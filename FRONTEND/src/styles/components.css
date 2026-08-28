@@ -1,0 +1,713 @@
+/* ==========================================================================
+   CarePulse HMS — Next-Gen Aesthetic Component Styles
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Sidebar with Luxury Frosted Glass
+   -------------------------------------------------------------------------- */
+.app-sidebar {
+  width: 270px;
+  height: 100vh;
+  max-height: 100vh;
+  background: linear-gradient(180deg, #0b1329 0%, #070d1e 100%);
+  color: #94a3b8;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  flex-shrink: 0;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none;
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+}
+
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 1.5rem 1.35rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  flex-shrink: 0;
+}
+
+.brand-icon-wrapper {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #06b6d4 0%, #0e7490 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(6, 182, 212, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-title {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.03em;
+}
+
+.brand-badge {
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #38bdf8;
+}
+
+.sidebar-nav {
+  flex: 1;
+  padding: 1.25rem 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+.sidebar-nav::-webkit-scrollbar {
+  width: 5px;
+}
+
+.sidebar-nav::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 4px;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.nav-section-title {
+  font-size: 0.6875rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #475569;
+  padding: 0.85rem 0.85rem 0.45rem 0.85rem;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.6875rem 0.875rem;
+  color: #94a3b8;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+}
+
+.nav-item:hover {
+  color: #f8fafc;
+  background-color: rgba(255, 255, 255, 0.06);
+  transform: translateX(2px);
+}
+
+.nav-item.active {
+  color: #ffffff;
+  background: linear-gradient(135deg, #0891b2 0%, #0e7490 100%);
+  font-weight: 700;
+  box-shadow: 0 4px 16px rgba(14, 116, 144, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.nav-item-icon {
+  width: 19px;
+  height: 19px;
+}
+
+.sidebar-footer {
+  padding: 1.15rem 1.35rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background-color: rgba(0, 0, 0, 0.3);
+  flex-shrink: 0;
+}
+
+.user-profile-widget {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.user-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #0891b2;
+}
+
+.user-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.user-name {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-role-tag {
+  font-size: 0.7rem;
+  color: #38bdf8;
+  font-weight: 600;
+}
+
+/* --------------------------------------------------------------------------
+   Navbar with Glassmorphic Header
+   -------------------------------------------------------------------------- */
+.app-navbar {
+  height: 72px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2.25rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+}
+
+.navbar-search {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background-color: #f1f5f9;
+  padding: 0.55rem 1rem;
+  border-radius: var(--radius-full);
+  width: 340px;
+  border: 1px solid transparent;
+  transition: all var(--transition-fast);
+}
+
+.navbar-search:focus-within {
+  background-color: #ffffff;
+  border-color: var(--primary-500);
+  box-shadow: 0 0 0 4px rgba(6, 182, 212, 0.15);
+}
+
+.navbar-search input {
+  border: none;
+  background: transparent;
+  width: 100%;
+  outline: none;
+  font-size: 0.875rem;
+  color: var(--slate-800);
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+/* Demo Role Switcher Bar */
+.demo-role-banner {
+  background: linear-gradient(90deg, #07172b 0%, #0e3a53 50%, #0891b2 100%);
+  color: #ffffff;
+  padding: 0.45rem 2.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.8125rem;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.demo-role-buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.demo-role-btn {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  padding: 0.3rem 0.75rem;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 700;
+  transition: all var(--transition-fast);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(8px);
+}
+
+.demo-role-btn:hover,
+.demo-role-btn.active {
+  background: #ffffff;
+  color: #0e7490;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* --------------------------------------------------------------------------
+   Hospital Hero Banner for Dashboard
+   -------------------------------------------------------------------------- */
+.hospital-hero-card {
+  position: relative;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  margin-bottom: 2rem;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.hospital-hero-bg {
+  position: absolute;
+  inset: 0;
+  background-image: url('/hospital_hero_bg.jpg');
+  background-size: cover;
+  background-position: center;
+  filter: brightness(0.9);
+  transition: transform 0.6s ease;
+}
+
+.hospital-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(11, 19, 41, 0.92) 0%,
+    rgba(14, 116, 144, 0.75) 55%,
+    rgba(6, 182, 212, 0.3) 100%
+  );
+  backdrop-filter: blur(2px);
+}
+
+.hospital-hero-content {
+  position: relative;
+  z-index: 2;
+  padding: 2.25rem 2.5rem;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.hospital-hero-text h2 {
+  font-size: 1.85rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin-bottom: 0.4rem;
+  color: #ffffff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.hospital-hero-text p {
+  font-size: 0.9375rem;
+  color: #e0f2fe;
+  max-width: 620px;
+  line-height: 1.5;
+}
+
+.hospital-hero-chips {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+.hero-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(8px);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+/* --------------------------------------------------------------------------
+   Stats Grid & Aesthetic Metric Cards
+   -------------------------------------------------------------------------- */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem 1.75rem;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-normal);
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #06b6d4 0%, #0e7490 100%);
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+  border-color: rgba(6, 182, 212, 0.35);
+}
+
+.stat-card:hover::before {
+  opacity: 1;
+}
+
+.stat-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.stat-label {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.stat-value {
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: var(--slate-900);
+  font-feature-settings: 'tnum';
+  letter-spacing: -0.03em;
+}
+
+.stat-subtext {
+  font-size: 0.75rem;
+  color: var(--text-light);
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-top: 0.3rem;
+  font-weight: 500;
+}
+
+.stat-icon-wrapper {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+}
+
+/* --------------------------------------------------------------------------
+   Ward & Bed Occupancy Matrix
+   -------------------------------------------------------------------------- */
+.bed-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.25rem;
+}
+
+.bed-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  padding: 1.15rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  transition: all var(--transition-fast);
+  position: relative;
+  box-shadow: var(--shadow-xs);
+}
+
+.bed-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.bed-card.occupied {
+  border-left: 4px solid var(--danger-500);
+  background-color: #fffafa;
+}
+
+.bed-card.available {
+  border-left: 4px solid var(--success-500);
+}
+
+.bed-card.maintenance {
+  border-left: 4px solid var(--warning-500);
+  background-color: #fffdf5;
+}
+
+.bed-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.bed-number {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--slate-900);
+}
+
+.bed-patient-info {
+  font-size: 0.8125rem;
+  color: var(--slate-700);
+  background: #f1f5f9;
+  padding: 0.65rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid #e2e8f0;
+}
+
+/* --------------------------------------------------------------------------
+   Prescription Printable & Digital View
+   -------------------------------------------------------------------------- */
+.rx-document {
+  background: #ffffff;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 2.75rem;
+  box-shadow: var(--shadow-md);
+  max-width: 840px;
+  margin: 0 auto;
+}
+
+.rx-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: 1.75rem;
+  border-bottom: 3px solid var(--primary-700);
+  margin-bottom: 1.75rem;
+}
+
+.rx-hospital-title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--primary-800);
+  letter-spacing: -0.02em;
+}
+
+.rx-patient-bar {
+  background-color: #f8fafc;
+  padding: 1.15rem;
+  border-radius: var(--radius-md);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.85rem;
+  margin-bottom: 1.75rem;
+  border: 1px solid var(--slate-200);
+}
+
+.rx-vitals-bar {
+  display: flex;
+  gap: 1.75rem;
+  flex-wrap: wrap;
+  padding: 0.85rem 1.25rem;
+  background: linear-gradient(135deg, #ecfeff 0%, #cffafe 100%);
+  border-radius: var(--radius-sm);
+  font-size: 0.8125rem;
+  color: var(--primary-900);
+  margin-bottom: 1.75rem;
+  border: 1px solid #a5f3fc;
+}
+
+.rx-symbol {
+  font-size: 2.25rem;
+  font-family: serif;
+  font-weight: bold;
+  color: var(--primary-700);
+  margin-bottom: 0.85rem;
+}
+
+.rx-medicines-table {
+  width: 100%;
+  margin-bottom: 1.75rem;
+  border-collapse: collapse;
+}
+
+.rx-medicines-table th {
+  background-color: #f1f5f9;
+  padding: 0.75rem 0.85rem;
+  text-align: left;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--slate-700);
+}
+
+.rx-medicines-table td {
+  padding: 0.85rem;
+  border-bottom: 1px solid var(--slate-200);
+  font-size: 0.875rem;
+}
+
+.rx-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: 2.75rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--slate-200);
+}
+
+/* --------------------------------------------------------------------------
+   Invoice Printable Receipt
+   -------------------------------------------------------------------------- */
+.invoice-sheet {
+  background: #ffffff;
+  padding: 2.75rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  max-width: 840px;
+  margin: 0 auto;
+}
+
+.invoice-summary-box {
+  background-color: #f8fafc;
+  padding: 1.35rem;
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  width: 300px;
+  margin-left: auto;
+  border: 1px solid var(--slate-200);
+}
+
+.invoice-summary-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.875rem;
+  color: var(--slate-700);
+}
+
+.invoice-summary-total {
+  border-top: 2px solid var(--slate-300);
+  padding-top: 0.6rem;
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--slate-900);
+}
+
+/* --------------------------------------------------------------------------
+   Medical Files & Scans Vault
+   -------------------------------------------------------------------------- */
+.file-upload-zone {
+  border: 2px dashed #94a3b8;
+  border-radius: var(--radius-lg);
+  padding: 2.75rem 1.75rem;
+  text-align: center;
+  background-color: #f8fafc;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.file-upload-zone:hover,
+.file-upload-zone.drag-active {
+  border-color: var(--primary-600);
+  background-color: #ecfeff;
+}
+
+.files-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.file-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-xs);
+  transition: all var(--transition-fast);
+}
+
+.file-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-3px);
+}
+
+.file-card-preview {
+  height: 160px;
+  background-color: #0f172a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+
+.file-card-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.file-card-details {
+  padding: 1.15rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+/* --------------------------------------------------------------------------
+   ChatBot Floating Animation
+   -------------------------------------------------------------------------- */
+@keyframes slideUpChat {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
