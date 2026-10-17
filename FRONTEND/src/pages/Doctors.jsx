@@ -105,63 +105,67 @@ export const Doctors = ({ setActiveTab }) => {
 
   return (
     <div>
-      <div className="page-header">
-        <div className="page-header-title">
-          <h1>Medical Specialists & Doctor Roster</h1>
-          <p>Consulting physicians, surgeons, pediatricians, and clinical department heads.</p>
-        </div>
-        {isAdmin && (
-          <div className="page-header-actions">
-            <button className="btn btn-primary" onClick={() => setIsModalOpen(true)}>
-              <Plus size={16} /> Add Specialist
-            </button>
+      <div className="page-hero">
+        <div className="page-header">
+          <div className="page-header-title">
+            <span className="eyebrow">
+              <Stethoscope size={13} /> Medical staff
+            </span>
+            <h1>Doctors</h1>
+            <p>Consulting physicians, surgeons and department heads available for booking.</p>
           </div>
-        )}
+          {isAdmin && (
+            <div className="page-header-actions">
+              <button className="btn btn-primary" onClick={() => setIsModalOpen(true)}>
+                <Plus size={16} /> Add Specialist
+              </button>
+            </div>
+          )}
+        </div>
+        <img
+          className="page-hero-img"
+          src="/images/care-team.webp"
+          alt="Doctor and nurse reviewing patient details on a tablet"
+          loading="lazy"
+        />
       </div>
 
       {/* Filter Bar */}
-      <div className="card" style={{ marginBottom: '1.5rem', padding: '1rem 1.25rem' }}>
-        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'center' }}>
-          <div style={{ flex: 1, minWidth: '240px', position: 'relative' }}>
-            <Search size={16} style={{ position: 'absolute', left: '10px', top: '12px', color: '#94a3b8' }} />
-            <input
-              type="text"
-              placeholder="Search by doctor name or medical specialty..."
-              className="form-input"
-              style={{ paddingLeft: '2.2rem' }}
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-          </div>
+      <div className="filter-bar">
+        <div className="filter-search">
+          <Search size={16} />
+          <input
+            type="text"
+            placeholder="Search by doctor name or medical specialty..."
+            className="form-input"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
 
-          <div style={{ width: '200px' }}>
-            <select
-              className="form-select"
-              value={deptFilter}
-              onChange={(e) => setDeptFilter(e.target.value)}
-            >
-              <option value="">All Departments</option>
-              {departments.map((d) => (
-                <option key={d} value={d}>
-                  {d}
-                </option>
-              ))}
-            </select>
-          </div>
+        <div className="filter-select">
+          <select
+            className="form-select"
+            value={deptFilter}
+            onChange={(e) => setDeptFilter(e.target.value)}
+          >
+            <option value="">All Departments</option>
+            {departments.map((d) => (
+              <option key={d} value={d}>
+                {d}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
 
       {/* Doctors Card Grid */}
       {loading ? (
-        <div style={{ padding: '3rem', textAlign: 'center', color: '#64748b' }}>
-          Loading specialists catalog...
-        </div>
+        <div className="empty-state">Loading doctors...</div>
       ) : filtered.length === 0 ? (
-        <div className="card" style={{ textAlign: 'center', padding: '3rem', color: '#64748b' }}>
-          No doctors found matching your criteria.
-        </div>
+        <div className="card empty-state">No doctors match your search.</div>
       ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '1.5rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 300px), 1fr))', gap: '1.25rem' }}>
           {filtered.map((doc) => (
             <div key={doc._id} className="card" style={{ display: 'flex', flexDirection: 'column' }}>
               <div style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start', marginBottom: '1rem' }}>
@@ -172,26 +176,27 @@ export const Doctors = ({ setActiveTab }) => {
                   shape="rounded"
                 />
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <h3 style={{ fontSize: '1.05rem', fontWeight: '700', color: '#0f172a' }}>
+                  <h3 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--slate-900)' }}>
                     {doc.user?.name}
                   </h3>
-                  <div style={{ color: '#0891b2', fontSize: '0.8125rem', fontWeight: '600' }}>
+                  <div style={{ color: 'var(--primary-700)', fontSize: '0.8125rem', fontWeight: 600 }}>
                     {doc.specialty}
                   </div>
-                  <div style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '2px' }}>
+                  <div className="text-muted-sm" style={{ marginTop: '2px' }}>
                     {doc.department} Department
                   </div>
                 </div>
               </div>
 
-              <p style={{ fontSize: '0.8125rem', color: '#475569', lineHeight: '1.4', marginBottom: '1rem', flex: 1 }}>
+              <p style={{ fontSize: '0.8125rem', color: 'var(--slate-600)', lineHeight: 1.5, marginBottom: '1rem', flex: 1 }}>
                 {doc.biography || 'Experienced healthcare practitioner dedicated to comprehensive patient care.'}
               </p>
 
               <div
                 style={{
-                  background: '#f8fafc',
-                  borderRadius: '8px',
+                  background: 'var(--slate-50)',
+                  border: '1px solid var(--slate-100)',
+                  borderRadius: '10px',
                   padding: '0.75rem',
                   display: 'grid',
                   gridTemplateColumns: '1fr 1fr',
@@ -200,21 +205,20 @@ export const Doctors = ({ setActiveTab }) => {
                   marginBottom: '1rem',
                 }}
               >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', color: '#334155' }}>
-                  <Award size={14} color="#0891b2" />
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', color: 'var(--slate-700)' }}>
+                  <Award size={14} color="var(--primary-600)" />
                   <span>{doc.experienceYears} Yrs Experience</span>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', color: '#334155' }}>
-                  <Star size={14} color="#f59e0b" />
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', color: 'var(--slate-700)' }}>
+                  <Star size={14} color="var(--warning-500)" />
                   <span>{doc.rating || 4.9} / 5.0 Rating</span>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', color: '#334155' }}>
-                  <MapPin size={14} color="#64748b" />
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', color: 'var(--slate-700)' }}>
+                  <MapPin size={14} color="var(--slate-500)" />
                   <span>{doc.roomNumber}</span>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', color: '#059669', fontWeight: '700' }}>
-                  <span style={{ fontSize: '0.9rem', fontWeight: '800' }}>₹</span>
-                  <span>₹{doc.consultationFee} Fee</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', color: 'var(--success-700)', fontWeight: 600 }}>
+                  <span>₹{doc.consultationFee} fee</span>
                 </div>
               </div>
 

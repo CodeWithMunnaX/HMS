@@ -3,7 +3,6 @@ import { useAuth } from '../context/AuthContext';
 import { dashboardService } from '../services/api';
 import { StatCard } from '../components/common/StatCard';
 import { StatusBadge } from '../components/common/Badge';
-import { EcgWaveform } from '../components/common/EcgWaveform';
 import { AmbulanceTrackerModal } from '../components/emergency/AmbulanceTrackerModal';
 import { PharmacyInventoryModal } from '../components/pharmacy/PharmacyInventoryModal';
 import {
@@ -49,9 +48,9 @@ export const Dashboard = ({ setActiveTab }) => {
 
   if (loading) {
     return (
-      <div style={{ padding: '3rem', textAlign: 'center', color: '#64748b' }}>
-        <HeartPulse size={36} className="animate-spin" style={{ margin: '0 auto 1rem auto', color: '#0891b2' }} />
-        <p>Loading Clinical Dashboard...</p>
+      <div className="empty-state">
+        <div className="app-loading-spinner" style={{ margin: '0 auto 1rem auto' }} />
+        <p>Loading dashboard...</p>
       </div>
     );
   }
@@ -133,7 +132,7 @@ export const Dashboard = ({ setActiveTab }) => {
               <tbody>
                 {queue.length === 0 ? (
                   <tr>
-                    <td colSpan="7" style={{ textAlign: 'center', padding: '2rem', color: '#64748b' }}>
+                    <td colSpan="7" className="table-empty">
                       No appointments in queue for today.
                     </td>
                   </tr>
@@ -141,13 +140,13 @@ export const Dashboard = ({ setActiveTab }) => {
                   queue.map((app) => (
                     <tr key={app._id}>
                       <td>
-                        <strong style={{ fontSize: '1rem', color: '#0e7490' }}>
+                        <strong className="text-link">
                           #{app.tokenNumber}
                         </strong>
                       </td>
                       <td>
                         <strong>{app.patient?.name || 'Walk-in Patient'}</strong>
-                        <div style={{ fontSize: '0.75rem', color: '#64748b' }}>{app.patient?.phone}</div>
+                        <div className="text-muted-sm">{app.patient?.phone}</div>
                       </td>
                       <td>
                         {app.patient?.patientId || 'PAT-TEMP'} • {app.patient?.age}y ({app.patient?.gender})
@@ -214,7 +213,7 @@ export const Dashboard = ({ setActiveTab }) => {
           <StatCard
             label="Pending Invoices"
             value={metrics.pendingBillsCount || 0}
-            subtext={`$${metrics.pendingBalance || 0} outstanding balance`}
+            subtext={`₹${metrics.pendingBalance || 0} outstanding balance`}
             icon={Receipt}
             color={metrics.pendingBillsCount > 0 ? 'rose' : 'emerald'}
           />
@@ -227,7 +226,7 @@ export const Dashboard = ({ setActiveTab }) => {
           />
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))', gap: '1.5rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 360px), 1fr))', gap: '1.25rem' }}>
           {/* Upcoming appointments */}
           <div className="card">
             <div className="card-header">
@@ -248,7 +247,7 @@ export const Dashboard = ({ setActiveTab }) => {
                 <tbody>
                   {appointments.length === 0 ? (
                     <tr>
-                      <td colSpan="3" style={{ textAlign: 'center', padding: '1.5rem', color: '#64748b' }}>
+                      <td colSpan="3" className="table-empty">
                         No appointments found. Click Book New to schedule a consultation.
                       </td>
                     </tr>
@@ -257,11 +256,11 @@ export const Dashboard = ({ setActiveTab }) => {
                       <tr key={app._id}>
                         <td>
                           <strong>{app.doctor?.user?.name || 'Specialist'}</strong>
-                          <div style={{ fontSize: '0.75rem', color: '#64748b' }}>{app.department}</div>
+                          <div className="text-muted-sm">{app.department}</div>
                         </td>
                         <td>
                           {new Date(app.appointmentDate).toLocaleDateString()}
-                          <div style={{ fontSize: '0.75rem', color: '#64748b' }}>{app.timeSlot}</div>
+                          <div className="text-muted-sm">{app.timeSlot}</div>
                         </td>
                         <td>
                           <StatusBadge status={app.status} />
@@ -294,7 +293,7 @@ export const Dashboard = ({ setActiveTab }) => {
                 <tbody>
                   {prescriptions.length === 0 ? (
                     <tr>
-                      <td colSpan="3" style={{ textAlign: 'center', padding: '1.5rem', color: '#64748b' }}>
+                      <td colSpan="3" className="table-empty">
                         No digital prescriptions recorded.
                       </td>
                     </tr>
@@ -326,56 +325,52 @@ export const Dashboard = ({ setActiveTab }) => {
 
   return (
     <div>
-      {/* Luxury Hospital Atrium Hero Banner */}
+      {/* Welcome banner with reception photo */}
       <div className="hospital-hero-card">
-        <div className="hospital-hero-bg" />
+        <img
+          className="hospital-hero-bg"
+          src="/images/procedure-room.webp"
+          alt="Clean, well-lit hospital procedure room"
+          loading="lazy"
+        />
         <div className="hospital-hero-overlay" />
         <div className="hospital-hero-content">
           <div className="hospital-hero-text">
-            <h2>CarePulse Medical Institute & Clinical Center</h2>
+            <span className="eyebrow">Welcome back{user?.name ? `, ${user.name.split(' ')[0]}` : ''}</span>
+            <h2>CarePulse Medical Institute</h2>
             <p>
-              Autonomous smart hospital network facilitating OPD consultations, multi-specialty surgery, ICU triage, and integrated cloud diagnostics.
+              OPD consultations, inpatient wards, diagnostics and billing — all in one place.
             </p>
             <div className="hospital-hero-chips">
               <span className="hero-chip">
-                <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#10b981' }} />
-                ER & Trauma 24/7 Active
+                <span className="hero-chip-dot" />
+                ER & Trauma open 24/7
               </span>
               <span className="hero-chip">
-                <Users size={13} /> {metrics.totalDoctors || 4} Specialists on Duty
+                <Stethoscope size={13} /> {metrics.totalDoctors || 0} specialists on duty
               </span>
               <span className="hero-chip">
-                <BedDouble size={13} /> {metrics.occupiedBeds || 0} / {metrics.totalBeds || 10} Beds Occupied
+                <BedDouble size={13} /> {metrics.occupiedBeds || 0} / {metrics.totalBeds || 0} beds occupied
               </span>
             </div>
           </div>
-          <div style={{ display: 'flex', gap: '0.75rem' }}>
-            <button className="btn btn-primary btn-lg" onClick={() => setActiveTab('appointments')}>
-              <Calendar size={18} /> Schedule OPD Visit
-            </button>
-          </div>
+          <button className="btn btn-primary" onClick={() => setActiveTab('appointments')}>
+            <Calendar size={16} /> Schedule OPD Visit
+          </button>
         </div>
       </div>
 
       <div className="page-header">
         <div className="page-header-title">
-          <h1>Clinical Operations Dashboard</h1>
-          <p>Real-time hospital intelligence, live OPD queue, inpatient occupancy, and financial metrics.</p>
+          <h1>Operations Dashboard</h1>
+          <p>Live OPD queue, inpatient occupancy and financial metrics.</p>
         </div>
-        <div className="page-header-actions" style={{ display: 'flex', gap: '0.6rem', flexWrap: 'wrap' }}>
-          <button
-            className="btn"
-            style={{ backgroundColor: '#dc2626', color: '#ffffff', fontWeight: '700' }}
-            onClick={() => setIsAmbulanceModalOpen(true)}
-          >
-            <Siren size={16} /> 🚑 Emergency Ambulance Radar
+        <div className="page-header-actions">
+          <button className="btn btn-danger-soft" onClick={() => setIsAmbulanceModalOpen(true)}>
+            <Siren size={16} /> Ambulance Radar
           </button>
-          <button
-            className="btn"
-            style={{ backgroundColor: '#4338ca', color: '#ffffff', fontWeight: '700' }}
-            onClick={() => setIsInventoryModalOpen(true)}
-          >
-            <Package size={16} /> 📦 Central Drug Inventory
+          <button className="btn btn-secondary" onClick={() => setIsInventoryModalOpen(true)}>
+            <Package size={16} /> Drug Inventory
           </button>
           <button className="btn btn-secondary" onClick={() => setActiveTab('patients')}>
             <Users size={16} /> Register Patient
@@ -386,8 +381,45 @@ export const Dashboard = ({ setActiveTab }) => {
         </div>
       </div>
 
-      {/* Real-Time Hospital Telemetry Line */}
-      <EcgWaveform patientName="CarePulse Central ICU & Trauma Telemetry" bpm={72} spO2={99} bp="118/78 mmHg" />
+      {/* Light live-status strip */}
+      <div className="status-strip">
+        <div className="status-strip-item">
+          <div className="status-strip-icon" style={{ background: 'var(--danger-50)', color: 'var(--danger-600)' }}>
+            <HeartPulse size={17} />
+          </div>
+          <div>
+            <div className="status-strip-label">Central ICU telemetry</div>
+            <div className="status-strip-value">72 bpm · SpO₂ 99%</div>
+          </div>
+        </div>
+        <div className="status-strip-item">
+          <div className="status-strip-icon" style={{ background: 'var(--primary-50)', color: 'var(--primary-700)' }}>
+            <BedDouble size={17} />
+          </div>
+          <div>
+            <div className="status-strip-label">Bed occupancy</div>
+            <div className="status-strip-value">{metrics.occupancyRate || 0}%</div>
+          </div>
+        </div>
+        <div className="status-strip-item">
+          <div className="status-strip-icon" style={{ background: 'var(--info-50)', color: 'var(--info-600)' }}>
+            <Clock size={17} />
+          </div>
+          <div>
+            <div className="status-strip-label">Recent appointments</div>
+            <div className="status-strip-value">{recentAppointments.length}</div>
+          </div>
+        </div>
+        <div className="status-strip-item">
+          <div className="status-strip-icon" style={{ background: 'var(--warning-50)', color: 'var(--warning-600)' }}>
+            <Receipt size={17} />
+          </div>
+          <div>
+            <div className="status-strip-label">Pending collections</div>
+            <div className="status-strip-value">₹{(metrics.pendingRevenue || 0).toLocaleString()}</div>
+          </div>
+        </div>
+      </div>
 
       <div className="stats-grid">
         <StatCard
@@ -423,11 +455,11 @@ export const Dashboard = ({ setActiveTab }) => {
       <div className="card">
         <div className="card-header">
           <div>
-            <h2 className="card-title">Recent Clinical Appointments</h2>
-            <p className="card-subtitle">Live status across departments</p>
+            <h2 className="card-title">Recent Appointments</h2>
+            <p className="card-subtitle">Latest bookings across all departments</p>
           </div>
           <button className="btn btn-secondary btn-sm" onClick={() => setActiveTab('appointments')}>
-            Manage All Appointments
+            View all
           </button>
         </div>
 
@@ -446,7 +478,7 @@ export const Dashboard = ({ setActiveTab }) => {
             <tbody>
               {recentAppointments.length === 0 ? (
                 <tr>
-                  <td colSpan="6" style={{ textAlign: 'center', padding: '2rem', color: '#64748b' }}>
+                  <td colSpan="6" className="table-empty">
                     No recent appointments found.
                   </td>
                 </tr>
@@ -458,15 +490,15 @@ export const Dashboard = ({ setActiveTab }) => {
                     </td>
                     <td>
                       <strong>{app.patient?.name || 'Walk-in'}</strong>
-                      <div style={{ fontSize: '0.75rem', color: '#64748b' }}>{app.patient?.patientId}</div>
+                      <div className="text-muted-sm">{app.patient?.patientId}</div>
                     </td>
                     <td>
                       <strong>{app.doctor?.user?.name || 'Specialist'}</strong>
-                      <div style={{ fontSize: '0.75rem', color: '#64748b' }}>{app.department}</div>
+                      <div className="text-muted-sm">{app.department}</div>
                     </td>
                     <td>
                       {new Date(app.appointmentDate).toLocaleDateString()}
-                      <div style={{ fontSize: '0.75rem', color: '#64748b' }}>{app.timeSlot}</div>
+                      <div className="text-muted-sm">{app.timeSlot}</div>
                     </td>
                     <td>{app.type}</td>
                     <td>

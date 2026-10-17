@@ -101,7 +101,7 @@ export const PharmacyDispenserModal = ({ isOpen, onClose, defaultRxId = null }) 
 
       if (res.success && res.data) {
         setPrescription(res.data);
-        toast.success(`🎉 Medications successfully dispensed for ${res.data.prescriptionId}!`);
+        toast.success(`Medications successfully dispensed for ${res.data.prescriptionId}!`);
         loadRecentPrescriptions();
       } else {
         toast.error(res.message || 'Failed to dispense medications');
@@ -117,45 +117,42 @@ export const PharmacyDispenserModal = ({ isOpen, onClose, defaultRxId = null }) 
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title="💊 Pharmacy QR Prescription Dispenser & Verification"
+      title="Pharmacy Dispenser & RX Verification"
       maxWidth="920px"
     >
       <div>
         {/* Quick-Scan Header Bar */}
         <div
           style={{
-            background: 'linear-gradient(135deg, #042f2e 0%, #0f172a 100%)',
-            borderRadius: '16px',
-            border: '1px solid rgba(20, 184, 166, 0.3)',
+            background: 'var(--primary-50)',
+            borderRadius: '14px',
+            border: '1px solid var(--primary-100)',
             padding: '1.25rem',
-            color: '#ffffff',
             marginBottom: '1.25rem',
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.75rem', marginBottom: '0.75rem' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-              <ScanLine size={20} color="#2dd4bf" />
-              <span style={{ fontWeight: '800', fontSize: '0.95rem', color: '#ccfbf1' }}>
-                Scan or Enter Digital Prescription QR Code
+              <ScanLine size={20} color="var(--primary-600)" />
+              <span style={{ fontWeight: '700', fontSize: '0.95rem', color: 'var(--slate-900)' }}>
+                Scan or enter a prescription QR code
               </span>
             </div>
-            <span style={{ fontSize: '0.75rem', backgroundColor: 'rgba(20, 184, 166, 0.2)', color: '#2dd4bf', padding: '0.2rem 0.6rem', borderRadius: '999px', fontWeight: '700' }}>
-              ● Pharmacy Live Registry Connected
+            <span className="clinical-pill clinical-pill-success">
+              <span className="portal-live-dot" /> Registry connected
             </span>
           </div>
 
-          <div style={{ display: 'flex', gap: '0.5rem' }}>
-            <div style={{ position: 'relative', flex: 1 }}>
-              <QrCode size={18} color="#14b8a6" style={{ position: 'absolute', left: '12px', top: '12px' }} />
+          <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+            <div style={{ position: 'relative', flex: '1 1 240px' }}>
+              <QrCode size={18} color="var(--primary-600)" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }} />
               <input
                 type="text"
                 className="form-input"
                 placeholder="Scan QR or enter Prescription ID (e.g. RX-05001 or CAREPULSE-VERIFIED-RX-...)"
                 style={{
                   paddingLeft: '2.5rem',
-                  backgroundColor: '#0f172a',
-                  borderColor: 'rgba(20, 184, 166, 0.4)',
-                  color: '#ffffff',
+                  backgroundColor: '#ffffff',
                 }}
                 value={qrInput}
                 onChange={(e) => setQrInput(e.target.value)}
@@ -167,7 +164,7 @@ export const PharmacyDispenserModal = ({ isOpen, onClose, defaultRxId = null }) 
             <button
               type="button"
               className="btn btn-primary"
-              style={{ backgroundColor: '#0d9488', borderColor: '#0f766e', minWidth: '130px' }}
+              style={{ minWidth: '130px', justifyContent: 'center' }}
               onClick={() => handleVerify()}
               disabled={loading}
             >
@@ -179,7 +176,7 @@ export const PharmacyDispenserModal = ({ isOpen, onClose, defaultRxId = null }) 
           {/* Quick-Pills of recent prescriptions */}
           {recentPrescriptions.length > 0 && (
             <div style={{ marginTop: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.4rem', flexWrap: 'wrap' }}>
-              <span style={{ fontSize: '0.7rem', color: '#94a3b8', fontWeight: '700' }}>⚡ Quick Test:</span>
+              <span style={{ fontSize: '0.75rem', color: 'var(--slate-600)', fontWeight: '600' }}>Recent:</span>
               {recentPrescriptions.map((rx) => (
                 <button
                   key={rx._id}
@@ -189,9 +186,9 @@ export const PharmacyDispenserModal = ({ isOpen, onClose, defaultRxId = null }) 
                     handleVerify(rx.prescriptionId);
                   }}
                   style={{
-                    backgroundColor: rx.dispenseStatus === 'Dispensed' ? 'rgba(16, 185, 129, 0.15)' : 'rgba(245, 158, 11, 0.15)',
-                    border: rx.dispenseStatus === 'Dispensed' ? '1px solid #10b981' : '1px solid #f59e0b',
-                    color: rx.dispenseStatus === 'Dispensed' ? '#34d399' : '#fbbf24',
+                    backgroundColor: rx.dispenseStatus === 'Dispensed' ? 'var(--success-50)' : 'var(--warning-50)',
+                    border: rx.dispenseStatus === 'Dispensed' ? '1px solid var(--success-100)' : '1px solid var(--warning-100)',
+                    color: rx.dispenseStatus === 'Dispensed' ? 'var(--success-700)' : '#b45309',
                     padding: '0.2rem 0.5rem',
                     borderRadius: '6px',
                     fontSize: '0.7rem',
@@ -208,16 +205,16 @@ export const PharmacyDispenserModal = ({ isOpen, onClose, defaultRxId = null }) 
 
         {/* Verification Result & Fulfillment Area */}
         {prescription ? (
-          <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: '1.25rem' }}>
+          <div className="clinical-split-grid">
             {/* Left: Patient info & Medication Checklist */}
-            <div style={{ backgroundColor: '#f8fafc', padding: '1.25rem', borderRadius: '16px', border: '1px solid #e2e8f0' }}>
+            <div className="clinical-panel">
               {/* Status Header */}
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', paddingBottom: '0.75rem', borderBottom: '1px solid #e2e8f0' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1rem', paddingBottom: '0.75rem', borderBottom: '1px solid var(--slate-200)' }}>
                 <div>
                   <div style={{ fontSize: '0.7rem', color: '#64748b', fontWeight: '700', textTransform: 'uppercase' }}>
                     Prescription ID
                   </div>
-                  <div style={{ fontSize: '1.2rem', fontWeight: '900', color: '#0f766e' }}>
+                  <div style={{ fontSize: '1.2rem', fontWeight: '900', color: 'var(--primary-700)' }}>
                     {prescription.prescriptionId}
                   </div>
                 </div>
@@ -242,7 +239,7 @@ export const PharmacyDispenserModal = ({ isOpen, onClose, defaultRxId = null }) 
               </div>
 
               {/* Patient Bar */}
-              <div style={{ backgroundColor: '#ffffff', padding: '0.85rem', borderRadius: '10px', border: '1px solid #e2e8f0', marginBottom: '1rem', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem', fontSize: '0.8125rem' }}>
+              <div className="clinical-grid-2" style={{ backgroundColor: 'var(--slate-50)', padding: '0.85rem', borderRadius: '10px', border: '1px solid var(--slate-200)', marginBottom: '1rem', gap: '0.5rem', fontSize: '0.8125rem', color: 'var(--slate-700)' }}>
                 <div><strong>Patient:</strong> {prescription.patient?.name} ({prescription.patient?.patientId})</div>
                 <div><strong>Age/Gender:</strong> {prescription.patient?.age}y / {prescription.patient?.gender}</div>
                 <div><strong>Attending Doctor:</strong> {prescription.doctor?.user?.name || 'Dr. Sarah Jenkins'}</div>
@@ -272,8 +269,8 @@ export const PharmacyDispenserModal = ({ isOpen, onClose, defaultRxId = null }) 
                         key={idx}
                         onClick={() => handleToggleMed(idx)}
                         style={{
-                          backgroundColor: isChecked ? '#f0fdfa' : '#ffffff',
-                          border: isChecked ? '1px solid #5eead4' : '1px solid #e2e8f0',
+                          backgroundColor: isChecked ? 'var(--primary-50)' : '#ffffff',
+                          border: isChecked ? '1px solid var(--primary-200)' : '1px solid var(--slate-200)',
                           padding: '0.75rem',
                           borderRadius: '10px',
                           cursor: 'pointer',
@@ -287,12 +284,12 @@ export const PharmacyDispenserModal = ({ isOpen, onClose, defaultRxId = null }) 
                           type="checkbox"
                           checked={isChecked}
                           onChange={() => handleToggleMed(idx)}
-                          style={{ marginTop: '3px', cursor: 'pointer', width: '16px', height: '16px', accentColor: '#0d9488' }}
+                          style={{ marginTop: '3px', cursor: 'pointer', width: '16px', height: '16px', accentColor: '#0891b2' }}
                         />
                         <div style={{ flex: 1 }}>
                           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                             <strong style={{ color: '#0f172a', fontSize: '0.9rem' }}>{m.name}</strong>
-                            <span style={{ backgroundColor: '#e2e8f0', padding: '0.15rem 0.5rem', borderRadius: '4px', fontSize: '0.7rem', fontWeight: '700', color: '#334155' }}>
+                            <span style={{ backgroundColor: 'var(--slate-100)', padding: '0.15rem 0.5rem', borderRadius: '4px', fontSize: '0.7rem', fontWeight: '700', color: '#334155' }}>
                               {m.dosage}
                             </span>
                           </div>
@@ -300,8 +297,8 @@ export const PharmacyDispenserModal = ({ isOpen, onClose, defaultRxId = null }) 
                             Freq: <strong>{m.frequency}</strong> • Duration: <strong>{m.duration}</strong>
                           </div>
                           {m.instructions && (
-                            <div style={{ fontSize: '0.7rem', color: '#0d9488', marginTop: '2px' }}>
-                              📝 {m.instructions}
+                            <div style={{ fontSize: '0.75rem', color: 'var(--primary-700)', marginTop: '2px' }}>
+                              {m.instructions}
                             </div>
                           )}
                         </div>
@@ -314,7 +311,7 @@ export const PharmacyDispenserModal = ({ isOpen, onClose, defaultRxId = null }) 
 
             {/* Right: Dispensing Controls & Official QR Proof */}
             <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-              <div style={{ backgroundColor: '#f8fafc', padding: '1.25rem', borderRadius: '16px', border: '1px solid #e2e8f0' }}>
+              <div className="clinical-panel">
                 <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
                   <img
                     src={`https://api.qrserver.com/v1/create-qr-code/?size=110x110&data=${encodeURIComponent('CAREPULSE-VERIFIED-RX-' + prescription.prescriptionId + '-' + prescription.patient?.name)}`}
@@ -361,8 +358,7 @@ export const PharmacyDispenserModal = ({ isOpen, onClose, defaultRxId = null }) 
                     width: '100%',
                     padding: '0.85rem',
                     fontSize: '0.95rem',
-                    backgroundColor: prescription.dispenseStatus === 'Dispensed' ? '#059669' : '#0d9488',
-                    borderColor: '#0f766e',
+                    justifyContent: 'center',
                   }}
                   onClick={handleDispense}
                   disabled={dispensing || prescription.dispenseStatus === 'Dispensed'}
@@ -377,7 +373,7 @@ export const PharmacyDispenserModal = ({ isOpen, onClose, defaultRxId = null }) 
                     </>
                   ) : (
                     <>
-                      <PackageCheck size={18} /> ✓ Confirm & Dispense Medications
+                      <PackageCheck size={18} /> Confirm & dispense
                     </>
                   )}
                 </button>
@@ -391,7 +387,7 @@ export const PharmacyDispenserModal = ({ isOpen, onClose, defaultRxId = null }) 
                   style={{ width: '100%', justifyContent: 'center' }}
                   onClick={() => window.print()}
                 >
-                  <Printer size={14} /> 🖨️ Print Pharmacy Dispense Slip
+                  <Printer size={14} /> Print dispense slip
                 </button>
               </div>
             </div>
@@ -400,16 +396,18 @@ export const PharmacyDispenserModal = ({ isOpen, onClose, defaultRxId = null }) 
           <div
             style={{
               padding: '2.5rem 1.5rem',
-              backgroundColor: '#f8fafc',
-              borderRadius: '16px',
-              border: '1px dashed #cbd5e1',
-              color: '#64748b',
+              backgroundColor: '#ffffff',
+              borderRadius: '14px',
+              border: '1px dashed var(--slate-300)',
+              color: 'var(--slate-600)',
               textAlign: 'center',
             }}
           >
-            <Pill size={44} color="#14b8a6" style={{ margin: '0 auto 0.75rem auto' }} />
-            <h4 style={{ color: '#0f172a', fontWeight: '800', fontSize: '1.1rem', marginBottom: '0.35rem' }}>
-              Hospital Pharmacy QR Dispenser & Verification Desk
+            <div className="clinical-empty-icon">
+              <Pill size={28} />
+            </div>
+            <h4 style={{ color: 'var(--slate-900)', fontWeight: '700', fontSize: '1.1rem', marginBottom: '0.35rem' }}>
+              Verify a prescription to begin
             </h4>
             <p style={{ fontSize: '0.875rem', maxWidth: '520px', margin: '0 auto 1.5rem auto', lineHeight: '1.5', color: '#475569' }}>
               When a doctor writes a prescription in <strong>Doctor Portal (E-Prescription Studio)</strong>, a tamper-proof digital <strong>QR Code</strong> is generated. Enter the <strong>Prescription ID</strong> (e.g. <code>RX-50001</code>) or click below to verify!
@@ -417,16 +415,16 @@ export const PharmacyDispenserModal = ({ isOpen, onClose, defaultRxId = null }) 
 
             {/* 3 Step Workflow */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '0.85rem', maxWidth: '640px', margin: '0 auto 1.5rem auto', textAlign: 'left' }}>
-              <div style={{ backgroundColor: '#ffffff', padding: '0.85rem', borderRadius: '10px', border: '1px solid #e2e8f0' }}>
-                <div style={{ fontSize: '0.75rem', fontWeight: '800', color: '#0e7490', marginBottom: '4px' }}>1. Doctor Prescribes</div>
+              <div style={{ backgroundColor: 'var(--slate-50)', padding: '0.85rem', borderRadius: '10px', border: '1px solid var(--slate-200)' }}>
+                <div style={{ fontSize: '0.8125rem', fontWeight: '700', color: 'var(--primary-700)', marginBottom: '4px' }}>1. Doctor Prescribes</div>
                 <div style={{ fontSize: '0.75rem', color: '#64748b' }}>Doctor issues RX in Clinical Studio with dosage & duration.</div>
               </div>
-              <div style={{ backgroundColor: '#ffffff', padding: '0.85rem', borderRadius: '10px', border: '1px solid #e2e8f0' }}>
-                <div style={{ fontSize: '0.75rem', fontWeight: '800', color: '#0e7490', marginBottom: '4px' }}>2. Patient Brings QR</div>
+              <div style={{ backgroundColor: 'var(--slate-50)', padding: '0.85rem', borderRadius: '10px', border: '1px solid var(--slate-200)' }}>
+                <div style={{ fontSize: '0.8125rem', fontWeight: '700', color: 'var(--primary-700)', marginBottom: '4px' }}>2. Patient Brings QR</div>
                 <div style={{ fontSize: '0.75rem', color: '#64748b' }}>Patient shows QR code on mobile or printed summary.</div>
               </div>
-              <div style={{ backgroundColor: '#ffffff', padding: '0.85rem', borderRadius: '10px', border: '1px solid #e2e8f0' }}>
-                <div style={{ fontSize: '0.75rem', fontWeight: '800', color: '#0e7490', marginBottom: '4px' }}>3. Pharmacist Dispenses</div>
+              <div style={{ backgroundColor: 'var(--slate-50)', padding: '0.85rem', borderRadius: '10px', border: '1px solid var(--slate-200)' }}>
+                <div style={{ fontSize: '0.8125rem', fontWeight: '700', color: 'var(--primary-700)', marginBottom: '4px' }}>3. Pharmacist Dispenses</div>
                 <div style={{ fontSize: '0.75rem', color: '#64748b' }}>Pharmacy scans QR, checks inventory & fulfills medicines.</div>
               </div>
             </div>
@@ -436,13 +434,12 @@ export const PharmacyDispenserModal = ({ isOpen, onClose, defaultRxId = null }) 
               <button
                 type="button"
                 className="btn btn-primary"
-                style={{ backgroundColor: '#0d9488', borderColor: '#0f766e' }}
                 onClick={() => {
                   setQrInput('RX-50001');
                   handleVerify('RX-50001');
                 }}
               >
-                ⚡ 1-Click Test: Load Sample RX-50001 (Alex Johnson)
+                Load sample RX-50001
               </button>
             </div>
           </div>

@@ -200,109 +200,31 @@ export const DoctorPortal = ({ subTab = 'overview', setSubTab }) => {
   return (
     <div>
       {/* Doctor Header Banner */}
-      <div
-        style={{
-          background: 'linear-gradient(135deg, #0e7490 0%, #0891b2 50%, #0f172a 100%)',
-          borderRadius: '20px',
-          padding: '2rem 2.25rem',
-          color: '#ffffff',
-          marginBottom: '2rem',
-          boxShadow: '0 10px 30px rgba(14, 116, 144, 0.3)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          flexWrap: 'wrap',
-          gap: '1.5rem',
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
+      <section className="portal-hero">
+        <img className="portal-hero-photo" src="/images/care-team.webp" alt="" aria-hidden="true" />
+        <div className="portal-hero-main">
           <img
+            className="portal-hero-avatar"
             src={user?.avatar || 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=200'}
-            alt="Doctor Avatar"
-            style={{
-              width: '72px',
-              height: '72px',
-              borderRadius: '16px',
-              objectFit: 'cover',
-              border: '3px solid rgba(255, 255, 255, 0.3)',
-              boxShadow: '0 8px 16px rgba(0, 0, 0, 0.2)',
-            }}
+            alt="Doctor avatar"
           />
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <span
-                style={{
-                  backgroundColor: '#10b981',
-                  color: '#ffffff',
-                  fontSize: '0.7rem',
-                  fontWeight: '800',
-                  padding: '0.2rem 0.6rem',
-                  borderRadius: '999px',
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.05em',
-                }}
-              >
-                ● Active On Duty
+            <div className="portal-hero-meta">
+              <span className="portal-status-pill">
+                <span className="portal-live-dot" /> On duty
               </span>
-              <span style={{ opacity: 0.85, fontSize: '0.8125rem' }}>Room: OPD-204</span>
+              <span>Room OPD-204</span>
             </div>
-            <h1 style={{ fontSize: '1.65rem', fontWeight: '800', margin: '0.25rem 0', color: '#ffffff' }}>
-              {user?.name}
-            </h1>
-            <p style={{ opacity: 0.9, fontSize: '0.875rem' }}>
+            <h1 className="portal-hero-title">{user?.name}</h1>
+            <p className="portal-hero-sub">
               {user?.department || 'Cardiology'} Specialist • Consultant Physician & Surgeon
             </p>
           </div>
         </div>
 
-        <div style={{ display: 'flex', gap: '0.6rem', flexWrap: 'wrap' }}>
+        <div className="portal-hero-actions">
           <button
-            className="btn"
-            style={{
-              backgroundColor: '#0d9488',
-              color: '#ffffff',
-              fontWeight: '700',
-            }}
-            onClick={() => {
-              setTelehealthPatient(null);
-              setIsTelehealthOpen(true);
-            }}
-          >
-            <Video size={16} /> Telehealth Video Consult
-          </button>
-          <button
-            className="btn"
-            style={{
-              backgroundColor: '#4338ca',
-              color: '#ffffff',
-              fontWeight: '700',
-            }}
-            onClick={() => {
-              setPathologyPatient(null);
-              setIsPathologyOpen(true);
-            }}
-          >
-            <Microscope size={16} /> Smart Lab Report
-          </button>
-          <button
-            className="btn"
-            style={{
-              background: 'linear-gradient(135deg, #0891b2 0%, #0e7490 100%)',
-              color: '#ffffff',
-              fontWeight: '700',
-              boxShadow: '0 4px 14px rgba(8, 145, 178, 0.4)',
-              border: '1px solid rgba(255, 255, 255, 0.3)',
-            }}
-            onClick={() => {
-              setAiScanSelected(null);
-              setIsAiAnalyzerOpen(true);
-            }}
-          >
-            <Activity size={16} /> Clinical Scan Analyzer
-          </button>
-          <button
-            className="btn"
-            style={{ backgroundColor: '#ffffff', color: '#0e7490', fontWeight: '700' }}
+            className="btn btn-primary"
             onClick={() => {
               setRxForm((prev) => ({ ...prev, patientId: '', appointmentId: '' }));
               setIsRxModalOpen(true);
@@ -310,8 +232,35 @@ export const DoctorPortal = ({ subTab = 'overview', setSubTab }) => {
           >
             <Plus size={16} /> Write E-Prescription
           </button>
+          <button
+            className="btn btn-secondary"
+            onClick={() => {
+              setTelehealthPatient(null);
+              setIsTelehealthOpen(true);
+            }}
+          >
+            <Video size={16} /> Video Consult
+          </button>
+          <button
+            className="btn btn-secondary"
+            onClick={() => {
+              setPathologyPatient(null);
+              setIsPathologyOpen(true);
+            }}
+          >
+            <Microscope size={16} /> Lab Report
+          </button>
+          <button
+            className="btn btn-secondary"
+            onClick={() => {
+              setAiScanSelected(null);
+              setIsAiAnalyzerOpen(true);
+            }}
+          >
+            <Activity size={16} /> Scan Analyzer
+          </button>
         </div>
-      </div>
+      </section>
 
       {/* TAB 1: OVERVIEW & TODAY'S QUEUE */}
       {currentTab === 'overview' && (
@@ -380,7 +329,7 @@ export const DoctorPortal = ({ subTab = 'overview', setSubTab }) => {
                 <tbody>
                   {queue.length === 0 ? (
                     <tr>
-                      <td colSpan="7" style={{ textAlign: 'center', padding: '2.5rem', color: '#64748b' }}>
+                      <td colSpan="7" style={{ textAlign: 'center', padding: '2.5rem', color: 'var(--slate-500)' }}>
                         No patients currently in your queue.
                       </td>
                     </tr>
@@ -388,44 +337,29 @@ export const DoctorPortal = ({ subTab = 'overview', setSubTab }) => {
                     queue.map((app) => (
                       <tr key={app._id}>
                         <td>
-                          <div
-                            style={{
-                              display: 'inline-flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              width: '38px',
-                              height: '38px',
-                              borderRadius: '10px',
-                              backgroundColor: '#ecfeff',
-                              color: '#0e7490',
-                              fontWeight: '800',
-                              fontSize: '1rem',
-                            }}
-                          >
-                            #{app.tokenNumber}
-                          </div>
+                          <span className="portal-token">#{app.tokenNumber}</span>
                         </td>
                         <td>
-                          <div style={{ fontWeight: '700', color: '#0f172a' }}>{app.patient?.name}</div>
-                          <div style={{ fontSize: '0.75rem', color: '#64748b' }}>{app.patient?.phone}</div>
+                          <div style={{ fontWeight: '700', color: 'var(--slate-900)' }}>{app.patient?.name}</div>
+                          <div style={{ fontSize: '0.75rem', color: 'var(--slate-500)' }}>{app.patient?.phone}</div>
                         </td>
                         <td>
                           <div>{app.patient?.patientId}</div>
-                          <div style={{ fontSize: '0.75rem', color: '#64748b' }}>
+                          <div style={{ fontSize: '0.75rem', color: 'var(--slate-500)' }}>
                             {app.patient?.age}y ({app.patient?.gender}) • <strong>{app.patient?.bloodGroup}</strong>
                           </div>
                         </td>
                         <td>
                           <div style={{ fontWeight: '600' }}>{app.timeSlot}</div>
-                          <div style={{ fontSize: '0.75rem', color: '#64748b' }}>
+                          <div style={{ fontSize: '0.75rem', color: 'var(--slate-500)' }}>
                             {new Date(app.appointmentDate).toLocaleDateString()}
                           </div>
                         </td>
                         <td style={{ maxWidth: '220px' }}>
                           <div style={{ fontSize: '0.85rem', fontWeight: '600' }}>{app.reasonForVisit}</div>
                           {app.symptoms?.length > 0 && (
-                            <div style={{ fontSize: '0.725rem', color: '#dc2626', marginTop: '2px' }}>
-                              ⚠️ {app.symptoms.join(', ')}
+                            <div className="portal-alert-text">
+                              <AlertTriangle size={12} /> {app.symptoms.join(', ')}
                             </div>
                           )}
                         </td>
@@ -433,17 +367,16 @@ export const DoctorPortal = ({ subTab = 'overview', setSubTab }) => {
                           <StatusBadge status={app.status} />
                         </td>
                         <td>
-                          <div style={{ display: 'flex', gap: '0.35rem' }}>
+                          <div className="portal-row-actions">
                             <button
                               className="btn btn-secondary btn-sm"
-                              style={{ backgroundColor: '#0d9488', color: '#ffffff' }}
                               onClick={() => {
                                 setTelehealthPatient(app.patient);
                                 setIsTelehealthOpen(true);
                               }}
                               title="Start Telehealth Video Consultation"
                             >
-                              <Video size={13} /> Video Call
+                              <Video size={13} /> Video
                             </button>
 
                             {app.status === 'Scheduled' || app.status === 'Confirmed' ? (
@@ -508,7 +441,7 @@ export const DoctorPortal = ({ subTab = 'overview', setSubTab }) => {
               <tbody>
                 {prescriptions.length === 0 ? (
                   <tr>
-                    <td colSpan="7" style={{ textAlign: 'center', padding: '2.5rem', color: '#64748b' }}>
+                    <td colSpan="7" style={{ textAlign: 'center', padding: '2.5rem', color: 'var(--slate-500)' }}>
                       No digital prescriptions issued yet.
                     </td>
                   </tr>
@@ -516,32 +449,23 @@ export const DoctorPortal = ({ subTab = 'overview', setSubTab }) => {
                   prescriptions.map((rx) => (
                     <tr key={rx._id}>
                       <td>
-                        <strong style={{ color: '#0e7490' }}>{rx.prescriptionId}</strong>
+                        <strong style={{ color: 'var(--primary-700)' }}>{rx.prescriptionId}</strong>
                       </td>
                       <td>
                         <div style={{ fontWeight: '700' }}>{rx.patient?.name}</div>
-                        <div style={{ fontSize: '0.75rem', color: '#64748b' }}>{rx.patient?.patientId}</div>
+                        <div style={{ fontSize: '0.75rem', color: 'var(--slate-500)' }}>{rx.patient?.patientId}</div>
                       </td>
                       <td>
                         <div style={{ fontWeight: '600' }}>{rx.diagnosis}</div>
                       </td>
                       <td>
-                        <div style={{ fontSize: '0.75rem', color: '#475569' }}>
+                        <div style={{ fontSize: '0.75rem', color: 'var(--slate-600)' }}>
                           BP: {rx.vitals?.bloodPressure || '-'} • HR: {rx.vitals?.heartRate || '-'}
                         </div>
                       </td>
                       <td>
-                        <span
-                          style={{
-                            padding: '0.2rem 0.5rem',
-                            borderRadius: '4px',
-                            backgroundColor: '#ecfeff',
-                            color: '#0e7490',
-                            fontWeight: '700',
-                            fontSize: '0.75rem',
-                          }}
-                        >
-                          {rx.medicines?.length || 0} Drugs
+                        <span className="portal-tag portal-tag-teal">
+                          {rx.medicines?.length || 0} drugs
                         </span>
                       </td>
                       <td>{new Date(rx.createdAt).toLocaleDateString()}</td>
@@ -586,39 +510,35 @@ export const DoctorPortal = ({ subTab = 'overview', setSubTab }) => {
                 </tr>
               </thead>
               <tbody>
+                {patients.length === 0 && (
+                  <tr>
+                    <td colSpan="7" className="portal-empty-cell">
+                      No patient records found.
+                    </td>
+                  </tr>
+                )}
                 {patients.map((p) => (
                   <tr key={p._id}>
                     <td>
-                      <strong style={{ color: '#0e7490' }}>{p.patientId}</strong>
+                      <strong style={{ color: 'var(--primary-700)' }}>{p.patientId}</strong>
                     </td>
                     <td>
                       <div style={{ fontWeight: '700' }}>{p.name}</div>
-                      <div style={{ fontSize: '0.75rem', color: '#64748b' }}>{p.phone}</div>
+                      <div style={{ fontSize: '0.75rem', color: 'var(--slate-500)' }}>{p.phone}</div>
                     </td>
                     <td>
                       {p.age} yrs ({p.gender})
                     </td>
                     <td>
-                      <span
-                        style={{
-                          padding: '0.2rem 0.5rem',
-                          backgroundColor: '#fef2f2',
-                          color: '#dc2626',
-                          borderRadius: '6px',
-                          fontWeight: '700',
-                          fontSize: '0.75rem',
-                        }}
-                      >
-                        {p.bloodGroup}
-                      </span>
+                      <span className="portal-tag portal-tag-red">{p.bloodGroup}</span>
                     </td>
                     <td>
                       {p.allergies?.length > 0 ? (
-                        <span style={{ color: '#b45309', fontWeight: '600', fontSize: '0.75rem' }}>
-                          ⚠️ {p.allergies.join(', ')}
+                        <span className="portal-tag portal-tag-amber">
+                          <AlertTriangle size={12} /> {p.allergies.join(', ')}
                         </span>
                       ) : (
-                        <span style={{ color: '#94a3b8', fontSize: '0.75rem' }}>None</span>
+                        <span style={{ color: 'var(--slate-500)', fontSize: '0.8125rem' }}>None</span>
                       )}
                     </td>
                     <td>
@@ -643,13 +563,11 @@ export const DoctorPortal = ({ subTab = 'overview', setSubTab }) => {
       {/* TAB 4: DIAGNOSTIC SCANS & LAB VAULT */}
       {currentTab === 'scans' && (
         <div>
-          <div className="card" style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
+          <div className="card portal-section-head">
             <div>
-              <h3 style={{ fontSize: '1.1rem', fontWeight: '700', marginBottom: '0.25rem' }}>
-                Patient Diagnostic Scans (Cloudinary Vault)
-              </h3>
-              <p style={{ fontSize: '0.85rem', color: '#64748b' }}>
-                High-resolution radiology imaging, X-Rays, MRI scans, and pathology reports.
+              <h2 className="card-title">Patient Diagnostic Scans</h2>
+              <p className="card-subtitle">
+                Radiology imaging, X-rays, MRI scans and pathology reports.
               </p>
             </div>
             <button
@@ -659,9 +577,13 @@ export const DoctorPortal = ({ subTab = 'overview', setSubTab }) => {
                 setIsAiAnalyzerOpen(true);
               }}
             >
-              <Activity size={16} /> 🔬 Clinical Scan Analyzer
+              <Activity size={16} /> Clinical Scan Analyzer
             </button>
           </div>
+
+          {scans.length === 0 && (
+            <div className="card portal-empty-card">No diagnostic scans uploaded yet.</div>
+          )}
 
           <div className="files-grid">
             {scans.map((file) => (
@@ -672,31 +594,18 @@ export const DoctorPortal = ({ subTab = 'overview', setSubTab }) => {
                   style={{ cursor: 'pointer' }}
                 >
                   <img src={file.fileUrl} alt={file.title} />
-                  <div
-                    style={{
-                      position: 'absolute',
-                      top: '8px',
-                      right: '8px',
-                      background: 'rgba(15, 23, 42, 0.75)',
-                      padding: '0.2rem 0.5rem',
-                      borderRadius: '4px',
-                      color: '#ffffff',
-                      fontSize: '0.7rem',
-                    }}
-                  >
-                    {file.category}
-                  </div>
+                  <span className="portal-file-tag">{file.category}</span>
                 </div>
 
                 <div className="file-card-details">
-                  <div style={{ fontWeight: '700', fontSize: '0.9375rem', color: '#0f172a' }}>
+                  <div style={{ fontWeight: '700', fontSize: '0.9375rem', color: 'var(--slate-900)' }}>
                     {file.title}
                   </div>
-                  <div style={{ fontSize: '0.75rem', color: '#64748b' }}>
+                  <div style={{ fontSize: '0.75rem', color: 'var(--slate-500)' }}>
                     Patient: <strong>{file.patient?.name}</strong> ({file.patient?.patientId})
                   </div>
                   {file.notes && (
-                    <div style={{ fontSize: '0.75rem', color: '#475569', marginTop: '0.25rem' }}>
+                    <div style={{ fontSize: '0.75rem', color: 'var(--slate-600)', marginTop: '0.25rem' }}>
                       {file.notes}
                     </div>
                   )}
@@ -714,7 +623,7 @@ export const DoctorPortal = ({ subTab = 'overview', setSubTab }) => {
                         setIsAiAnalyzerOpen(true);
                       }}
                     >
-                      <Activity size={13} /> 🔬 Analyze
+                      <Activity size={13} /> Analyze
                     </button>
                   </div>
                 </div>
@@ -754,19 +663,8 @@ export const DoctorPortal = ({ subTab = 'overview', setSubTab }) => {
             const selectedPat = patients.find((p) => p._id === rxForm.patientId);
             if (selectedPat && selectedPat.allergies?.length > 0) {
               return (
-                <div
-                  style={{
-                    backgroundColor: '#fffbeb',
-                    border: '1px solid #fde68a',
-                    padding: '0.75rem 1rem',
-                    borderRadius: '10px',
-                    marginBottom: '1rem',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '0.75rem',
-                  }}
-                >
-                  <AlertTriangle size={20} color="#d97706" />
+                <div className="portal-callout portal-callout-warning">
+                  <AlertTriangle size={20} color="#d97706" style={{ flexShrink: 0 }} />
                   <div style={{ fontSize: '0.8125rem', color: '#92400e' }}>
                     <strong>Clinical Allergy Alert:</strong> Patient has documented hypersensitivity to{' '}
                     <span style={{ fontWeight: '800', textDecoration: 'underline' }}>
@@ -793,9 +691,7 @@ export const DoctorPortal = ({ subTab = 'overview', setSubTab }) => {
           </div>
 
           {/* Vitals */}
-          <div style={{ margin: '1rem 0 0.5rem 0', fontWeight: '700', fontSize: '0.875rem', color: '#0e7490' }}>
-            Patient Physical Vitals
-          </div>
+          <div className="portal-form-section">Patient vitals</div>
           <div className="form-row">
             <div className="form-group">
               <label className="form-label">Blood Pressure</label>
@@ -844,26 +740,15 @@ export const DoctorPortal = ({ subTab = 'overview', setSubTab }) => {
           </div>
 
           {/* Medicines Dynamic Table */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', margin: '1rem 0 0.5rem 0' }}>
-            <span style={{ fontWeight: '700', fontSize: '0.875rem', color: '#0e7490' }}>
-              Prescribed Medications
-            </span>
+          <div className="portal-form-section" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <span>Prescribed medications</span>
             <button type="button" className="btn btn-secondary btn-sm" onClick={addMedicineRow}>
               <Plus size={14} /> Add Drug
             </button>
           </div>
 
           {rxForm.medicines.map((med, idx) => (
-            <div
-              key={idx}
-              style={{
-                display: 'grid',
-                gridTemplateColumns: '2fr 1fr 1.5fr 1fr 2fr auto',
-                gap: '0.5rem',
-                alignItems: 'center',
-                marginBottom: '0.5rem',
-              }}
-            >
+            <div key={idx} className="portal-med-row">
               <input
                 type="text"
                 placeholder="Drug Name"
@@ -902,8 +787,9 @@ export const DoctorPortal = ({ subTab = 'overview', setSubTab }) => {
               {rxForm.medicines.length > 1 && (
                 <button
                   type="button"
+                  className="portal-icon-btn portal-icon-btn-danger"
                   onClick={() => removeMedicineRow(idx)}
-                  style={{ color: '#ef4444', padding: '0.4rem', cursor: 'pointer' }}
+                  aria-label="Remove medicine"
                 >
                   <Trash2 size={16} />
                 </button>
@@ -945,13 +831,13 @@ export const DoctorPortal = ({ subTab = 'overview', setSubTab }) => {
               <div className="rx-header">
                 <div>
                   <div className="rx-hospital-title">CarePulse Hospital & Medical Institute</div>
-                  <div style={{ fontSize: '0.8125rem', color: '#64748b' }}>
+                  <div style={{ fontSize: '0.8125rem', color: 'var(--slate-500)' }}>
                     100 Clinical Way, Health District • Tel: +1 (555) 010-9000
                   </div>
                 </div>
                 <div style={{ textAlign: 'right' }}>
-                  <div style={{ fontWeight: '800', color: '#0e7490' }}>{selectedRxForPrint.prescriptionId}</div>
-                  <div style={{ fontSize: '0.75rem', color: '#64748b' }}>
+                  <div style={{ fontWeight: '800', color: 'var(--primary-700)' }}>{selectedRxForPrint.prescriptionId}</div>
+                  <div style={{ fontSize: '0.75rem', color: 'var(--slate-500)' }}>
                     Date: {new Date(selectedRxForPrint.createdAt).toLocaleDateString()}
                   </div>
                 </div>
@@ -959,29 +845,30 @@ export const DoctorPortal = ({ subTab = 'overview', setSubTab }) => {
 
               <div className="rx-patient-bar">
                 <div>
-                  <span style={{ fontSize: '0.75rem', color: '#64748b' }}>Patient Name:</span>
+                  <span style={{ fontSize: '0.75rem', color: 'var(--slate-500)' }}>Patient Name:</span>
                   <div style={{ fontWeight: '700' }}>{selectedRxForPrint.patient?.name}</div>
                 </div>
                 <div>
-                  <span style={{ fontSize: '0.75rem', color: '#64748b' }}>Patient ID:</span>
+                  <span style={{ fontSize: '0.75rem', color: 'var(--slate-500)' }}>Patient ID:</span>
                   <div>{selectedRxForPrint.patient?.patientId}</div>
                 </div>
                 <div>
-                  <span style={{ fontSize: '0.75rem', color: '#64748b' }}>Age / Gender:</span>
+                  <span style={{ fontSize: '0.75rem', color: 'var(--slate-500)' }}>Age / Gender:</span>
                   <div>{selectedRxForPrint.patient?.age}y ({selectedRxForPrint.patient?.gender})</div>
                 </div>
                 <div>
-                  <span style={{ fontSize: '0.75rem', color: '#64748b' }}>Blood Group:</span>
+                  <span style={{ fontSize: '0.75rem', color: 'var(--slate-500)' }}>Blood Group:</span>
                   <div style={{ fontWeight: '700', color: '#dc2626' }}>{selectedRxForPrint.patient?.bloodGroup}</div>
                 </div>
               </div>
 
               <div style={{ marginBottom: '1rem' }}>
-                <strong>Diagnosis:</strong> <span style={{ color: '#0f172a' }}>{selectedRxForPrint.diagnosis}</span>
+                <strong>Diagnosis:</strong> <span style={{ color: 'var(--slate-900)' }}>{selectedRxForPrint.diagnosis}</span>
               </div>
 
               <div className="rx-symbol">℞</div>
 
+              <div className="portal-table-scroll">
               <table className="rx-medicines-table">
                 <thead>
                   <tr>
@@ -1006,8 +893,9 @@ export const DoctorPortal = ({ subTab = 'overview', setSubTab }) => {
                   ))}
                 </tbody>
               </table>
+              </div>
 
-              <div className="rx-footer" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '1.5rem', paddingTop: '1rem', borderTop: '1px solid #e2e8f0' }}>
+              <div className="rx-footer" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem', marginTop: '1.5rem', paddingTop: '1rem', borderTop: '1px solid var(--slate-200)' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
                   <img
                     src={`https://api.qrserver.com/v1/create-qr-code/?size=85x85&data=${encodeURIComponent('CAREPULSE-VERIFIED-RX-' + selectedRxForPrint.prescriptionId + '-' + selectedRxForPrint.patient?.name)}`}
@@ -1015,10 +903,10 @@ export const DoctorPortal = ({ subTab = 'overview', setSubTab }) => {
                     style={{ width: '70px', height: '70px', borderRadius: '8px', border: '1px solid #e2e8f0', padding: '2px' }}
                   />
                   <div>
-                    <div style={{ fontSize: '0.7rem', fontWeight: '800', color: '#0e7490', textTransform: 'uppercase' }}>
+                    <div style={{ fontSize: '0.7rem', fontWeight: '800', color: 'var(--primary-700)', textTransform: 'uppercase' }}>
                       Verified Digital RX
                     </div>
-                    <div style={{ fontSize: '0.6875rem', color: '#64748b', maxWidth: '160px', lineHeight: '1.2' }}>
+                    <div style={{ fontSize: '0.6875rem', color: 'var(--slate-500)', maxWidth: '160px', lineHeight: '1.2' }}>
                       Scan QR code at hospital pharmacy to dispense medication.
                     </div>
                   </div>
@@ -1038,9 +926,9 @@ export const DoctorPortal = ({ subTab = 'overview', setSubTab }) => {
                     <div style={{ fontSize: '0.65rem', color: '#0891b2', fontWeight: '800', textTransform: 'uppercase' }}>
                       ✓ Digitally Signed & Sealed
                     </div>
-                    <div style={{ fontWeight: '800', fontSize: '0.875rem', color: '#0f172a' }}>{user?.name}</div>
+                    <div style={{ fontWeight: '800', fontSize: '0.875rem', color: 'var(--slate-900)' }}>{user?.name}</div>
                   </div>
-                  <div style={{ fontSize: '0.7rem', color: '#64748b' }}>License ID: MED-8842-CA • CarePulse MD</div>
+                  <div style={{ fontSize: '0.7rem', color: 'var(--slate-500)' }}>License ID: MED-8842-CA • CarePulse MD</div>
                 </div>
               </div>
             </div>
@@ -1066,13 +954,13 @@ export const DoctorPortal = ({ subTab = 'overview', setSubTab }) => {
       >
         {selectedPatientForHistory && (
           <div>
-            <div style={{ background: '#f8fafc', padding: '1rem', borderRadius: '10px', marginBottom: '1rem' }}>
-              <div><strong>Patient ID:</strong> {selectedPatientForHistory.patientId}</div>
-              <div><strong>Age / Gender:</strong> {selectedPatientForHistory.age}y ({selectedPatientForHistory.gender})</div>
-              <div><strong>Blood Group:</strong> <span style={{ color: '#dc2626', fontWeight: '700' }}>{selectedPatientForHistory.bloodGroup}</span></div>
-              <div><strong>Known Allergies:</strong> {selectedPatientForHistory.allergies?.join(', ') || 'None'}</div>
-              <div><strong>Chronic Conditions:</strong> {selectedPatientForHistory.chronicConditions?.join(', ') || 'None'}</div>
-            </div>
+            <dl className="portal-info-list" style={{ marginBottom: '1rem' }}>
+              <div><dt>Patient ID</dt><dd>{selectedPatientForHistory.patientId}</dd></div>
+              <div><dt>Age / Gender</dt><dd>{selectedPatientForHistory.age}y ({selectedPatientForHistory.gender})</dd></div>
+              <div><dt>Blood group</dt><dd><span className="portal-tag portal-tag-red">{selectedPatientForHistory.bloodGroup}</span></dd></div>
+              <div><dt>Known allergies</dt><dd>{selectedPatientForHistory.allergies?.join(', ') || 'None'}</dd></div>
+              <div><dt>Chronic conditions</dt><dd>{selectedPatientForHistory.chronicConditions?.join(', ') || 'None'}</dd></div>
+            </dl>
 
             <div className="modal-footer">
               <button className="btn btn-secondary" onClick={() => setSelectedPatientForHistory(null)}>
@@ -1092,7 +980,7 @@ export const DoctorPortal = ({ subTab = 'overview', setSubTab }) => {
       >
         {viewScanFile && (
           <div>
-            <div style={{ textAlign: 'center', background: '#0f172a', padding: '1rem', borderRadius: '12px' }}>
+            <div className="portal-scan-viewer">
               <img
                 src={viewScanFile.fileUrl}
                 alt={viewScanFile.title}
@@ -1100,8 +988,12 @@ export const DoctorPortal = ({ subTab = 'overview', setSubTab }) => {
               />
             </div>
             <div style={{ marginTop: '1rem' }}>
-              <strong>Patient:</strong> {viewScanFile.patient?.name} ({viewScanFile.patient?.patientId})
-              <p style={{ fontSize: '0.85rem', color: '#64748b' }}>{viewScanFile.notes}</p>
+              <div style={{ color: 'var(--slate-900)' }}>
+                <strong>Patient:</strong> {viewScanFile.patient?.name} ({viewScanFile.patient?.patientId})
+              </div>
+              {viewScanFile.notes && (
+                <p style={{ fontSize: '0.875rem', color: 'var(--slate-600)', marginTop: '0.25rem' }}>{viewScanFile.notes}</p>
+              )}
             </div>
           </div>
         )}

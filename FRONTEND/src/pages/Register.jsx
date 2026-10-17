@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
-import { Activity, Lock, Mail, User, Phone, ArrowLeft } from 'lucide-react';
+import { Activity, ArrowLeft, Eye, EyeOff, Loader2, Lock, Mail, Phone, User } from 'lucide-react';
 
 export const Register = ({ onNavigateLogin, onNavigateHome }) => {
   const { register } = useAuth();
@@ -17,6 +17,7 @@ export const Register = ({ onNavigateLogin, onNavigateHome }) => {
     bloodGroup: 'O+',
   });
 
+  const [showPassword, setShowPassword] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -36,220 +37,188 @@ export const Register = ({ onNavigateLogin, onNavigateHome }) => {
     }
   };
 
+  const update = (field) => (e) => setFormData({ ...formData, [field]: e.target.value });
+
   return (
-    <div
-      style={{
-        minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        position: 'relative',
-        padding: '2rem 1.5rem',
-        backgroundImage: 'url(/hospital_hero_bg.jpg)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-      }}
-    >
-      {/* Dark Ambient Glass Vignette Overlay */}
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          background:
-            'radial-gradient(circle at center, rgba(11, 19, 41, 0.75) 0%, rgba(2, 6, 23, 0.94) 100%)',
-          backdropFilter: 'blur(4px)',
-        }}
-      />
+    <div className="cp-auth">
+      <aside className="cp-auth-media">
+        <img src="/images/care-team.webp" alt="Doctor and nurse reviewing patient details on a tablet" />
+        <div className="cp-auth-overlay" />
+        <div className="cp-auth-media-copy">
+          <span className="cp-logo cp-logo-light">
+            <span className="cp-logo-mark">
+              <Activity size={18} />
+            </span>
+            CarePulse
+          </span>
+          <p className="cp-auth-tagline">Book visits, see prescriptions and keep your records in one place.</p>
+        </div>
+      </aside>
 
-      <div
-        className="card"
-        style={{
-          position: 'relative',
-          zIndex: 10,
-          width: '100%',
-          maxWidth: '540px',
-          padding: '2.75rem',
-          backgroundColor: 'rgba(255, 255, 255, 0.95)',
-          backdropFilter: 'blur(20px)',
-          WebkitBackdropFilter: 'blur(20px)',
-          borderRadius: '24px',
-          boxShadow: '0 25px 60px -15px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.6)',
-          border: '1px solid rgba(255, 255, 255, 0.8)',
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
-          <button
-            type="button"
-            onClick={onNavigateLogin}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.4rem',
-              color: '#64748b',
-              fontSize: '0.8125rem',
-              fontWeight: '600',
-              cursor: 'pointer',
-            }}
-          >
-            <ArrowLeft size={16} /> Back to Sign In
-          </button>
-
+      <main className="cp-auth-panel">
+        <div className="cp-auth-form-wrap">
           {onNavigateHome && (
-            <button
-              type="button"
-              onClick={onNavigateHome}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.4rem',
-                color: '#0891b2',
-                fontSize: '0.8125rem',
-                fontWeight: '700',
-                cursor: 'pointer',
-              }}
-            >
-              Hospital Home &rarr;
+            <button type="button" className="cp-back-link" onClick={onNavigateHome}>
+              <ArrowLeft size={16} /> Back to home
             </button>
           )}
-        </div>
 
-        <div style={{ textAlign: 'center', marginBottom: '1.75rem' }}>
-          <div
-            style={{
-              width: '54px',
-              height: '54px',
-              borderRadius: '14px',
-              background: 'linear-gradient(135deg, #06b6d4 0%, #0e7490 100%)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: '#ffffff',
-              margin: '0 auto 0.85rem auto',
-              boxShadow: '0 8px 20px rgba(6, 182, 212, 0.4)',
-            }}
-          >
-            <Activity size={28} />
-          </div>
-          <h1 style={{ fontSize: '1.5rem', fontWeight: '800', color: '#0f172a', letterSpacing: '-0.02em' }}>
-            Create Patient Portal Account
-          </h1>
-          <p style={{ fontSize: '0.8125rem', color: '#64748b', marginTop: '0.25rem' }}>
-            Access online OPD bookings, digital prescriptions, and clinical vault
+          <h1 className="cp-auth-title">Create a patient account</h1>
+          <p className="cp-auth-sub">Book appointments online and access your prescriptions and medical files.</p>
+
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label className="form-label" htmlFor="reg-name">
+                Full name *
+              </label>
+              <div className="cp-input-icon">
+                <User size={16} aria-hidden="true" />
+                <input
+                  id="reg-name"
+                  type="text"
+                  required
+                  autoComplete="name"
+                  placeholder="Jane Doe"
+                  className="form-input"
+                  value={formData.name}
+                  onChange={update('name')}
+                />
+              </div>
+            </div>
+
+            <div className="cp-form-grid cp-form-grid-2">
+              <div className="form-group">
+                <label className="form-label" htmlFor="reg-email">
+                  Email address *
+                </label>
+                <div className="cp-input-icon">
+                  <Mail size={16} aria-hidden="true" />
+                  <input
+                    id="reg-email"
+                    type="email"
+                    required
+                    autoComplete="email"
+                    placeholder="jane@example.com"
+                    className="form-input"
+                    value={formData.email}
+                    onChange={update('email')}
+                  />
+                </div>
+              </div>
+              <div className="form-group">
+                <label className="form-label" htmlFor="reg-phone">
+                  Phone *
+                </label>
+                <div className="cp-input-icon">
+                  <Phone size={16} aria-hidden="true" />
+                  <input
+                    id="reg-phone"
+                    type="tel"
+                    required
+                    autoComplete="tel"
+                    placeholder="+1 (555) 000-0000"
+                    className="form-input"
+                    value={formData.phone}
+                    onChange={update('phone')}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="cp-form-grid cp-form-grid-3">
+              <div className="form-group">
+                <label className="form-label" htmlFor="reg-age">
+                  Age *
+                </label>
+                <input
+                  id="reg-age"
+                  type="number"
+                  min="1"
+                  required
+                  className="form-input"
+                  value={formData.age}
+                  onChange={update('age')}
+                />
+              </div>
+              <div className="form-group">
+                <label className="form-label" htmlFor="reg-gender">
+                  Gender
+                </label>
+                <select id="reg-gender" className="form-select" value={formData.gender} onChange={update('gender')}>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <div className="form-group">
+                <label className="form-label" htmlFor="reg-blood">
+                  Blood group
+                </label>
+                <select
+                  id="reg-blood"
+                  className="form-select"
+                  value={formData.bloodGroup}
+                  onChange={update('bloodGroup')}
+                >
+                  <option value="A+">A+</option>
+                  <option value="A-">A-</option>
+                  <option value="B+">B+</option>
+                  <option value="B-">B-</option>
+                  <option value="AB+">AB+</option>
+                  <option value="AB-">AB-</option>
+                  <option value="O+">O+</option>
+                  <option value="O-">O-</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="form-group">
+              <label className="form-label" htmlFor="reg-password">
+                Password * (min 6 characters)
+              </label>
+              <div className="cp-input-icon">
+                <Lock size={16} aria-hidden="true" />
+                <input
+                  id="reg-password"
+                  type={showPassword ? 'text' : 'password'}
+                  required
+                  minLength="6"
+                  autoComplete="new-password"
+                  placeholder="At least 6 characters"
+                  className="form-input cp-has-toggle"
+                  value={formData.password}
+                  onChange={update('password')}
+                />
+                <button
+                  type="button"
+                  className="cp-pw-toggle"
+                  onClick={() => setShowPassword((v) => !v)}
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
+                >
+                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                </button>
+              </div>
+            </div>
+
+            <button type="submit" className="cp-btn cp-btn-primary cp-btn-lg cp-btn-block" disabled={submitting}>
+              {submitting ? (
+                <>
+                  <Loader2 size={18} className="cp-spin" /> Creating account…
+                </>
+              ) : (
+                'Create account'
+              )}
+            </button>
+          </form>
+
+          <p className="cp-auth-switch">
+            Already have an account?{' '}
+            <button type="button" className="cp-link" onClick={onNavigateLogin}>
+              Sign in
+            </button>
           </p>
         </div>
-
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label className="form-label">Full Name *</label>
-            <div style={{ position: 'relative' }}>
-              <User size={16} style={{ position: 'absolute', left: '12px', top: '14px', color: '#94a3b8' }} />
-              <input
-                type="text"
-                required
-                placeholder="Jane Doe"
-                className="form-input"
-                style={{ paddingLeft: '2.5rem' }}
-                value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              />
-            </div>
-          </div>
-
-          <div className="form-row">
-            <div className="form-group">
-              <label className="form-label">Email Address *</label>
-              <input
-                type="email"
-                required
-                placeholder="jane@example.com"
-                className="form-input"
-                value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              />
-            </div>
-            <div className="form-group">
-              <label className="form-label">Phone *</label>
-              <input
-                type="text"
-                required
-                placeholder="+1 (555) 000-0000"
-                className="form-input"
-                value={formData.phone}
-                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-              />
-            </div>
-          </div>
-
-          <div className="form-row">
-            <div className="form-group">
-              <label className="form-label">Age *</label>
-              <input
-                type="number"
-                min="1"
-                required
-                className="form-input"
-                value={formData.age}
-                onChange={(e) => setFormData({ ...formData, age: e.target.value })}
-              />
-            </div>
-            <div className="form-group">
-              <label className="form-label">Gender</label>
-              <select
-                className="form-select"
-                value={formData.gender}
-                onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
-              >
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Other">Other</option>
-              </select>
-            </div>
-            <div className="form-group">
-              <label className="form-label">Blood Group</label>
-              <select
-                className="form-select"
-                value={formData.bloodGroup}
-                onChange={(e) => setFormData({ ...formData, bloodGroup: e.target.value })}
-              >
-                <option value="A+">A+</option>
-                <option value="A-">A-</option>
-                <option value="B+">B+</option>
-                <option value="B-">B-</option>
-                <option value="AB+">AB+</option>
-                <option value="AB-">AB-</option>
-                <option value="O+">O+</option>
-                <option value="O-">O-</option>
-              </select>
-            </div>
-          </div>
-
-          <div className="form-group">
-            <label className="form-label">Password * (Min 6 chars)</label>
-            <div style={{ position: 'relative' }}>
-              <Lock size={16} style={{ position: 'absolute', left: '12px', top: '14px', color: '#94a3b8' }} />
-              <input
-                type="password"
-                required
-                minLength="6"
-                placeholder="••••••••"
-                className="form-input"
-                style={{ paddingLeft: '2.5rem' }}
-                value={formData.password}
-                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-              />
-            </div>
-          </div>
-
-          <button
-            type="submit"
-            className="btn btn-primary"
-            style={{ width: '100%', padding: '0.85rem', marginTop: '0.5rem', fontSize: '0.95rem' }}
-            disabled={submitting}
-          >
-            {submitting ? 'Registering...' : 'Complete Patient Registration'}
-          </button>
-        </form>
-      </div>
+      </main>
     </div>
   );
 };

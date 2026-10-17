@@ -61,8 +61,8 @@ export const CustomSelect = ({
   return (
     <div className="custom-select-wrapper" ref={containerRef} style={{ position: 'relative', width: '100%' }}>
       {label && (
-        <label className="form-label" style={{ display: 'block', marginBottom: '0.4rem', fontWeight: '700', fontSize: '0.85rem' }}>
-          {label} {required && <span style={{ color: '#ef4444' }}>*</span>}
+        <label className="form-label" style={{ display: 'block', marginBottom: '0.4rem' }}>
+          {label} {required && <span style={{ color: 'var(--danger-600)' }}>*</span>}
         </label>
       )}
 
@@ -76,12 +76,12 @@ export const CustomSelect = ({
           justifyContent: 'space-between',
           padding: '0.65rem 0.95rem',
           backgroundColor: '#ffffff',
-          border: isOpen ? '2px solid #0891b2' : '1px solid #cbd5e1',
-          borderRadius: '12px',
+          border: isOpen ? '1px solid var(--primary-500)' : '1px solid var(--slate-200)',
+          borderRadius: 'var(--radius-md)',
           cursor: 'pointer',
-          boxShadow: isOpen ? '0 0 0 4px rgba(8, 145, 178, 0.15)' : '0 1px 3px rgba(0,0,0,0.05)',
-          transition: 'all 0.2s ease',
-          minHeight: '44px',
+          boxShadow: isOpen ? '0 0 0 3px rgba(6, 182, 212, 0.16)' : 'var(--shadow-xs)',
+          transition: 'border-color 0.15s ease, box-shadow 0.15s ease',
+          minHeight: '42px',
           userSelect: 'none',
         }}
       >
@@ -95,7 +95,7 @@ export const CustomSelect = ({
               </span>
             )
           ) : (
-            <span style={{ color: '#94a3b8', fontSize: '0.875rem' }}>{placeholder}</span>
+            <span style={{ color: 'var(--slate-400)', fontSize: '0.875rem' }}>{placeholder}</span>
           )}
         </div>
 
@@ -110,7 +110,7 @@ export const CustomSelect = ({
               style={{
                 background: 'transparent',
                 border: 'none',
-                color: '#94a3b8',
+                color: 'var(--slate-500)',
                 cursor: 'pointer',
                 padding: '2px',
                 display: 'flex',
@@ -142,9 +142,9 @@ export const CustomSelect = ({
             left: 0,
             right: 0,
             backgroundColor: '#ffffff',
-            borderRadius: '14px',
-            border: '1px solid #cbd5e1',
-            boxShadow: '0 18px 38px -10px rgba(15, 23, 42, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.05)',
+            borderRadius: '12px',
+            border: '1px solid var(--slate-200)',
+            boxShadow: 'var(--shadow-lg)',
             zIndex: 9999,
             overflow: 'hidden',
             animation: 'fadeInScale 0.15s ease-out',
@@ -154,14 +154,14 @@ export const CustomSelect = ({
           <div
             style={{
               padding: '0.65rem 0.75rem',
-              borderBottom: '1px solid #f1f5f9',
-              backgroundColor: '#f8fafc',
+              borderBottom: '1px solid var(--slate-200)',
+              backgroundColor: 'var(--slate-50)',
               display: 'flex',
               alignItems: 'center',
               gap: '8px',
             }}
           >
-            <Search size={15} color="#0891b2" />
+            <Search size={15} color="var(--slate-500)" />
             <input
               ref={searchInputRef}
               type="text"
@@ -201,7 +201,7 @@ export const CustomSelect = ({
             }}
           >
             {filteredOptions.length === 0 ? (
-              <div style={{ padding: '1rem', textAlign: 'center', color: '#94a3b8', fontSize: '0.825rem' }}>
+              <div style={{ padding: '1rem', textAlign: 'center', color: 'var(--slate-500)', fontSize: '0.825rem' }}>
                 No matching results found
               </div>
             ) : (
@@ -217,8 +217,8 @@ export const CustomSelect = ({
                       padding: '0.6rem 0.75rem',
                       borderRadius: '8px',
                       cursor: 'pointer',
-                      backgroundColor: isSelected ? '#ecfeff' : 'transparent',
-                      color: isSelected ? '#0e7490' : '#0f172a',
+                      backgroundColor: isSelected ? 'var(--primary-50)' : 'transparent',
+                      color: isSelected ? 'var(--primary-700)' : 'var(--slate-900)',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'space-between',
@@ -226,7 +226,7 @@ export const CustomSelect = ({
                       marginBottom: '2px',
                     }}
                     onMouseEnter={(e) => {
-                      if (!isSelected) e.currentTarget.style.backgroundColor = '#f1f5f9';
+                      if (!isSelected) e.currentTarget.style.backgroundColor = 'var(--slate-50)';
                     }}
                     onMouseLeave={(e) => {
                       if (!isSelected) e.currentTarget.style.backgroundColor = 'transparent';

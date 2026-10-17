@@ -265,32 +265,29 @@ export const Billing = () => {
       )}
 
       {/* Filter Bar */}
-      <div className="card" style={{ marginBottom: '1.5rem', padding: '1rem 1.25rem' }}>
-        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'center' }}>
-          <div style={{ flex: 1, minWidth: '240px', position: 'relative' }}>
-            <Search size={16} style={{ position: 'absolute', left: '10px', top: '12px', color: '#94a3b8' }} />
-            <input
-              type="text"
-              placeholder="Search by Invoice # (INV-2026-xxxxx) or Patient Name..."
-              className="form-input"
-              style={{ paddingLeft: '2.2rem' }}
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-          </div>
+      <div className="filter-bar">
+        <div className="filter-search">
+          <Search size={16} />
+          <input
+            type="text"
+            placeholder="Search by Invoice # (INV-2026-xxxxx) or Patient Name..."
+            className="form-input"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
 
-          <div style={{ width: '180px' }}>
-            <select
-              className="form-select"
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-            >
-              <option value="">All Payment States</option>
-              <option value="Paid">Paid</option>
-              <option value="Partially Paid">Partially Paid</option>
-              <option value="Unpaid">Unpaid</option>
-            </select>
-          </div>
+        <div className="filter-select">
+          <select
+            className="form-select"
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+          >
+            <option value="">All Payment States</option>
+            <option value="Paid">Paid</option>
+            <option value="Partially Paid">Partially Paid</option>
+            <option value="Unpaid">Unpaid</option>
+          </select>
         </div>
       </div>
 
@@ -313,13 +310,13 @@ export const Billing = () => {
           <tbody>
             {loading ? (
               <tr>
-                <td colSpan="9" style={{ textAlign: 'center', padding: '2.5rem', color: '#64748b' }}>
+                <td colSpan="9" className="table-empty">
                   Loading financial records...
                 </td>
               </tr>
             ) : filtered.length === 0 ? (
               <tr>
-                <td colSpan="9" style={{ textAlign: 'center', padding: '2.5rem', color: '#64748b' }}>
+                <td colSpan="9" className="table-empty">
                   No invoices found matching criteria.
                 </td>
               </tr>
@@ -331,7 +328,7 @@ export const Billing = () => {
                   </td>
                   <td>
                     <div style={{ fontWeight: '600' }}>{inv.patient?.name || 'Patient'}</div>
-                    <div style={{ fontSize: '0.75rem', color: '#64748b' }}>{inv.patient?.patientId}</div>
+                    <div className="text-muted-sm">{inv.patient?.patientId}</div>
                   </td>
                   <td>{new Date(inv.issueDate).toLocaleDateString()}</td>
                   <td>
@@ -662,7 +659,7 @@ export const Billing = () => {
                   <div style={{ fontWeight: '800', color: '#0e7490', fontSize: '1.25rem' }}>
                     {selectedInvoice.invoiceNumber}
                   </div>
-                  <div style={{ fontSize: '0.75rem', color: '#64748b' }}>
+                  <div className="text-muted-sm">
                     Issue Date: {new Date(selectedInvoice.issueDate).toLocaleDateString()}
                   </div>
                   <StatusBadge status={selectedInvoice.paymentStatus} />
@@ -671,20 +668,20 @@ export const Billing = () => {
 
               <div className="rx-patient-bar">
                 <div>
-                  <span style={{ fontSize: '0.75rem', color: '#64748b' }}>Billed To:</span>
+                  <span className="text-muted-sm">Billed To:</span>
                   <div style={{ fontWeight: '700' }}>{selectedInvoice.patient?.name}</div>
                   <div style={{ fontSize: '0.75rem' }}>{selectedInvoice.patient?.phone}</div>
                 </div>
                 <div>
-                  <span style={{ fontSize: '0.75rem', color: '#64748b' }}>Patient ID:</span>
+                  <span className="text-muted-sm">Patient ID:</span>
                   <div>{selectedInvoice.patient?.patientId}</div>
                 </div>
                 <div>
-                  <span style={{ fontSize: '0.75rem', color: '#64748b' }}>Insurance:</span>
+                  <span className="text-muted-sm">Insurance:</span>
                   <div>{selectedInvoice.patient?.insuranceProvider || 'Self Pay'}</div>
                 </div>
                 <div>
-                  <span style={{ fontSize: '0.75rem', color: '#64748b' }}>Payment Mode:</span>
+                  <span className="text-muted-sm">Payment Mode:</span>
                   <div>{selectedInvoice.paymentMethod}</div>
                 </div>
               </div>

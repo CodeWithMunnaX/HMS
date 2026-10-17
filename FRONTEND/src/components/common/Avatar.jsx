@@ -72,13 +72,12 @@ export const Avatar = ({
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          fontWeight: '800',
+          fontWeight: '700',
           fontSize: calculatedFontSize,
-          letterSpacing: '0.04em',
+          letterSpacing: '0.02em',
           userSelect: 'none',
-          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.12)',
-          border: '1.5px solid rgba(255, 255, 255, 0.4)',
-          textShadow: '0 1px 2px rgba(0,0,0,0.25)',
+          boxShadow: '0 1px 2px rgba(15, 23, 42, 0.08)',
+          border: '2px solid #ffffff',
           ...style,
         }}
         title={name}
@@ -101,8 +100,8 @@ export const Avatar = ({
         minHeight: `${size}px`,
         borderRadius,
         objectFit: 'cover',
-        border: '1.5px solid rgba(0, 0, 0, 0.08)',
-        boxShadow: '0 2px 6px rgba(0, 0, 0, 0.08)',
+        border: '2px solid #ffffff',
+        boxShadow: '0 0 0 1px var(--slate-200)',
         ...style,
       }}
     />

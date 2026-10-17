@@ -183,8 +183,8 @@ export const Appointments = () => {
     <div>
       <div className="page-header">
         <div className="page-header-title">
-          <h1>Clinical Appointments</h1>
-          <p>Schedule patient consultations, track live token queues, and manage doctor calendars.</p>
+          <h1>Appointments</h1>
+          <p>Schedule consultations, track the token queue and manage doctor calendars.</p>
         </div>
         <div className="page-header-actions">
           <button className="btn btn-primary" onClick={() => setIsModalOpen(true)}>
@@ -194,52 +194,49 @@ export const Appointments = () => {
       </div>
 
       {/* Filter Bar */}
-      <div className="card" style={{ marginBottom: '1.5rem', padding: '1rem 1.25rem' }}>
-        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'center' }}>
-          <div style={{ flex: 1, minWidth: '220px', position: 'relative' }}>
-            <Search size={16} style={{ position: 'absolute', left: '10px', top: '12px', color: '#94a3b8' }} />
-            <input
-              type="text"
-              placeholder="Search by patient, doctor, or token #..."
-              className="form-input"
-              style={{ paddingLeft: '2.2rem' }}
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-          </div>
+      <div className="filter-bar">
+        <div className="filter-search">
+          <Search size={16} />
+          <input
+            type="text"
+            placeholder="Search by patient, doctor, or token #..."
+            className="form-input"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
 
-          <div style={{ width: '180px' }}>
+        <div className="filter-select">
+          <select
+            className="form-select"
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+          >
+            <option value="">All Statuses</option>
+            <option value="Scheduled">Scheduled</option>
+            <option value="Confirmed">Confirmed</option>
+            <option value="In Consultation">In Consultation</option>
+            <option value="Completed">Completed</option>
+            <option value="Cancelled">Cancelled</option>
+          </select>
+        </div>
+
+        {!isDoctor && (
+          <div className="filter-select">
             <select
               className="form-select"
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
+              value={doctorFilter}
+              onChange={(e) => setDoctorFilter(e.target.value)}
             >
-              <option value="">All Statuses</option>
-              <option value="Scheduled">Scheduled</option>
-              <option value="Confirmed">Confirmed</option>
-              <option value="In Consultation">In Consultation</option>
-              <option value="Completed">Completed</option>
-              <option value="Cancelled">Cancelled</option>
+              <option value="">All Doctors</option>
+              {doctors.map((d) => (
+                <option key={d._id} value={d._id}>
+                  {d.user?.name} ({d.specialty})
+                </option>
+              ))}
             </select>
           </div>
-
-          {!isDoctor && (
-            <div style={{ width: '220px' }}>
-              <select
-                className="form-select"
-                value={doctorFilter}
-                onChange={(e) => setDoctorFilter(e.target.value)}
-              >
-                <option value="">All Doctors</option>
-                {doctors.map((d) => (
-                  <option key={d._id} value={d._id}>
-                    {d.user?.name} ({d.specialty})
-                  </option>
-                ))}
-              </select>
-            </div>
-          )}
-        </div>
+        )}
       </div>
 
       {/* Appointments Table */}
@@ -260,13 +257,13 @@ export const Appointments = () => {
           <tbody>
             {loading ? (
               <tr>
-                <td colSpan="8" style={{ textAlign: 'center', padding: '2.5rem', color: '#64748b' }}>
+                <td colSpan="8" className="table-empty">
                   Loading appointments...
                 </td>
               </tr>
             ) : filteredAppointments.length === 0 ? (
               <tr>
-                <td colSpan="8" style={{ textAlign: 'center', padding: '2.5rem', color: '#64748b' }}>
+                <td colSpan="8" className="table-empty">
                   No appointments found matching your filters.
                 </td>
               </tr>
@@ -274,32 +271,30 @@ export const Appointments = () => {
               filteredAppointments.map((app) => (
                 <tr key={app._id}>
                   <td>
-                    <div style={{ fontWeight: '800', color: '#0e7490', fontSize: '0.9375rem' }}>
-                      Token #{app.tokenNumber}
-                    </div>
-                    <span style={{ fontSize: '0.75rem', color: '#64748b' }}>{app.appointmentNumber}</span>
+                    <div className="text-link">Token #{app.tokenNumber}</div>
+                    <span className="text-muted-sm">{app.appointmentNumber}</span>
                   </td>
                   <td>
-                    <div style={{ fontWeight: '600' }}>{app.patient?.name || 'Walk-in Patient'}</div>
-                    <div style={{ fontSize: '0.75rem', color: '#64748b' }}>
+                    <div className="text-strong">{app.patient?.name || 'Walk-in Patient'}</div>
+                    <div className="text-muted-sm">
                       {app.patient?.patientId} • {app.patient?.phone}
                     </div>
                   </td>
                   <td>
-                    <div style={{ fontWeight: '600' }}>{app.doctor?.user?.name || 'Doctor'}</div>
-                    <div style={{ fontSize: '0.75rem', color: '#0891b2' }}>{app.doctor?.specialty}</div>
+                    <div className="text-strong">{app.doctor?.user?.name || 'Doctor'}</div>
+                    <div className="text-muted-sm">{app.doctor?.specialty}</div>
                   </td>
                   <td>{app.department}</td>
                   <td>
                     <div>{new Date(app.appointmentDate).toLocaleDateString()}</div>
-                    <div style={{ fontSize: '0.75rem', color: '#64748b' }}>{app.timeSlot}</div>
+                    <div className="text-muted-sm">{app.timeSlot}</div>
                   </td>
                   <td style={{ maxWidth: '200px' }}>
                     <div style={{ fontSize: '0.8125rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={app.reasonForVisit}>
                       {app.reasonForVisit}
                     </div>
                     {app.symptoms?.length > 0 && (
-                      <div style={{ fontSize: '0.7rem', color: '#64748b', marginTop: '2px' }}>
+                      <div className="text-muted-sm" style={{ marginTop: '2px' }}>
                         Symptoms: {app.symptoms.join(', ')}
                       </div>
                     )}
@@ -311,7 +306,7 @@ export const Appointments = () => {
                     {!isPatient && (
                       <select
                         className="form-select"
-                        style={{ fontSize: '0.75rem', padding: '0.3rem 0.5rem', width: 'auto' }}
+                        style={{ fontSize: '0.78rem', padding: '0.35rem 0.5rem', width: 'auto', minWidth: '140px' }}
                         value={app.status}
                         onChange={(e) => handleStatusUpdate(app._id, e.target.value)}
                       >
@@ -363,7 +358,7 @@ export const Appointments = () => {
                         width: '26px',
                         height: '26px',
                         borderRadius: '50%',
-                        backgroundColor: '#0891b2',
+                        backgroundColor: 'var(--primary-600)',
                         color: '#ffffff',
                         display: 'flex',
                         alignItems: 'center',
@@ -374,13 +369,9 @@ export const Appointments = () => {
                     >
                       {p.name?.charAt(0) || 'P'}
                     </div>
-                    <span style={{ fontWeight: '800', color: '#0f172a', fontSize: '0.9rem' }}>{p.name}</span>
-                    <span style={{ fontSize: '0.7rem', color: '#0891b2', backgroundColor: '#ecfeff', padding: '2px 6px', borderRadius: '4px', fontWeight: '700' }}>
-                      {p.patientId}
-                    </span>
-                    <span style={{ fontSize: '0.7rem', color: '#dc2626', backgroundColor: '#fee2e2', padding: '2px 6px', borderRadius: '4px', fontWeight: '800' }}>
-                      🩸 {p.bloodGroup}
-                    </span>
+                    <span style={{ fontWeight: 700, color: 'var(--slate-900)', fontSize: '0.875rem' }}>{p.name}</span>
+                    <span className="tag tag-teal">{p.patientId}</span>
+                    <span className="tag tag-danger">{p.bloodGroup}</span>
                   </div>
                 )}
                 renderOption={(p, isSelected) => (
@@ -391,7 +382,7 @@ export const Appointments = () => {
                           width: '34px',
                           height: '34px',
                           borderRadius: '50%',
-                          background: 'linear-gradient(135deg, #06b6d4 0%, #0e7490 100%)',
+                          background: 'var(--primary-600)',
                           color: '#ffffff',
                           display: 'flex',
                           alignItems: 'center',
@@ -404,17 +395,15 @@ export const Appointments = () => {
                         {p.name?.charAt(0) || 'P'}
                       </div>
                       <div>
-                        <div style={{ fontWeight: '800', color: isSelected ? '#0891b2' : '#0f172a', fontSize: '0.875rem' }}>
+                        <div style={{ fontWeight: 700, color: isSelected ? 'var(--primary-700)' : 'var(--slate-900)', fontSize: '0.875rem' }}>
                           {p.name}
                         </div>
-                        <div style={{ fontSize: '0.75rem', color: '#64748b' }}>
+                        <div className="text-muted-sm">
                           ID: <strong>{p.patientId}</strong> • Age: {p.age}y • Tel: {p.phone}
                         </div>
                       </div>
                     </div>
-                    <span style={{ fontSize: '0.725rem', backgroundColor: '#fee2e2', color: '#dc2626', padding: '2px 8px', borderRadius: '999px', fontWeight: '800' }}>
-                      🩸 {p.bloodGroup}
-                    </span>
+                    <span className="tag tag-danger">{p.bloodGroup}</span>
                   </div>
                 )}
               />
@@ -450,10 +439,8 @@ export const Appointments = () => {
                       alt=""
                       style={{ width: '26px', height: '26px', borderRadius: '50%', objectFit: 'cover' }}
                     />
-                    <span style={{ fontWeight: '700', color: '#0f172a', fontSize: '0.875rem' }}>{doc.user?.name}</span>
-                    <span style={{ fontSize: '0.7rem', color: '#0891b2', backgroundColor: '#ecfeff', padding: '2px 6px', borderRadius: '4px', fontWeight: '700' }}>
-                      {doc.specialty}
-                    </span>
+                    <span style={{ fontWeight: 700, color: 'var(--slate-900)', fontSize: '0.875rem' }}>{doc.user?.name}</span>
+                    <span className="tag tag-teal">{doc.specialty}</span>
                   </div>
                 )}
                 renderOption={(doc, isSelected) => (
@@ -465,10 +452,10 @@ export const Appointments = () => {
                         style={{ width: '32px', height: '32px', borderRadius: '50%', objectFit: 'cover' }}
                       />
                       <div>
-                        <div style={{ fontWeight: '700', color: isSelected ? '#0891b2' : '#0f172a', fontSize: '0.875rem' }}>
+                        <div style={{ fontWeight: 700, color: isSelected ? 'var(--primary-700)' : 'var(--slate-900)', fontSize: '0.875rem' }}>
                           {doc.user?.name}
                         </div>
-                        <div style={{ fontSize: '0.75rem', color: '#64748b' }}>
+                        <div className="text-muted-sm">
                           {doc.specialty} • ₹{doc.consultationFee} Fee
                         </div>
                       </div>
@@ -479,7 +466,7 @@ export const Appointments = () => {
             </div>
 
             <div className="form-group">
-              <label className="form-label" style={{ fontSize: '0.85rem', fontWeight: '700' }}>
+              <label className="form-label">
                 Consultation Date *
               </label>
               <input
@@ -504,8 +491,10 @@ export const Appointments = () => {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
-                    backgroundColor: '#ecfeff',
-                    border: '1px solid #a5f3fc',
+                    gap: '0.75rem',
+                    flexWrap: 'wrap',
+                    backgroundColor: 'var(--primary-50)',
+                    border: '1px solid var(--primary-100)',
                     borderRadius: '12px',
                     padding: '0.75rem 1rem',
                     marginBottom: '1.25rem',
@@ -515,20 +504,20 @@ export const Appointments = () => {
                     <img
                       src={selectedDoc.user?.avatar || 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&q=80&w=150'}
                       alt={selectedDoc.user?.name}
-                      style={{ width: '40px', height: '40px', borderRadius: '50%', objectFit: 'cover', border: '2px solid #0891b2' }}
+                      style={{ width: '40px', height: '40px', borderRadius: '50%', objectFit: 'cover', border: '2px solid #ffffff', boxShadow: '0 0 0 1px var(--primary-200)' }}
                     />
                     <div>
-                      <div style={{ fontWeight: '800', color: '#0f172a', fontSize: '0.9rem' }}>
+                      <div style={{ fontWeight: 700, color: 'var(--slate-900)', fontSize: '0.9rem' }}>
                         {selectedDoc.user?.name}
                       </div>
-                      <div style={{ fontSize: '0.75rem', color: '#0e7490' }}>
+                      <div style={{ fontSize: '0.75rem', color: 'var(--primary-700)' }}>
                         {selectedDoc.specialty} • {selectedDoc.roomNumber || 'OPD-102'}
                       </div>
                     </div>
                   </div>
                   <div style={{ textAlign: 'right' }}>
-                    <div style={{ fontSize: '0.7rem', color: '#64748b', textTransform: 'uppercase', fontWeight: '700' }}>Consultation Fee</div>
-                    <div style={{ fontSize: '1.1rem', fontWeight: '900', color: '#0891b2' }}>₹{selectedDoc.consultationFee}</div>
+                    <div className="text-muted-sm" style={{ fontWeight: 600 }}>Consultation fee</div>
+                    <div style={{ fontSize: '1.1rem', fontWeight: '800', color: 'var(--primary-700)' }}>₹{selectedDoc.consultationFee}</div>
                   </div>
                 </div>
               );
@@ -537,35 +526,35 @@ export const Appointments = () => {
 
           {/* Available Time Slots Section */}
           <div className="form-group" style={{ marginBottom: '1.25rem' }}>
-            <label className="form-label" style={{ fontSize: '0.85rem', fontWeight: '700', display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <Clock size={15} color="#0891b2" />
+            <label className="form-label" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <Clock size={15} color="var(--primary-600)" />
               <span>Available Consultation Time Slots *</span>
             </label>
 
             {loadingSlots ? (
-              <div style={{ fontSize: '0.85rem', color: '#0891b2', padding: '1rem', backgroundColor: '#f8fafc', borderRadius: '10px', textAlign: 'center' }}>
-                Checking real-time doctor availability slots...
+              <div style={{ fontSize: '0.85rem', color: 'var(--slate-600)', padding: '1rem', backgroundColor: 'var(--slate-50)', borderRadius: '10px', textAlign: 'center' }}>
+                Checking availability...
               </div>
             ) : !bookingForm.doctorId ? (
               <div
                 style={{
                   fontSize: '0.8125rem',
-                  color: '#475569',
-                  backgroundColor: '#f8fafc',
-                  border: '1px dashed #cbd5e1',
+                  color: 'var(--slate-600)',
+                  backgroundColor: 'var(--slate-50)',
+                  border: '1px dashed var(--slate-300)',
                   padding: '1rem',
                   borderRadius: '10px',
                   textAlign: 'center',
                 }}
               >
-                👉 Please choose an attending specialist above to generate available consultation slots.
+                Choose a doctor above to see available time slots.
               </div>
             ) : availableSlots.length === 0 ? (
-              <div style={{ fontSize: '0.8125rem', color: '#dc2626', padding: '0.75rem', backgroundColor: '#fee2e2', borderRadius: '8px' }}>
+              <div style={{ fontSize: '0.8125rem', color: 'var(--danger-700)', padding: '0.75rem', backgroundColor: 'var(--danger-50)', border: '1px solid var(--danger-100)', borderRadius: '10px' }}>
                 No slots available on this date. Please pick another consultation date.
               </div>
             ) : (
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(130px, 1fr))', gap: '0.5rem' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(118px, 1fr))', gap: '0.5rem' }}>
                 {availableSlots.map((s) => {
                   const isSelected = bookingForm.timeSlot === s.slot;
                   return (
@@ -579,12 +568,12 @@ export const Appointments = () => {
                         borderRadius: '10px',
                         fontSize: '0.78rem',
                         fontWeight: '700',
-                        border: isSelected ? '2px solid #0891b2' : '1px solid #e2e8f0',
-                        backgroundColor: isSelected ? '#ecfeff' : s.isAvailable ? '#ffffff' : '#f1f5f9',
-                        color: isSelected ? '#0e7490' : s.isAvailable ? '#0f172a' : '#94a3b8',
+                        border: isSelected ? '1px solid var(--primary-600)' : '1px solid var(--slate-200)',
+                        backgroundColor: isSelected ? 'var(--primary-50)' : s.isAvailable ? '#ffffff' : 'var(--slate-100)',
+                        color: isSelected ? 'var(--primary-700)' : s.isAvailable ? 'var(--slate-900)' : 'var(--slate-500)',
                         cursor: s.isAvailable ? 'pointer' : 'not-allowed',
                         transition: 'all 0.15s ease',
-                        boxShadow: isSelected ? '0 2px 8px rgba(8, 145, 178, 0.25)' : 'none',
+                        boxShadow: isSelected ? '0 0 0 2px rgba(8, 145, 178, 0.15)' : 'none',
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
@@ -593,7 +582,7 @@ export const Appointments = () => {
                     >
                       <span>{s.slot}</span>
                       <span style={{ fontSize: '0.65rem', opacity: 0.8, fontWeight: '600' }}>
-                        {s.isAvailable ? (isSelected ? '✓ Selected' : 'Available') : 'Booked'}
+                        {s.isAvailable ? (isSelected ? 'Selected' : 'Available') : 'Booked'}
                       </span>
                     </button>
                   );
@@ -605,7 +594,7 @@ export const Appointments = () => {
           {/* Category & Symptoms Row */}
           <div className="form-row" style={{ marginBottom: '1.25rem' }}>
             <div className="form-group">
-              <label className="form-label" style={{ fontSize: '0.85rem', fontWeight: '700' }}>
+              <label className="form-label">
                 Appointment Category
               </label>
               <select
@@ -622,7 +611,7 @@ export const Appointments = () => {
             </div>
 
             <div className="form-group">
-              <label className="form-label" style={{ fontSize: '0.85rem', fontWeight: '700' }}>
+              <label className="form-label">
                 Key Symptoms
               </label>
               <input
@@ -637,8 +626,8 @@ export const Appointments = () => {
 
           {/* Quick Symptoms Preset Chips */}
           <div style={{ marginBottom: '1.25rem' }}>
-            <div style={{ fontSize: '0.725rem', color: '#64748b', fontWeight: '700', textTransform: 'uppercase', marginBottom: '0.4rem' }}>
-              ⚡ 1-Click Quick Symptoms:
+            <div className="text-muted-sm" style={{ fontWeight: 600, marginBottom: '0.4rem' }}>
+              Quick add symptoms
             </div>
             <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
               {['Headache & Migraine', 'Fever & Chills', 'Chest Discomfort', 'Knee & Joint Pain', 'Persistent Cough', 'Routine Checkup'].map((chip) => (
@@ -653,16 +642,8 @@ export const Appointments = () => {
                       reasonForVisit: prev.reasonForVisit ? prev.reasonForVisit : `Consultation for ${chip}`,
                     }));
                   }}
-                  style={{
-                    backgroundColor: '#f1f5f9',
-                    color: '#334155',
-                    border: '1px solid #cbd5e1',
-                    borderRadius: '999px',
-                    padding: '0.25rem 0.65rem',
-                    fontSize: '0.725rem',
-                    fontWeight: '600',
-                    cursor: 'pointer',
-                  }}
+                  className="tag"
+                  style={{ cursor: 'pointer', borderRadius: '999px', padding: '0.25rem 0.65rem', fontWeight: 600 }}
                 >
                   + {chip}
                 </button>
@@ -672,7 +653,7 @@ export const Appointments = () => {
 
           {/* Chief Reason for Visit */}
           <div className="form-group" style={{ marginBottom: '1.5rem' }}>
-            <label className="form-label" style={{ fontSize: '0.85rem', fontWeight: '700' }}>
+            <label className="form-label">
               Chief Reason for Visit *
             </label>
             <textarea
@@ -686,15 +667,7 @@ export const Appointments = () => {
           </div>
 
           {/* Footer Action Buttons */}
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'flex-end',
-              gap: '0.75rem',
-              borderTop: '1px solid #e2e8f0',
-              paddingTop: '1.25rem',
-            }}
-          >
+          <div className="modal-footer">
             <button
               type="button"
               className="btn btn-secondary"
@@ -708,7 +681,7 @@ export const Appointments = () => {
               disabled={submitting}
               style={{ minWidth: '160px', justifyContent: 'center' }}
             >
-              {submitting ? 'Booking Appointment...' : '✓ Confirm Appointment'}
+              {submitting ? 'Booking Appointment...' : 'Confirm Appointment'}
             </button>
           </div>
         </form>

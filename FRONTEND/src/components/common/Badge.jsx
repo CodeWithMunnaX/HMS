@@ -32,6 +32,7 @@ export const StatusBadge = ({ status }) => {
     case 'Active':
     case 'Paid':
     case 'Available':
+    case 'Dispensed':
       variant = 'success';
       break;
     case 'In Consultation':
@@ -45,6 +46,9 @@ export const StatusBadge = ({ status }) => {
     case 'Unpaid':
     case 'Emergency':
       variant = 'danger';
+      break;
+    case 'Admitted':
+      variant = 'blue';
       break;
     case 'Completed':
     case 'Discharged':

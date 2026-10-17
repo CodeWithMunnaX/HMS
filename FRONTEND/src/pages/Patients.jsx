@@ -145,8 +145,8 @@ export const Patients = () => {
     <div>
       <div className="page-header">
         <div className="page-header-title">
-          <h1>Patient Directory & Electronic Medical Records</h1>
-          <p>Comprehensive patient health records, allergy warnings, triage status, and clinical history.</p>
+          <h1>Patients</h1>
+          <p>Patient records, allergy alerts, admission status and clinical history.</p>
         </div>
         <div className="page-header-actions">
           <button className="btn btn-primary" onClick={() => setIsModalOpen(true)}>
@@ -156,37 +156,34 @@ export const Patients = () => {
       </div>
 
       {/* Filter Bar */}
-      <div className="card" style={{ marginBottom: '1.5rem', padding: '1rem 1.25rem' }}>
-        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'center' }}>
-          <div style={{ flex: 1, minWidth: '240px', position: 'relative' }}>
-            <Search size={16} style={{ position: 'absolute', left: '10px', top: '12px', color: '#94a3b8' }} />
-            <input
-              type="text"
-              placeholder="Search by Patient Name, ID (PAT-xxxx), or Phone..."
-              className="form-input"
-              style={{ paddingLeft: '2.2rem' }}
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-          </div>
+      <div className="filter-bar">
+        <div className="filter-search">
+          <Search size={16} />
+          <input
+            type="text"
+            placeholder="Search by Patient Name, ID (PAT-xxxx), or Phone..."
+            className="form-input"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
 
-          <div style={{ width: '180px' }}>
-            <select
-              className="form-select"
-              value={bloodGroupFilter}
-              onChange={(e) => setBloodGroupFilter(e.target.value)}
-            >
-              <option value="">All Blood Groups</option>
-              <option value="A+">A+</option>
-              <option value="A-">A-</option>
-              <option value="B+">B+</option>
-              <option value="B-">B-</option>
-              <option value="AB+">AB+</option>
-              <option value="AB-">AB-</option>
-              <option value="O+">O+</option>
-              <option value="O-">O-</option>
-            </select>
-          </div>
+        <div className="filter-select">
+          <select
+            className="form-select"
+            value={bloodGroupFilter}
+            onChange={(e) => setBloodGroupFilter(e.target.value)}
+          >
+            <option value="">All Blood Groups</option>
+            <option value="A+">A+</option>
+            <option value="A-">A-</option>
+            <option value="B+">B+</option>
+            <option value="B-">B-</option>
+            <option value="AB+">AB+</option>
+            <option value="AB-">AB-</option>
+            <option value="O+">O+</option>
+            <option value="O-">O-</option>
+          </select>
         </div>
       </div>
 
@@ -208,13 +205,13 @@ export const Patients = () => {
           <tbody>
             {loading ? (
               <tr>
-                <td colSpan="8" style={{ textAlign: 'center', padding: '2.5rem', color: '#64748b' }}>
+                <td colSpan="8" className="table-empty">
                   Loading patient records...
                 </td>
               </tr>
             ) : filtered.length === 0 ? (
               <tr>
-                <td colSpan="8" style={{ textAlign: 'center', padding: '2.5rem', color: '#64748b' }}>
+                <td colSpan="8" className="table-empty">
                   No patients found matching your search.
                 </td>
               </tr>
@@ -222,14 +219,14 @@ export const Patients = () => {
               filtered.map((p) => (
                 <tr key={p._id}>
                   <td>
-                    <strong style={{ color: '#0e7490' }}>{p.patientId}</strong>
+                    <strong className="text-link">{p.patientId}</strong>
                   </td>
                   <td>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
                       <Avatar name={p.name} size={36} shape="circle" />
                       <div>
-                        <div style={{ fontWeight: '700', color: '#0f172a' }}>{p.name}</div>
-                        <div style={{ fontSize: '0.75rem', color: '#64748b' }}>{p.phone}</div>
+                        <div className="text-strong">{p.name}</div>
+                        <div className="text-muted-sm">{p.phone}</div>
                       </div>
                     </div>
                   </td>
@@ -237,54 +234,33 @@ export const Patients = () => {
                     {p.age} yrs • {p.gender}
                   </td>
                   <td>
-                    <span
-                      style={{
-                        padding: '0.2rem 0.5rem',
-                        backgroundColor: '#fef2f2',
-                        color: '#dc2626',
-                        borderRadius: '6px',
-                        fontWeight: '700',
-                        fontSize: '0.75rem',
-                      }}
-                    >
-                      {p.bloodGroup}
-                    </span>
+                    <span className="tag tag-danger">{p.bloodGroup}</span>
                   </td>
                   <td>
                     {p.allergies?.length > 0 ? (
                       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.25rem' }}>
                         {p.allergies.map((a, idx) => (
-                          <span
-                            key={idx}
-                            style={{
-                              backgroundColor: '#fffbeb',
-                              color: '#b45309',
-                              fontSize: '0.7rem',
-                              padding: '0.15rem 0.4rem',
-                              borderRadius: '4px',
-                              border: '1px solid #fef3c7',
-                            }}
-                          >
-                            ⚠️ {a}
+                          <span key={idx} className="tag tag-warning">
+                            <AlertTriangle size={11} /> {a}
                           </span>
                         ))}
                       </div>
                     ) : (
-                      <span style={{ fontSize: '0.75rem', color: '#94a3b8' }}>None reported</span>
+                      <span className="text-muted-sm">None reported</span>
                     )}
                   </td>
                   <td>
                     <StatusBadge status={p.admissionStatus} />
                     {p.currentBed && (
-                      <div style={{ fontSize: '0.7rem', color: '#0891b2', marginTop: '2px' }}>
+                      <div className="text-muted-sm" style={{ marginTop: '4px' }}>
                         Bed: {p.currentBed?.bedNumber} ({p.currentBed?.wardType})
                       </div>
                     )}
                   </td>
                   <td>
-                    <div style={{ fontSize: '0.8125rem', fontWeight: '500' }}>{p.insuranceProvider}</div>
+                    <div style={{ fontSize: '0.8125rem' }}>{p.insuranceProvider}</div>
                     {p.policyNumber && (
-                      <div style={{ fontSize: '0.7rem', color: '#64748b' }}>{p.policyNumber}</div>
+                      <div className="text-muted-sm">{p.policyNumber}</div>
                     )}
                   </td>
                   <td>
@@ -402,9 +378,7 @@ export const Patients = () => {
             />
           </div>
 
-          <div style={{ margin: '1rem 0 0.5rem 0', fontWeight: '700', fontSize: '0.875rem', color: '#0e7490' }}>
-            Emergency Contact & Clinical Alerts
-          </div>
+          <div className="section-title">Emergency contact & clinical alerts</div>
 
           <div className="form-row">
             <div className="form-group">
@@ -509,32 +483,21 @@ export const Patients = () => {
       >
         {selectedPatientHistory && (
           <div>
-            <div
-              style={{
-                background: '#f8fafc',
-                padding: '1rem',
-                borderRadius: '10px',
-                border: '1px solid #e2e8f0',
-                marginBottom: '1.5rem',
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
-                gap: '0.75rem',
-              }}
-            >
+            <div className="info-panel" style={{ marginBottom: '1.5rem' }}>
               <div>
-                <span style={{ fontSize: '0.75rem', color: '#64748b' }}>Patient ID:</span>
-                <div style={{ fontWeight: '700' }}>{selectedPatientHistory.patient.patientId}</div>
+                <span className="info-panel-label">Patient ID</span>
+                <div style={{ fontWeight: 700 }}>{selectedPatientHistory.patient.patientId}</div>
               </div>
               <div>
-                <span style={{ fontSize: '0.75rem', color: '#64748b' }}>Age / Gender:</span>
+                <span className="info-panel-label">Age / Gender</span>
                 <div>{selectedPatientHistory.patient.age}y ({selectedPatientHistory.patient.gender})</div>
               </div>
               <div>
-                <span style={{ fontSize: '0.75rem', color: '#64748b' }}>Blood Group:</span>
-                <div style={{ fontWeight: '700', color: '#dc2626' }}>{selectedPatientHistory.patient.bloodGroup}</div>
+                <span className="info-panel-label">Blood Group</span>
+                <div style={{ fontWeight: 700, color: 'var(--danger-600)' }}>{selectedPatientHistory.patient.bloodGroup}</div>
               </div>
               <div>
-                <span style={{ fontSize: '0.75rem', color: '#64748b' }}>Emergency Contact:</span>
+                <span className="info-panel-label">Emergency Contact</span>
                 <div>
                   {selectedPatientHistory.patient.emergencyContact?.name || 'None'} (
                   {selectedPatientHistory.patient.emergencyContact?.relation || '-'})
@@ -543,29 +506,29 @@ export const Patients = () => {
             </div>
 
             {/* Prescriptions */}
-            <h4 style={{ marginBottom: '0.75rem', color: '#0e7490' }}>Digital Prescriptions ({selectedPatientHistory.prescriptions?.length || 0})</h4>
+            <h4 className="card-title" style={{ fontSize: '0.95rem', marginBottom: '0.75rem' }}>Prescriptions ({selectedPatientHistory.prescriptions?.length || 0})</h4>
             {selectedPatientHistory.prescriptions?.length === 0 ? (
-              <p style={{ fontSize: '0.8125rem', color: '#64748b', marginBottom: '1.5rem' }}>No prescriptions on record.</p>
+              <p className="text-muted-sm" style={{ marginBottom: '1.5rem' }}>No prescriptions on record.</p>
             ) : (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginBottom: '1.5rem' }}>
                 {selectedPatientHistory.prescriptions.map((rx) => (
                   <div
                     key={rx._id}
                     style={{
-                      border: '1px solid #e2e8f0',
-                      borderRadius: '8px',
+                      border: '1px solid var(--slate-200)',
+                      borderRadius: '10px',
                       padding: '0.875rem',
                       background: '#ffffff',
                     }}
                   >
-                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.35rem' }}>
-                      <strong style={{ color: '#0e7490' }}>{rx.prescriptionId}</strong>
-                      <span style={{ fontSize: '0.75rem', color: '#64748b' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', gap: '0.5rem', marginBottom: '0.35rem' }}>
+                      <strong className="text-link">{rx.prescriptionId}</strong>
+                      <span className="text-muted-sm">
                         {new Date(rx.createdAt).toLocaleDateString()}
                       </span>
                     </div>
-                    <div style={{ fontSize: '0.875rem', fontWeight: '600' }}>Diagnosis: {rx.diagnosis}</div>
-                    <div style={{ fontSize: '0.8125rem', color: '#475569', marginTop: '0.25rem' }}>
+                    <div style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--slate-900)' }}>Diagnosis: {rx.diagnosis}</div>
+                    <div style={{ fontSize: '0.8125rem', color: 'var(--slate-600)', marginTop: '0.25rem' }}>
                       Medicines: {rx.medicines?.map((m) => `${m.name} (${m.dosage} - ${m.frequency})`).join(', ')}
                     </div>
                   </div>
@@ -574,9 +537,9 @@ export const Patients = () => {
             )}
 
             {/* Invoices */}
-            <h4 style={{ marginBottom: '0.75rem', color: '#0e7490' }}>Billing Invoices ({selectedPatientHistory.invoices?.length || 0})</h4>
+            <h4 className="card-title" style={{ fontSize: '0.95rem', marginBottom: '0.75rem' }}>Invoices ({selectedPatientHistory.invoices?.length || 0})</h4>
             {selectedPatientHistory.invoices?.length === 0 ? (
-              <p style={{ fontSize: '0.8125rem', color: '#64748b' }}>No invoices recorded.</p>
+              <p className="text-muted-sm">No invoices recorded.</p>
             ) : (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                 {selectedPatientHistory.invoices.map((inv) => (
@@ -586,17 +549,18 @@ export const Patients = () => {
                       display: 'flex',
                       justifyContent: 'space-between',
                       alignItems: 'center',
+                      gap: '0.75rem',
                       padding: '0.75rem',
-                      border: '1px solid #e2e8f0',
-                      borderRadius: '6px',
+                      border: '1px solid var(--slate-200)',
+                      borderRadius: '10px',
                     }}
                   >
                     <div>
                       <strong>{inv.invoiceNumber}</strong>
-                      <div style={{ fontSize: '0.75rem', color: '#64748b' }}>{new Date(inv.issueDate).toLocaleDateString()}</div>
+                      <div className="text-muted-sm">{new Date(inv.issueDate).toLocaleDateString()}</div>
                     </div>
                     <div style={{ textAlign: 'right' }}>
-                      <div style={{ fontWeight: '700' }}>${inv.totalAmount}</div>
+                      <div style={{ fontWeight: 700, marginBottom: '0.25rem' }}>₹{inv.totalAmount}</div>
                       <StatusBadge status={inv.paymentStatus} />
                     </div>
                   </div>
@@ -604,7 +568,7 @@ export const Patients = () => {
               </div>
             )}
 
-            <div className="modal-footer" style={{ marginTop: '1.5rem' }}>
+            <div className="modal-footer">
               <button className="btn btn-secondary" onClick={() => setSelectedPatientHistory(null)}>
                 Close Record
               </button>

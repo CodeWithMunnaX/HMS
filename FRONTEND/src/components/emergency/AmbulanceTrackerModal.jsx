@@ -97,7 +97,7 @@ export const AmbulanceTrackerModal = ({ isOpen, onClose }) => {
       })
     );
 
-    toast.error(`🚨 AMBULANCE DISPATCHED: ${dispatchForm.unitId} rolling to ${dispatchForm.pickupLocation}!`);
+    toast.error(`Ambulance dispatched: ${dispatchForm.unitId} en route to ${dispatchForm.pickupLocation}`);
     setDispatchForm({
       unitId: 'AMB-04',
       patientName: '',
@@ -121,7 +121,7 @@ export const AmbulanceTrackerModal = ({ isOpen, onClose }) => {
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title="🚑 Emergency Ambulance Fleet & GPS Dispatch Radar"
+      title="Ambulance Fleet & Dispatch"
       maxWidth="980px"
     >
       <div>
@@ -129,17 +129,18 @@ export const AmbulanceTrackerModal = ({ isOpen, onClose }) => {
         <div
           style={{
             position: 'relative',
-            height: '180px',
-            borderRadius: '16px',
-            backgroundColor: '#040d21',
-            border: '1px solid rgba(6, 182, 212, 0.3)',
+            minHeight: '160px',
+            borderRadius: '14px',
+            background: 'linear-gradient(135deg, var(--primary-50) 0%, #ffffff 100%)',
+            border: '1px solid var(--primary-100)',
             overflow: 'hidden',
             marginBottom: '1.25rem',
-            padding: '1rem',
+            padding: '1.25rem 1.5rem',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            boxShadow: 'inset 0 0 30px rgba(6, 182, 212, 0.1)',
+            flexWrap: 'wrap',
+            gap: '1rem',
           }}
         >
           {/* Animated GPS Radar Circles */}
@@ -152,7 +153,7 @@ export const AmbulanceTrackerModal = ({ isOpen, onClose }) => {
               width: '260px',
               height: '260px',
               borderRadius: '50%',
-              border: '1px solid rgba(6, 182, 212, 0.2)',
+              border: '1px solid rgba(8, 145, 178, 0.18)',
               pointerEvents: 'none',
             }}
           />
@@ -165,7 +166,7 @@ export const AmbulanceTrackerModal = ({ isOpen, onClose }) => {
               width: '160px',
               height: '160px',
               borderRadius: '50%',
-              border: '1px dashed rgba(6, 182, 212, 0.3)',
+              border: '1px dashed rgba(8, 145, 178, 0.28)',
               pointerEvents: 'none',
             }}
           />
@@ -178,7 +179,7 @@ export const AmbulanceTrackerModal = ({ isOpen, onClose }) => {
               left: '30%',
               width: '130px',
               height: '2px',
-              background: 'linear-gradient(90deg, transparent, #22d3ee)',
+              background: 'linear-gradient(90deg, transparent, rgba(8, 145, 178, 0.55))',
               transformOrigin: '0 0',
               animation: 'spin 4s linear infinite',
               pointerEvents: 'none',
@@ -186,32 +187,32 @@ export const AmbulanceTrackerModal = ({ isOpen, onClose }) => {
           />
 
           {/* Radar Header */}
-          <div style={{ position: 'relative', zIndex: 2, color: '#ffffff' }}>
+          <div style={{ position: 'relative', zIndex: 2 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-              <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#10b981', boxShadow: '0 0 10px #10b981' }} />
-              <span style={{ fontSize: '0.75rem', fontWeight: '800', textTransform: 'uppercase', color: '#67e8f9', letterSpacing: '0.08em' }}>
-                Live GPS Telemetry Active
+              <span className="portal-live-dot" />
+              <span className="clinical-eyebrow" style={{ color: 'var(--primary-700)' }}>
+                Live GPS tracking
               </span>
             </div>
-            <div style={{ fontWeight: '900', fontSize: '1.25rem', color: '#ffffff' }}>
-              Emergency Fleet Radar • 4 Active Units
+            <div style={{ fontWeight: '800', fontSize: '1.2rem', color: 'var(--slate-900)' }}>
+              Emergency fleet • {fleet.length} units
             </div>
-            <div style={{ fontSize: '0.8rem', color: '#94a3b8', marginTop: '2px' }}>
-              Average Metropolitan Hospital Transit Time: <strong>5.4 Minutes</strong>
+            <div style={{ fontSize: '0.8125rem', color: 'var(--slate-600)', marginTop: '2px' }}>
+              Average transit time to hospital: <strong>5.4 Minutes</strong>
             </div>
           </div>
 
           {/* Quick Metrics */}
-          <div style={{ position: 'relative', zIndex: 2, display: 'flex', gap: '1rem', textAlign: 'center' }}>
-            <div style={{ backgroundColor: 'rgba(255, 255, 255, 0.08)', padding: '0.6rem 1rem', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.1)' }}>
-              <div style={{ fontSize: '0.65rem', color: '#94a3b8', fontWeight: '700', textTransform: 'uppercase' }}>Available Units</div>
-              <div style={{ fontSize: '1.25rem', fontWeight: '900', color: '#10b981' }}>
+          <div style={{ position: 'relative', zIndex: 2, display: 'flex', gap: '0.75rem', textAlign: 'center' }}>
+            <div className="clinical-metric">
+              <div className="clinical-metric-label">Available</div>
+              <div className="clinical-metric-value" style={{ color: 'var(--success-600)' }}>
                 {fleet.filter((f) => f.status.includes('Available')).length}
               </div>
             </div>
-            <div style={{ backgroundColor: 'rgba(255, 255, 255, 0.08)', padding: '0.6rem 1rem', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.1)' }}>
-              <div style={{ fontSize: '0.65rem', color: '#94a3b8', fontWeight: '700', textTransform: 'uppercase' }}>Active In Transit</div>
-              <div style={{ fontSize: '1.25rem', fontWeight: '900', color: '#f59e0b' }}>
+            <div className="clinical-metric">
+              <div className="clinical-metric-label">In transit</div>
+              <div className="clinical-metric-value" style={{ color: 'var(--warning-600)' }}>
                 {fleet.filter((f) => !f.status.includes('Available')).length}
               </div>
             </div>
@@ -219,7 +220,7 @@ export const AmbulanceTrackerModal = ({ isOpen, onClose }) => {
         </div>
 
         {/* Fleet Grid & Dispatch Form */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1.3fr 0.7fr', gap: '1.25rem' }}>
+        <div className="clinical-split-grid">
           {/* Left: Active Fleet Cards */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', maxHeight: '420px', overflowY: 'auto' }}>
             {fleet.map((unit) => {
@@ -229,13 +230,13 @@ export const AmbulanceTrackerModal = ({ isOpen, onClose }) => {
                   key={unit.id}
                   style={{
                     backgroundColor: '#ffffff',
-                    border: '1px solid #e2e8f0',
+                    border: '1px solid var(--slate-200)',
                     borderRadius: '12px',
                     padding: '0.85rem 1rem',
-                    boxShadow: '0 2px 6px rgba(0,0,0,0.03)',
+                    boxShadow: 'var(--shadow-xs)',
                   }}
                 >
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '0.35rem' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                       <Siren size={16} color="#0891b2" />
                       <strong style={{ fontSize: '0.9rem', color: '#0f172a' }}>{unit.unitName}</strong>
@@ -252,11 +253,11 @@ export const AmbulanceTrackerModal = ({ isOpen, onClose }) => {
                         border: `1px solid ${statusStyle.border}`,
                       }}
                     >
-                      ● {unit.status}
+                      {unit.status}
                     </span>
                   </div>
 
-                  <div style={{ fontSize: '0.75rem', color: '#475569', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.25rem', marginTop: '0.35rem' }}>
+                  <div className="clinical-grid-2" style={{ fontSize: '0.75rem', color: 'var(--slate-600)', gap: '0.25rem 1rem', marginTop: '0.35rem' }}>
                     <div><strong>Paramedic:</strong> {unit.driver}</div>
                     <div><strong>Contact:</strong> {unit.phone}</div>
                     <div><strong>Current Location:</strong> {unit.location}</div>
@@ -274,7 +275,7 @@ export const AmbulanceTrackerModal = ({ isOpen, onClose }) => {
           </div>
 
           {/* Right: Rapid Dispatch Form */}
-          <div style={{ backgroundColor: '#f8fafc', padding: '1.25rem', borderRadius: '16px', border: '1px solid #e2e8f0' }}>
+          <div className="clinical-side-panel" style={{ height: 'auto' }}>
             <div style={{ fontWeight: '800', color: '#0f172a', fontSize: '0.95rem', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
               <Zap size={16} color="#dc2626" />
               <span>Rapid Emergency Dispatch</span>
@@ -344,7 +345,7 @@ export const AmbulanceTrackerModal = ({ isOpen, onClose }) => {
                 className="btn btn-danger"
                 style={{ width: '100%', padding: '0.75rem', fontWeight: '800', justifyContent: 'center' }}
               >
-                <Siren size={16} /> 🚨 Dispatch Ambulance Now
+                <Siren size={16} /> Dispatch ambulance
               </button>
             </form>
           </div>

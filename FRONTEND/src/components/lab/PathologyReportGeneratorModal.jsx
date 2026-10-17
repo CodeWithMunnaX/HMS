@@ -94,32 +94,33 @@ export const PathologyReportGeneratorModal = ({ isOpen, onClose, defaultPatient 
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title="🔬 Smart Pathology & Laboratory Report Generator"
+      title="Pathology Lab Report Generator"
       maxWidth="920px"
     >
       <div>
         {/* Quick Panel Switcher */}
         <div style={{ marginBottom: '1.25rem' }}>
-          <div style={{ fontSize: '0.75rem', fontWeight: '800', textTransform: 'uppercase', color: '#0891b2', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <Microscope size={15} />
-            <span>Select Clinical Pathology Panel:</span>
+          <div className="clinical-section-label" style={{ color: 'var(--primary-700)', marginBottom: '0.5rem' }}>
+            <Microscope size={14} />
+            <span>Select a pathology panel</span>
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '0.6rem' }}>
             {[
-              { key: 'CBC', label: '1. Complete Blood Count (CBC)', sub: 'Hemoglobin, Platelets, WBC' },
-              { key: 'LIPID', label: '2. Lipid & Diabetic Panel', sub: 'Cholesterol, HbA1c, Fasting Glucose' },
-              { key: 'LFT_KFT', label: '3. Liver & Kidney Panel', sub: 'Creatinine, BUN, Bilirubin, SGPT' },
+              { key: 'CBC', label: 'Complete Blood Count (CBC)', sub: 'Hemoglobin, Platelets, WBC' },
+              { key: 'LIPID', label: 'Lipid & Diabetic Panel', sub: 'Cholesterol, HbA1c, Fasting Glucose' },
+              { key: 'LFT_KFT', label: 'Liver & Kidney Panel', sub: 'Creatinine, BUN, Bilirubin, SGPT' },
             ].map((p) => (
               <button
                 key={p.key}
                 type="button"
-                className={`btn ${panelType === p.key ? 'btn-primary' : 'btn-secondary'} btn-sm`}
-                style={{ textAlign: 'left', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', padding: '0.6rem 0.85rem' }}
+                className={`clinical-option${panelType === p.key ? ' is-selected' : ''}`}
                 onClick={() => handleSwitchPanel(p.key)}
               >
-                <div style={{ fontWeight: '700', fontSize: '0.8125rem' }}>{p.label}</div>
-                <div style={{ fontSize: '0.6875rem', opacity: 0.85 }}>{p.sub}</div>
+                <span>
+                  <span className="clinical-option-title">{p.label}</span>
+                  <span className="clinical-option-desc">{p.sub}</span>
+                </span>
               </button>
             ))}
           </div>
@@ -130,16 +131,16 @@ export const PathologyReportGeneratorModal = ({ isOpen, onClose, defaultPatient 
           className="rx-document"
           style={{
             backgroundColor: '#ffffff',
-            border: '2px solid #e2e8f0',
-            borderRadius: '16px',
+            border: '1px solid var(--slate-200)',
+            borderRadius: '14px',
             padding: '1.5rem',
-            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
+            boxShadow: 'var(--shadow-sm)',
           }}
         >
           {/* Header */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', borderBottom: '2px solid #0891b2', paddingBottom: '1rem', marginBottom: '1.25rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '0.75rem', borderBottom: '2px solid var(--primary-600)', paddingBottom: '1rem', marginBottom: '1.25rem' }}>
             <div>
-              <div style={{ fontSize: '1.35rem', fontWeight: '900', color: '#0f766e', letterSpacing: '-0.02em' }}>
+              <div style={{ fontSize: '1.35rem', fontWeight: '900', color: 'var(--primary-800)', letterSpacing: '-0.02em' }}>
                 CarePulse Diagnostic Pathology Institute
               </div>
               <div style={{ fontSize: '0.75rem', color: '#64748b' }}>
@@ -189,7 +190,7 @@ export const PathologyReportGeneratorModal = ({ isOpen, onClose, defaultPatient 
           </div>
 
           {/* Panel Title */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '0.75rem' }}>
             <h3 style={{ fontSize: '1rem', fontWeight: '800', color: '#0f172a', margin: 0 }}>
               {labPanels[panelType].name}
             </h3>
@@ -197,9 +198,10 @@ export const PathologyReportGeneratorModal = ({ isOpen, onClose, defaultPatient 
           </div>
 
           {/* Biomarkers Table */}
-          <table className="custom-table" style={{ fontSize: '0.8125rem', marginBottom: '1.25rem' }}>
+          <div className="table-container" style={{ marginBottom: '1.25rem' }}>
+          <table className="custom-table" style={{ fontSize: '0.8125rem' }}>
             <thead>
-              <tr style={{ backgroundColor: '#f1f5f9' }}>
+              <tr>
                 <th>Test Parameter</th>
                 <th>Observed Value</th>
                 <th>Unit</th>
@@ -253,11 +255,12 @@ export const PathologyReportGeneratorModal = ({ isOpen, onClose, defaultPatient 
               })}
             </tbody>
           </table>
+          </div>
 
           {/* Remarks */}
           <div style={{ backgroundColor: '#f8fafc', padding: '0.85rem 1rem', borderRadius: '10px', border: '1px solid #e2e8f0', marginBottom: '1.25rem' }}>
-            <div style={{ fontSize: '0.75rem', fontWeight: '800', color: '#0e7490', textTransform: 'uppercase', marginBottom: '0.25rem' }}>
-              🔬 Pathologist Clinical Impression & Interpretations:
+            <div className="clinical-section-label" style={{ color: 'var(--primary-700)' }}>
+              Pathologist impression
             </div>
             <textarea
               className="form-textarea"
@@ -269,7 +272,7 @@ export const PathologyReportGeneratorModal = ({ isOpen, onClose, defaultPatient 
           </div>
 
           {/* Footer with QR Code and Pathologist Digital Seal */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid #e2e8f0', paddingTop: '1rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem', borderTop: '1px solid var(--slate-200)', paddingTop: '1rem' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
               <img
                 src={`https://api.qrserver.com/v1/create-qr-code/?size=80x80&data=${encodeURIComponent('CAREPULSE-LAB-REPORT-VERIFIED-' + patientId + '-' + panelType)}`}
@@ -320,7 +323,7 @@ export const PathologyReportGeneratorModal = ({ isOpen, onClose, defaultPatient 
               toast.success('Pathology report queued for printing!');
             }}
           >
-            <Printer size={15} /> Print Official Pathology Report
+            <Printer size={15} /> Print report
           </button>
         </div>
       </div>

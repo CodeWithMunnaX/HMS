@@ -179,7 +179,7 @@ ${reportData.recommendedActions?.map((a) => `• ${a}`).join('\n')}`;
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title="🔬 Clinical Diagnostic Scan Analyzer"
+      title="Clinical Scan Analyzer"
       maxWidth="940px"
     >
       <div>
@@ -208,7 +208,7 @@ ${reportData.recommendedActions?.map((a) => `• ${a}`).join('\n')}`;
             }}
           >
             <Microscope size={14} color="#0891b2" />
-            <span>Preset Clinical Diagnostic Studies:</span>
+            <span>Sample studies</span>
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '0.6rem' }}>
@@ -245,7 +245,7 @@ ${reportData.recommendedActions?.map((a) => `• ${a}`).join('\n')}`;
         </div>
 
         {/* Main Grid: Upload & Controls + Live Preview & Diagnostic Results */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+        <div className="clinical-grid-2" style={{ gap: '1.5rem' }}>
           {/* Left Column: Image Viewer & Inputs */}
           <div>
             {/* Clickable & Draggable Scan Dropzone */}
@@ -318,7 +318,7 @@ ${reportData.recommendedActions?.map((a) => `• ${a}`).join('\n')}`;
                       pointerEvents: 'none',
                     }}
                   >
-                    📁 Click to select file
+                    Click to replace
                   </div>
                 </>
               ) : (
@@ -342,7 +342,7 @@ ${reportData.recommendedActions?.map((a) => `• ${a}`).join('\n')}`;
                 style={{ width: '100%', justifyContent: 'center' }}
                 onClick={() => fileInputRef.current?.click()}
               >
-                <FolderOpen size={14} /> 📁 Upload Patient Scan (X-Ray, CT, MRI)
+                <FolderOpen size={14} /> Upload patient scan (X-Ray, CT, MRI)
               </button>
             </div>
 
@@ -394,24 +394,15 @@ ${reportData.recommendedActions?.map((a) => `• ${a}`).join('\n')}`;
 
           {/* Right Column: Clinical Analysis Report */}
           <div
-            style={{
-              backgroundColor: '#f8fafc',
-              borderRadius: '16px',
-              border: '1px solid #e2e8f0',
-              padding: '1.25rem',
-              display: 'flex',
-              flexDirection: 'column',
-              maxHeight: '540px',
-              overflowY: 'auto',
-            }}
+            className="clinical-report-panel"
           >
             {reportData ? (
               <div>
                 {/* Header with Severity Badge */}
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem', borderBottom: '1px solid #e2e8f0', paddingBottom: '0.75rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.75rem', flexWrap: 'wrap', marginBottom: '1rem', borderBottom: '1px solid var(--slate-200)', paddingBottom: '0.75rem' }}>
                   <div>
-                    <span style={{ fontSize: '0.7rem', color: '#64748b', fontWeight: '700', textTransform: 'uppercase' }}>
-                      Diagnostic Impression
+                    <span className="clinical-eyebrow">
+                      Diagnostic impression
                     </span>
                     <div style={{ fontWeight: '800', color: '#0f172a', fontSize: '1.05rem' }}>
                       {reportData.modality}
@@ -428,22 +419,22 @@ ${reportData.recommendedActions?.map((a) => `• ${a}`).join('\n')}`;
                       border: `1px solid ${getSeverityStyle(reportData.severity).border}`,
                     }}
                   >
-                    ● {reportData.severity}
+                    {reportData.severity}
                   </span>
                 </div>
 
                 {/* Primary Impression */}
                 <div
                   style={{
-                    backgroundColor: '#ffffff',
+                    backgroundColor: 'var(--primary-50)',
                     padding: '0.85rem',
                     borderRadius: '10px',
-                    border: '1px solid #e2e8f0',
+                    border: '1px solid var(--primary-100)',
                     marginBottom: '1rem',
                   }}
                 >
-                  <div style={{ fontSize: '0.75rem', fontWeight: '800', color: '#0e7490', textTransform: 'uppercase', marginBottom: '0.25rem' }}>
-                    🩺 Clinical Finding Summary:
+                  <div className="clinical-section-label" style={{ color: 'var(--primary-700)' }}>
+                    <Stethoscope size={13} /> Finding summary
                   </div>
                   <div style={{ fontSize: '0.875rem', color: '#0f172a', fontWeight: '600', lineHeight: '1.4' }}>
                     {reportData.primaryImpression}
@@ -452,10 +443,10 @@ ${reportData.recommendedActions?.map((a) => `• ${a}`).join('\n')}`;
 
                 {/* Key Radiological Findings */}
                 <div style={{ marginBottom: '1rem' }}>
-                  <div style={{ fontSize: '0.75rem', fontWeight: '800', color: '#475569', textTransform: 'uppercase', marginBottom: '0.4rem' }}>
-                    🔍 Key Anatomical Findings:
+                  <div className="clinical-section-label">
+                    <Eye size={13} /> Key findings
                   </div>
-                  <ul style={{ paddingLeft: '1.25rem', fontSize: '0.8125rem', color: '#334155', display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
+                  <ul style={{ paddingLeft: '1.25rem', fontSize: '0.8125rem', color: 'var(--slate-700)', display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
                     {reportData.keyFindings?.map((finding, i) => (
                       <li key={i}>{finding}</li>
                     ))}
@@ -465,16 +456,16 @@ ${reportData.recommendedActions?.map((a) => `• ${a}`).join('\n')}`;
                 {/* Differential Diagnoses */}
                 {reportData.differentialDiagnoses?.length > 0 && (
                   <div style={{ marginBottom: '1rem' }}>
-                    <div style={{ fontSize: '0.75rem', fontWeight: '800', color: '#475569', textTransform: 'uppercase', marginBottom: '0.4rem' }}>
-                      📋 Differential Diagnoses:
+                    <div className="clinical-section-label">
+                      <FileText size={13} /> Differential diagnoses
                     </div>
                     <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
                       {reportData.differentialDiagnoses.map((d, i) => (
                         <span
                           key={i}
                           style={{
-                            backgroundColor: '#f1f5f9',
-                            color: '#0e7490',
+                            backgroundColor: '#ffffff',
+                            color: 'var(--primary-700)',
                             padding: '0.2rem 0.6rem',
                             borderRadius: '6px',
                             fontSize: '0.75rem',
@@ -491,8 +482,8 @@ ${reportData.recommendedActions?.map((a) => `• ${a}`).join('\n')}`;
 
                 {/* Recommended Actions */}
                 <div style={{ marginBottom: '1rem' }}>
-                  <div style={{ fontSize: '0.75rem', fontWeight: '800', color: '#059669', textTransform: 'uppercase', marginBottom: '0.4rem' }}>
-                    ✅ Recommended Clinical Next Steps:
+                  <div className="clinical-section-label" style={{ color: 'var(--success-700)' }}>
+                    <CheckCircle2 size={13} /> Recommended next steps
                   </div>
                   <ul style={{ paddingLeft: '1.25rem', fontSize: '0.8125rem', color: '#047857', display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
                     {reportData.recommendedActions?.map((act, i) => (
@@ -521,8 +512,8 @@ ${reportData.recommendedActions?.map((a) => `• ${a}`).join('\n')}`;
                   </button>
                 </div>
 
-                <div style={{ fontSize: '0.6875rem', color: '#94a3b8', marginTop: '0.75rem', textAlign: 'center' }}>
-                  ⚠️ {reportData.disclaimer}
+                <div className="clinical-disclaimer">
+                  <AlertTriangle size={12} /> {reportData.disclaimer}
                 </div>
               </div>
             ) : (
@@ -533,17 +524,19 @@ ${reportData.recommendedActions?.map((a) => `• ${a}`).join('\n')}`;
                   flexDirection: 'column',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  color: '#94a3b8',
+                  color: 'var(--slate-500)',
                   textAlign: 'center',
                   padding: '2rem 1rem',
                 }}
               >
-                <FileSearch size={48} style={{ color: '#0891b2', marginBottom: '0.75rem', opacity: 0.6 }} />
-                <h4 style={{ color: '#334155', fontWeight: '700', marginBottom: '0.25rem' }}>
-                  Clinical Radiology Diagnostic Center
+                <div className="clinical-empty-icon">
+                  <FileSearch size={28} />
+                </div>
+                <h4 style={{ color: 'var(--slate-900)', fontWeight: '700', marginBottom: '0.25rem' }}>
+                  No analysis yet
                 </h4>
                 <p style={{ fontSize: '0.8125rem', maxWidth: '300px', lineHeight: '1.4' }}>
-                  The chest radiograph is loaded on the left. Click <strong>Run Diagnostic Analysis</strong> to evaluate!
+                  Pick a sample or upload a scan, then click <strong>Run Diagnostic Analysis</strong>.
                 </p>
               </div>
             )}

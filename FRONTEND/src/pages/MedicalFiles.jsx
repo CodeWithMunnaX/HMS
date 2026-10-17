@@ -202,7 +202,7 @@ export const MedicalFiles = () => {
             </div>
             {selectedFile && (
               <div style={{ marginTop: '0.5rem', color: '#059669', fontSize: '0.8125rem', fontWeight: '600' }}>
-                ✓ Selected: {selectedFile.name} ({(selectedFile.size / 1024).toFixed(1)} KB)
+                Selected: {selectedFile.name} ({(selectedFile.size / 1024).toFixed(1)} KB)
               </div>
             )}
             <input
@@ -283,34 +283,31 @@ export const MedicalFiles = () => {
       </div>
 
       {/* Filter Bar */}
-      <div className="card" style={{ marginBottom: '1.5rem', padding: '1rem 1.25rem' }}>
-        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'center' }}>
-          <div style={{ flex: 1, minWidth: '240px', position: 'relative' }}>
-            <Search size={16} style={{ position: 'absolute', left: '10px', top: '12px', color: '#94a3b8' }} />
-            <input
-              type="text"
-              placeholder="Search by file title or patient..."
-              className="form-input"
-              style={{ paddingLeft: '2.2rem' }}
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-          </div>
+      <div className="filter-bar">
+        <div className="filter-search">
+          <Search size={16} />
+          <input
+            type="text"
+            placeholder="Search by file title or patient..."
+            className="form-input"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
 
-          <div style={{ width: '200px' }}>
-            <select
-              className="form-select"
-              value={categoryFilter}
-              onChange={(e) => setCategoryFilter(e.target.value)}
-            >
-              <option value="">All Categories</option>
-              <option value="Lab Report">Lab Reports</option>
-              <option value="X-Ray / MRI Scan">X-Ray / MRI Scans</option>
-              <option value="Discharge Summary">Discharge Summaries</option>
-              <option value="Prescription Copy">Prescriptions</option>
-              <option value="Insurance Doc">Insurance Docs</option>
-            </select>
-          </div>
+        <div className="filter-select">
+          <select
+            className="form-select"
+            value={categoryFilter}
+            onChange={(e) => setCategoryFilter(e.target.value)}
+          >
+            <option value="">All Categories</option>
+            <option value="Lab Report">Lab Reports</option>
+            <option value="X-Ray / MRI Scan">X-Ray / MRI Scans</option>
+            <option value="Discharge Summary">Discharge Summaries</option>
+            <option value="Prescription Copy">Prescriptions</option>
+            <option value="Insurance Doc">Insurance Docs</option>
+          </select>
         </div>
       </div>
 
@@ -356,7 +353,7 @@ export const MedicalFiles = () => {
                 <div style={{ fontWeight: '700', fontSize: '0.9375rem', color: '#0f172a', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                   {file.title}
                 </div>
-                <div style={{ fontSize: '0.75rem', color: '#64748b' }}>
+                <div className="text-muted-sm">
                   Patient: <strong>{file.patient?.name || 'Assigned'}</strong> ({file.patient?.patientId})
                 </div>
                 {file.notes && (

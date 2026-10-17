@@ -169,64 +169,30 @@ export const TelehealthRoomModal = ({ isOpen, onClose, patient = null, doctor = 
     >
       <div>
         {/* Top Notification Bar: Camera connection helper */}
-        <div
-          style={{
-            backgroundColor: '#f0fdfa',
-            border: '1px solid #99f6e4',
-            borderRadius: '12px',
-            padding: '0.65rem 1rem',
-            marginBottom: '1rem',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            fontSize: '0.8125rem',
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#10b981', boxShadow: '0 0 8px #10b981' }} />
-            <strong style={{ color: '#0f766e' }}>Encrypted Telehealth Room:</strong>
-            <span style={{ color: '#134e4a' }}>
+        <div className="clinical-notice">
+          <div className="clinical-notice-text">
+            <span className="portal-live-dot" />
+            <strong style={{ color: 'var(--primary-800)' }}>Encrypted room</strong>
+            <span style={{ color: 'var(--slate-600)' }}>
               Connected via WebRTC with {patient?.name || 'Alex Johnson'} ({patient?.patientId || 'PAT-1001'})
             </span>
           </div>
 
           <button
             type="button"
-            className="btn btn-sm"
-            style={{
-              backgroundColor: isLiveCameraActive ? '#059669' : '#0891b2',
-              color: '#ffffff',
-              fontWeight: '700',
-              padding: '0.3rem 0.75rem',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-            }}
+            className={`btn btn-sm ${isLiveCameraActive ? 'btn-secondary' : 'btn-primary'}`}
             onClick={isLiveCameraActive ? stopLiveCamera : startLiveCamera}
           >
             <Camera size={14} />
-            {isLiveCameraActive ? 'Webcam Active (Click to Disconnect)' : 'Connect Your Real Webcam'}
+            {isLiveCameraActive ? 'Disconnect webcam' : 'Connect your webcam'}
           </button>
         </div>
 
         {/* Studio Grid: Video Stage (Left) & Clinical Console (Right) */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1.45fr 0.85fr', gap: '1.25rem' }}>
+        <div className="clinical-studio-grid">
           {/* LEFT: Video Screen Stage */}
           <div>
-            <div
-              style={{
-                position: 'relative',
-                height: '420px',
-                backgroundColor: '#040d21',
-                borderRadius: '16px',
-                overflow: 'hidden',
-                boxShadow: '0 12px 36px rgba(0, 0, 0, 0.4)',
-                border: '1px solid rgba(255, 255, 255, 0.1)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
+            <div className="clinical-video-stage">
               {/* Remote Feed: Patient Screen */}
               <div style={{ width: '100%', height: '100%', position: 'relative' }}>
                 <img
@@ -380,17 +346,7 @@ export const TelehealthRoomModal = ({ isOpen, onClose, patient = null, doctor = 
 
             {/* In-Call Action Controls Toolbar */}
             <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '0.85rem',
-                marginTop: '1rem',
-                backgroundColor: '#f8fafc',
-                padding: '0.85rem',
-                borderRadius: '16px',
-                border: '1px solid #e2e8f0',
-              }}
+              className="clinical-call-toolbar"
             >
               <button
                 type="button"
@@ -437,17 +393,7 @@ export const TelehealthRoomModal = ({ isOpen, onClose, patient = null, doctor = 
           </div>
 
           {/* RIGHT: In-Call Clinical Console & Instant Chat Tabs */}
-          <div
-            style={{
-              backgroundColor: '#f8fafc',
-              padding: '1.25rem',
-              borderRadius: '16px',
-              border: '1px solid #e2e8f0',
-              display: 'flex',
-              flexDirection: 'column',
-              height: '490px',
-            }}
-          >
+          <div className="clinical-side-panel">
             {/* Sub Tabs */}
             <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
               <button
@@ -472,7 +418,7 @@ export const TelehealthRoomModal = ({ isOpen, onClose, patient = null, doctor = 
             {activeTab === 'notes' ? (
               <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
                 {/* Patient Summary Card */}
-                <div style={{ backgroundColor: '#ffffff', padding: '0.75rem', borderRadius: '10px', border: '1px solid #e2e8f0', marginBottom: '0.85rem', fontSize: '0.75rem' }}>
+                <div className="clinical-summary">
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
                     <strong>Patient:</strong> <span>{patient?.name || 'Alex Johnson'} ({patient?.patientId || 'PAT-1001'})</span>
                   </div>
@@ -486,7 +432,7 @@ export const TelehealthRoomModal = ({ isOpen, onClose, patient = null, doctor = 
 
                 <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
                   <label className="form-label" style={{ fontSize: '0.75rem', fontWeight: '700' }}>
-                    Live Consultation Clinical Findings & Rx Advice:
+                    Clinical findings & Rx advice
                   </label>
                   <textarea
                     className="form-textarea"
@@ -505,7 +451,7 @@ export const TelehealthRoomModal = ({ isOpen, onClose, patient = null, doctor = 
                     toast.success('Clinical prescription drafted and queued for patient verification!');
                   }}
                 >
-                  <CheckCircle2 size={14} /> {rxIssued ? '✓ Prescription Issued to Patient' : 'Save & Issue Digital E-Prescription'}
+                  <CheckCircle2 size={14} /> {rxIssued ? 'Prescription issued to patient' : 'Save & issue e-prescription'}
                 </button>
               </div>
             ) : (
@@ -515,9 +461,9 @@ export const TelehealthRoomModal = ({ isOpen, onClose, patient = null, doctor = 
                   style={{
                     flex: 1,
                     overflowY: 'auto',
-                    backgroundColor: '#ffffff',
+                    backgroundColor: 'var(--slate-50)',
                     borderRadius: '10px',
-                    border: '1px solid #e2e8f0',
+                    border: '1px solid var(--slate-200)',
                     padding: '0.75rem',
                     display: 'flex',
                     flexDirection: 'column',
@@ -532,7 +478,7 @@ export const TelehealthRoomModal = ({ isOpen, onClose, patient = null, doctor = 
                         style={{
                           alignSelf: isDoc ? 'flex-end' : 'flex-start',
                           maxWidth: '85%',
-                          backgroundColor: isDoc ? '#ecfeff' : '#f1f5f9',
+                          backgroundColor: isDoc ? 'var(--primary-50)' : '#ffffff',
                           border: isDoc ? '1px solid #a5f3fc' : '1px solid #e2e8f0',
                           padding: '0.5rem 0.75rem',
                           borderRadius: '10px',

@@ -143,7 +143,7 @@ export const WardsAndBeds = () => {
       description,
       triggeredAt: new Date().toLocaleTimeString(),
     });
-    toast.error(`🚨 HOSPITAL BROADCAST: ${label} ACTIVATED!`);
+    toast.error(`Hospital broadcast: ${label} activated`);
   };
 
   // Group beds by Ward for Floorplan view
@@ -159,96 +159,101 @@ export const WardsAndBeds = () => {
       {/* Emergency Code Blue / Red Broadcast Banner */}
       {activeEmergencyCode && (
         <div
+          role="alert"
           style={{
-            backgroundColor: activeEmergencyCode.color === 'blue' ? '#1e3a8a' : '#991b1b',
-            color: '#ffffff',
-            padding: '1rem 1.5rem',
-            borderRadius: '16px',
+            backgroundColor: activeEmergencyCode.color === 'blue' ? 'var(--info-50)' : 'var(--danger-50)',
+            color: 'var(--slate-900)',
+            padding: '1rem 1.25rem',
+            borderRadius: '14px',
             marginBottom: '1.5rem',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            boxShadow: '0 10px 30px rgba(0,0,0,0.3)',
-            animation: 'pulse 1.5s infinite',
-            border: '2px solid rgba(255,255,255,0.4)',
+            flexWrap: 'wrap',
+            gap: '0.75rem',
+            border: `1px solid ${activeEmergencyCode.color === 'blue' ? 'var(--info-200)' : 'var(--danger-200)'}`,
+            borderLeft: `5px solid ${activeEmergencyCode.color === 'blue' ? 'var(--info-600)' : 'var(--danger-600)'}`,
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', minWidth: 0 }}>
             <div
               style={{
-                width: '44px',
-                height: '44px',
-                borderRadius: '50%',
-                backgroundColor: 'rgba(255,255,255,0.2)',
+                width: '40px',
+                height: '40px',
+                borderRadius: '10px',
+                backgroundColor: '#ffffff',
+                color: activeEmergencyCode.color === 'blue' ? 'var(--info-600)' : 'var(--danger-600)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
+                flexShrink: 0,
               }}
             >
-              <ShieldAlert size={26} color="#ffffff" className="animate-bounce" />
+              <ShieldAlert size={22} />
             </div>
-            <div>
-              <div style={{ fontWeight: '900', fontSize: '1.1rem', letterSpacing: '0.04em', textTransform: 'uppercase' }}>
-                🚨 {activeEmergencyCode.label} — {activeEmergencyCode.description}
+            <div style={{ minWidth: 0 }}>
+              <div
+                style={{
+                  fontWeight: 800,
+                  fontSize: '0.95rem',
+                  color: activeEmergencyCode.color === 'blue' ? 'var(--info-700)' : 'var(--danger-700)',
+                }}
+              >
+                {activeEmergencyCode.label} — {activeEmergencyCode.description}
               </div>
-              <div style={{ fontSize: '0.78rem', opacity: 0.9 }}>
-                Activated at {activeEmergencyCode.triggeredAt} • All available Critical Care & Trauma Physicians report STAT to ICU / ER.
+              <div style={{ fontSize: '0.8rem', color: 'var(--slate-600)' }}>
+                Activated at {activeEmergencyCode.triggeredAt} · Critical care and trauma physicians report to ICU / ER.
               </div>
             </div>
           </div>
 
-          <button
-            onClick={() => setActiveEmergencyCode(null)}
-            style={{
-              backgroundColor: 'rgba(255,255,255,0.25)',
-              border: 'none',
-              color: '#ffffff',
-              padding: '0.4rem 0.8rem',
-              borderRadius: '8px',
-              fontWeight: '700',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '4px',
-            }}
-          >
-            <X size={14} /> Clear Alert
+          <button className="btn btn-secondary btn-sm" onClick={() => setActiveEmergencyCode(null)}>
+            <X size={14} /> Clear alert
           </button>
         </div>
       )}
 
       {/* Page Header */}
-      <div className="page-header">
-        <div className="page-header-title">
-          <h1>Emergency Triage & Inpatient Ward Suite</h1>
-          <p>Real-time inpatient tracking, ICU telemetry units, emergency triage admission, and bed turnover matrix.</p>
+      <div className="page-hero">
+        <div className="page-header">
+          <div className="page-header-title">
+            <span className="eyebrow">
+              <BedDouble size={13} /> Inpatient care
+            </span>
+            <h1>Wards & Beds</h1>
+            <p>Live bed occupancy across ICU, emergency, general and private wards — admit, discharge and track turnover.</p>
+          </div>
+          <div className="page-header-actions">
+            {/* Emergency code buttons */}
+            <button
+              className="btn btn-info-soft btn-sm"
+              onClick={() => triggerEmergencyCode('blue', 'CODE BLUE', 'blue', 'Cardiac Arrest / Resuscitation Protocol STAT')}
+            >
+              <HeartPulse size={14} /> Code Blue
+            </button>
+            <button
+              className="btn btn-danger-soft btn-sm"
+              onClick={() => triggerEmergencyCode('red', 'CODE RED', 'red', 'Mass Trauma / Critical ER Intake Protocol')}
+            >
+              <Flame size={14} /> Code Red
+            </button>
+            <button
+              className="btn btn-secondary btn-sm"
+              onClick={() => {
+                fetchBeds();
+                fetchStats();
+              }}
+            >
+              <RefreshCw size={14} /> Refresh
+            </button>
+          </div>
         </div>
-        <div className="page-header-actions" style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-          {/* Emergency Code Buttons */}
-          <button
-            className="btn btn-sm"
-            style={{ backgroundColor: '#1e40af', color: '#ffffff', fontWeight: '800' }}
-            onClick={() => triggerEmergencyCode('blue', 'CODE BLUE', 'blue', 'Cardiac Arrest / Resuscitation Protocol STAT')}
-          >
-            🚨 Code Blue
-          </button>
-          <button
-            className="btn btn-sm"
-            style={{ backgroundColor: '#b91c1c', color: '#ffffff', fontWeight: '800' }}
-            onClick={() => triggerEmergencyCode('red', 'CODE RED', 'red', 'Mass Trauma / Critical ER Intake Protocol')}
-          >
-            🔴 Code Red
-          </button>
-          <button
-            className="btn btn-secondary btn-sm"
-            onClick={() => {
-              fetchBeds();
-              fetchStats();
-            }}
-          >
-            <RefreshCw size={14} /> Refresh Grid
-          </button>
-        </div>
+        <img
+          className="page-hero-img"
+          src="/images/private-room.webp"
+          alt="Private inpatient room"
+          loading="lazy"
+        />
       </div>
 
       {/* Ward Metric Stats */}
@@ -256,44 +261,44 @@ export const WardsAndBeds = () => {
         <div className="stats-grid">
           <div className="stat-card">
             <div className="stat-info">
-              <span className="stat-label">Total Beds In Inventory</span>
+              <span className="stat-label">Total beds</span>
               <span className="stat-value">{stats.totalBeds}</span>
               <span className="stat-subtext">Across 4 facility floors</span>
             </div>
-            <div className="stat-icon-wrapper" style={{ backgroundColor: '#ecfeff', color: '#0e7490' }}>
+            <div className="stat-icon-wrapper" style={{ backgroundColor: 'var(--primary-50)', color: 'var(--primary-700)' }}>
               <BedDouble size={22} />
             </div>
           </div>
 
           <div className="stat-card">
             <div className="stat-info">
-              <span className="stat-label">Available for Admission</span>
-              <span className="stat-value" style={{ color: '#059669' }}>{stats.availableBeds}</span>
+              <span className="stat-label">Available</span>
+              <span className="stat-value">{stats.availableBeds}</span>
               <span className="stat-subtext">Ready for patient assignment</span>
             </div>
-            <div className="stat-icon-wrapper" style={{ backgroundColor: '#ecfdf5', color: '#059669' }}>
+            <div className="stat-icon-wrapper" style={{ backgroundColor: 'var(--success-50)', color: 'var(--success-600)' }}>
               <CheckCircle2 size={22} />
             </div>
           </div>
 
           <div className="stat-card">
             <div className="stat-info">
-              <span className="stat-label">Occupied Inpatients</span>
-              <span className="stat-value" style={{ color: '#dc2626' }}>{stats.occupiedBeds}</span>
+              <span className="stat-label">Occupied</span>
+              <span className="stat-value">{stats.occupiedBeds}</span>
               <span className="stat-subtext">{stats.occupancyRate}% Overall Occupancy</span>
             </div>
-            <div className="stat-icon-wrapper" style={{ backgroundColor: '#fef2f2', color: '#dc2626' }}>
+            <div className="stat-icon-wrapper" style={{ backgroundColor: 'var(--danger-50)', color: 'var(--danger-600)' }}>
               <Activity size={22} />
             </div>
           </div>
 
           <div className="stat-card">
             <div className="stat-info">
-              <span className="stat-label">Sanitizing / Turnover</span>
-              <span className="stat-value" style={{ color: '#d97706' }}>{stats.maintenanceBeds}</span>
+              <span className="stat-label">Sanitizing / turnover</span>
+              <span className="stat-value">{stats.maintenanceBeds}</span>
               <span className="stat-subtext">Under clinical hygiene protocol</span>
             </div>
-            <div className="stat-icon-wrapper" style={{ backgroundColor: '#fffbeb', color: '#d97706' }}>
+            <div className="stat-icon-wrapper" style={{ backgroundColor: 'var(--warning-50)', color: 'var(--warning-600)' }}>
               <Clock size={22} />
             </div>
           </div>
@@ -301,7 +306,7 @@ export const WardsAndBeds = () => {
       )}
 
       {/* Filter Tabs & View Toggle */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '0.75rem' }}>
+      <div className="filter-bar" style={{ justifyContent: 'space-between' }}>
         <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
           {['', 'ICU', 'Emergency Room', 'General Ward', 'Private Deluxe'].map((type) => (
             <button
@@ -332,30 +337,24 @@ export const WardsAndBeds = () => {
 
       {/* Live Bed Matrix Grid */}
       {loading ? (
-        <div style={{ padding: '3rem', textAlign: 'center', color: '#64748b' }}>
-          <Activity size={32} className="animate-spin" style={{ margin: '0 auto 0.75rem auto', color: '#0891b2' }} />
-          <p>Loading Ward Matrix & Live Bed Telemetry...</p>
+        <div className="empty-state">
+          <div className="app-loading-spinner" style={{ margin: '0 auto 0.75rem auto' }} />
+          <p>Loading beds...</p>
         </div>
       ) : beds.length === 0 ? (
-        <div className="card" style={{ textAlign: 'center', padding: '3rem', color: '#64748b' }}>
-          No beds found for this ward filter.
-        </div>
+        <div className="card empty-state">No beds found for this ward.</div>
       ) : viewMode === 'floorplan' ? (
         /* Floorplan Grouped View */
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
           {Object.entries(wardsGrouped).map(([wardName, wardBeds]) => (
-            <div key={wardName} className="card" style={{ padding: '1.5rem', borderRadius: '16px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem', paddingBottom: '0.75rem', borderBottom: '1px solid #e2e8f0' }}>
+            <div key={wardName} className="card">
+              <div className="card-header" style={{ paddingBottom: '0.75rem', borderBottom: '1px solid var(--slate-200)' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-                  <BedDouble size={20} color="#0891b2" />
-                  <h3 style={{ fontWeight: '800', color: '#0f172a', fontSize: '1.1rem', margin: 0 }}>
-                    {wardName} Wing
-                  </h3>
-                  <span style={{ fontSize: '0.75rem', backgroundColor: '#ecfeff', color: '#0e7490', padding: '0.2rem 0.5rem', borderRadius: '6px', fontWeight: '700' }}>
-                    {wardBeds.length} Beds
-                  </span>
+                  <BedDouble size={18} color="var(--primary-600)" />
+                  <h3 className="card-title">{wardName} Wing</h3>
+                  <span className="tag tag-teal">{wardBeds.length} beds</span>
                 </div>
-                <span style={{ fontSize: '0.8rem', color: '#64748b' }}>
+                <span className="text-muted-sm" style={{ fontSize: '0.8rem' }}>
                   {wardBeds.filter((b) => b.status === 'Available').length} Ready • {wardBeds.filter((b) => b.status === 'Occupied').length} Admitted
                 </span>
               </div>
@@ -405,7 +404,7 @@ export const WardsAndBeds = () => {
                       width: '26px',
                       height: '26px',
                       borderRadius: '50%',
-                      backgroundColor: '#0891b2',
+                      backgroundColor: 'var(--primary-600)',
                       color: '#ffffff',
                       display: 'flex',
                       alignItems: 'center',
@@ -417,13 +416,9 @@ export const WardsAndBeds = () => {
                   >
                     {p.name?.charAt(0) || 'P'}
                   </div>
-                  <span style={{ fontWeight: '800', color: '#0f172a', fontSize: '0.9rem' }}>{p.name}</span>
-                  <span style={{ fontSize: '0.7rem', color: '#0891b2', backgroundColor: '#ecfeff', padding: '2px 6px', borderRadius: '4px', fontWeight: '700' }}>
-                    {p.patientId}
-                  </span>
-                  <span style={{ fontSize: '0.7rem', color: '#dc2626', backgroundColor: '#fee2e2', padding: '2px 6px', borderRadius: '4px', fontWeight: '800' }}>
-                    🩸 {p.bloodGroup}
-                  </span>
+                  <span style={{ fontWeight: 700, color: 'var(--slate-900)', fontSize: '0.875rem' }}>{p.name}</span>
+                  <span className="tag tag-teal">{p.patientId}</span>
+                  <span className="tag tag-danger">{p.bloodGroup}</span>
                 </div>
               )}
               renderOption={(p, isSelected) => (
@@ -434,7 +429,7 @@ export const WardsAndBeds = () => {
                         width: '34px',
                         height: '34px',
                         borderRadius: '50%',
-                        background: 'linear-gradient(135deg, #06b6d4 0%, #0e7490 100%)',
+                        background: 'var(--primary-600)',
                         color: '#ffffff',
                         display: 'flex',
                         alignItems: 'center',
@@ -447,17 +442,15 @@ export const WardsAndBeds = () => {
                       {p.name?.charAt(0) || 'P'}
                     </div>
                     <div>
-                      <div style={{ fontWeight: '800', color: isSelected ? '#0891b2' : '#0f172a', fontSize: '0.875rem' }}>
+                      <div style={{ fontWeight: 700, color: isSelected ? 'var(--primary-700)' : 'var(--slate-900)', fontSize: '0.875rem' }}>
                         {p.name}
                       </div>
-                      <div style={{ fontSize: '0.75rem', color: '#64748b' }}>
+                      <div className="text-muted-sm">
                         ID: <strong>{p.patientId}</strong> • Age: {p.age}y • {p.gender}
                       </div>
                     </div>
                   </div>
-                  <span style={{ fontSize: '0.725rem', backgroundColor: '#fee2e2', color: '#dc2626', padding: '2px 8px', borderRadius: '999px', fontWeight: '800', flexShrink: 0 }}>
-                    🩸 {p.bloodGroup}
-                  </span>
+                  <span className="tag tag-danger">{p.bloodGroup}</span>
                 </div>
               )}
             />
@@ -484,10 +477,8 @@ export const WardsAndBeds = () => {
                     alt=""
                     style={{ width: '26px', height: '26px', borderRadius: '50%', objectFit: 'cover' }}
                   />
-                  <span style={{ fontWeight: '700', color: '#0f172a', fontSize: '0.875rem' }}>{doc.user?.name}</span>
-                  <span style={{ fontSize: '0.7rem', color: '#0891b2', backgroundColor: '#ecfeff', padding: '2px 6px', borderRadius: '4px', fontWeight: '700' }}>
-                    {doc.specialty}
-                  </span>
+                  <span style={{ fontWeight: 700, color: 'var(--slate-900)', fontSize: '0.875rem' }}>{doc.user?.name}</span>
+                  <span className="tag tag-teal">{doc.specialty}</span>
                 </div>
               )}
               renderOption={(doc, isSelected) => (
@@ -499,15 +490,15 @@ export const WardsAndBeds = () => {
                       style={{ width: '32px', height: '32px', borderRadius: '50%', objectFit: 'cover' }}
                     />
                     <div>
-                      <div style={{ fontWeight: '700', color: isSelected ? '#0891b2' : '#0f172a', fontSize: '0.875rem' }}>
+                      <div style={{ fontWeight: 700, color: isSelected ? 'var(--primary-700)' : 'var(--slate-900)', fontSize: '0.875rem' }}>
                         {doc.user?.name}
                       </div>
-                      <div style={{ fontSize: '0.75rem', color: '#64748b' }}>
+                      <div className="text-muted-sm">
                         {doc.specialty} • Room: {doc.roomNumber || 'OPD-101'}
                       </div>
                     </div>
                   </div>
-                  <span style={{ fontSize: '0.75rem', color: '#059669', fontWeight: '800' }}>
+                  <span style={{ fontSize: '0.75rem', color: 'var(--success-700)', fontWeight: 600 }}>
                     ₹{doc.consultationFee} Fee
                   </span>
                 </div>
@@ -531,7 +522,7 @@ export const WardsAndBeds = () => {
               Cancel
             </button>
             <button type="submit" className="btn btn-primary" style={{ minWidth: '160px', justifyContent: 'center' }}>
-              ✓ Confirm Admission
+              Confirm Admission
             </button>
           </div>
         </form>
@@ -550,67 +541,49 @@ export const WardsAndBeds = () => {
         className={`bed-card ${
           isOccupied ? 'occupied' : isAvailable ? 'available' : 'maintenance'
         }`}
-        style={{
-          borderRadius: '16px',
-          boxShadow: isOccupied ? '0 4px 14px rgba(220, 38, 38, 0.12)' : '0 4px 14px rgba(15, 23, 42, 0.04)',
-        }}
       >
         <div className="bed-card-header">
           <span className="bed-number" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <BedDouble size={18} color="#0891b2" />
+            <BedDouble size={17} color="var(--primary-600)" />
             <span>{bed.bedNumber}</span>
           </span>
           <StatusBadge status={bed.status} />
         </div>
 
-        <div style={{ fontSize: '0.75rem', color: '#64748b' }}>
-          {bed.wardType} • {bed.floor} (Room {bed.roomNumber || '101'})
+        <div className="bed-meta">
+          {bed.wardType} · {bed.floor} · Room {bed.roomNumber || '101'}
         </div>
 
-        <div style={{ fontSize: '0.75rem', fontWeight: '700', color: '#0e7490' }}>
-          ₹{bed.dailyRate} / Day Rate
-        </div>
+        <div className="bed-rate">₹{bed.dailyRate} / day</div>
 
         {isOccupied && bed.currentPatient ? (
-          <div className="bed-patient-info" style={{ backgroundColor: '#ffffff', borderRadius: '10px', padding: '0.75rem', border: '1px solid #fee2e2' }}>
-            <div style={{ fontWeight: '800', color: '#0f172a', fontSize: '0.9rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div className="bed-patient-info">
+            <div style={{ fontWeight: 700, color: 'var(--slate-900)', fontSize: '0.875rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.5rem' }}>
               <span>{bed.currentPatient.name}</span>
-              <span style={{ fontSize: '0.6875rem', backgroundColor: '#fee2e2', color: '#dc2626', padding: '0.15rem 0.4rem', borderRadius: '4px' }}>
-                {bed.currentPatient.bloodGroup}
-              </span>
+              <span className="tag tag-danger">{bed.currentPatient.bloodGroup}</span>
             </div>
-            <div style={{ fontSize: '0.7rem', color: '#64748b', marginTop: '2px' }}>
+            <div className="text-muted-sm" style={{ marginTop: '2px' }}>
               Patient ID: <strong>{bed.currentPatient.patientId}</strong> • Age: {bed.currentPatient.age}y
             </div>
             {bed.attendingDoctor && (
-              <div style={{ fontSize: '0.7rem', color: '#0891b2', marginTop: '3px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <div style={{ fontSize: '0.75rem', color: 'var(--primary-700)', marginTop: '4px', display: 'flex', alignItems: 'center', gap: '4px' }}>
                 <Stethoscope size={11} /> Dr: {bed.attendingDoctor?.user?.name}
               </div>
             )}
             {bed.notes && (
-              <div style={{ fontSize: '0.6875rem', color: '#475569', marginTop: '4px', fontStyle: 'italic', lineHeight: '1.2' }}>
+              <div style={{ fontSize: '0.75rem', color: 'var(--slate-600)', marginTop: '4px', fontStyle: 'italic', lineHeight: 1.35 }}>
                 "{bed.notes}"
               </div>
             )}
           </div>
         ) : (
-          <div
-            style={{
-              fontSize: '0.75rem',
-              color: isAvailable ? '#059669' : '#d97706',
-              padding: '0.6rem',
-              background: '#f8fafc',
-              borderRadius: '8px',
-              textAlign: 'center',
-              fontWeight: '600',
-            }}
-          >
-            {isAvailable ? '✓ Ready for Inpatient Admission' : '⚠️ Sanitation & Linen Turnover'}
+          <div className={`bed-status-note ${isAvailable ? 'available' : 'maintenance'}`}>
+            {isAvailable ? 'Ready for admission' : 'Sanitation & linen turnover'}
           </div>
         )}
 
         {isStaff && (
-          <div style={{ marginTop: 'auto', paddingTop: '0.75rem' }}>
+          <div style={{ marginTop: 'auto', paddingTop: '0.25rem' }}>
             {isAvailable ? (
               <button
                 className="btn btn-primary btn-sm"
@@ -621,7 +594,7 @@ export const WardsAndBeds = () => {
               </button>
             ) : isOccupied ? (
               <button
-                className="btn btn-danger btn-sm"
+                className="btn btn-danger-soft btn-sm"
                 style={{ width: '100%', justifyContent: 'center' }}
                 onClick={() => handleDischarge(bed._id)}
               >

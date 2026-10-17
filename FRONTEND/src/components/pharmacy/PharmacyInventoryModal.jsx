@@ -60,32 +60,32 @@ export const PharmacyInventoryModal = ({ isOpen, onClose }) => {
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title="📦 Central Pharmacy Inventory & Medication Stock Manager"
+      title="Pharmacy Inventory"
       maxWidth="1000px"
     >
       <div>
         {/* Metric Cards */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginBottom: '1.25rem' }}>
-          <div style={{ backgroundColor: '#f8fafc', padding: '1rem', borderRadius: '12px', border: '1px solid #e2e8f0' }}>
-            <div style={{ fontSize: '0.7rem', color: '#64748b', fontWeight: '700', textTransform: 'uppercase' }}>Total Drug SKUs</div>
-            <div style={{ fontSize: '1.4rem', fontWeight: '900', color: '#0f172a' }}>{inventory.length} Medications</div>
+          <div className="clinical-stat">
+            <div className="clinical-metric-label">Total drug SKUs</div>
+            <div className="clinical-stat-value">{inventory.length} medications</div>
           </div>
 
-          <div style={{ backgroundColor: '#fef2f2', padding: '1rem', borderRadius: '12px', border: '1px solid #fecaca' }}>
-            <div style={{ fontSize: '0.7rem', color: '#dc2626', fontWeight: '700', textTransform: 'uppercase' }}>Critical Low Stock</div>
-            <div style={{ fontSize: '1.4rem', fontWeight: '900', color: '#dc2626' }}>{lowStockCount} Items Below Min</div>
+          <div className="clinical-stat" style={{ backgroundColor: 'var(--danger-50)', borderColor: 'var(--danger-100)' }}>
+            <div className="clinical-metric-label" style={{ color: 'var(--danger-600)' }}>Low stock</div>
+            <div className="clinical-stat-value" style={{ color: 'var(--danger-600)' }}>{lowStockCount} below minimum</div>
           </div>
 
-          <div style={{ backgroundColor: '#f0fdf4', padding: '1rem', borderRadius: '12px', border: '1px solid #bbf7d0' }}>
-            <div style={{ fontSize: '0.7rem', color: '#16a34a', fontWeight: '700', textTransform: 'uppercase' }}>Inventory Valuation</div>
-            <div style={{ fontSize: '1.4rem', fontWeight: '900', color: '#15803d' }}>₹{totalValuation.toLocaleString()}</div>
+          <div className="clinical-stat" style={{ backgroundColor: 'var(--success-50)', borderColor: 'var(--success-100)' }}>
+            <div className="clinical-metric-label" style={{ color: 'var(--success-700)' }}>Inventory valuation</div>
+            <div className="clinical-stat-value" style={{ color: 'var(--success-700)' }}>₹{totalValuation.toLocaleString()}</div>
           </div>
         </div>
 
         {/* Search & Filter Bar */}
         <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '1.25rem', flexWrap: 'wrap' }}>
-          <div style={{ position: 'relative', flex: 1 }}>
-            <Search size={16} style={{ position: 'absolute', left: '10px', top: '12px', color: '#94a3b8' }} />
+          <div style={{ position: 'relative', flex: '1 1 240px' }}>
+            <Search size={16} style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: 'var(--slate-500)' }} />
             <input
               type="text"
               placeholder="Search medication name, category, or batch..."
@@ -98,7 +98,7 @@ export const PharmacyInventoryModal = ({ isOpen, onClose }) => {
 
           <select
             className="form-select"
-            style={{ width: '200px' }}
+            style={{ flex: '0 1 200px', minWidth: '160px' }}
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
           >
@@ -130,14 +130,14 @@ export const PharmacyInventoryModal = ({ isOpen, onClose }) => {
               {filtered.map((item) => {
                 const isLow = item.stock <= item.minThreshold;
                 return (
-                  <tr key={item.id} style={{ backgroundColor: isLow ? '#fffbeb' : 'transparent' }}>
-                    <td><strong style={{ color: '#0e7490' }}>{item.id}</strong></td>
+                  <tr key={item.id} style={{ backgroundColor: isLow ? 'var(--warning-50)' : 'transparent' }}>
+                    <td><strong style={{ color: 'var(--primary-700)' }}>{item.id}</strong></td>
                     <td>
                       <div style={{ fontWeight: '700', color: '#0f172a' }}>{item.name}</div>
                       <div style={{ fontSize: '0.7rem', color: '#64748b' }}>Strength: {item.strength}</div>
                     </td>
                     <td>
-                      <span style={{ backgroundColor: '#f1f5f9', padding: '0.15rem 0.5rem', borderRadius: '4px', fontSize: '0.7rem', fontWeight: '600' }}>
+                      <span style={{ backgroundColor: 'var(--slate-100)', color: 'var(--slate-700)', padding: '0.15rem 0.5rem', borderRadius: '6px', fontSize: '0.75rem', fontWeight: '600' }}>
                         {item.category}
                       </span>
                     </td>
@@ -150,7 +150,7 @@ export const PharmacyInventoryModal = ({ isOpen, onClose }) => {
                         <span style={{ fontWeight: '800', fontSize: '0.95rem', color: isLow ? '#dc2626' : '#059669' }}>
                           {item.stock}
                         </span>
-                        <span style={{ fontSize: '0.7rem', color: '#94a3b8' }}>units</span>
+                        <span style={{ fontSize: '0.75rem', color: 'var(--slate-500)' }}>units</span>
                         {isLow && (
                           <span style={{ fontSize: '0.65rem', backgroundColor: '#fee2e2', color: '#dc2626', padding: '0.1rem 0.4rem', borderRadius: '4px', fontWeight: '800' }}>
                             LOW

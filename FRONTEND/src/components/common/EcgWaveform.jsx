@@ -1,5 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Activity, Heart, Zap } from 'lucide-react';
+import { Activity, Heart } from 'lucide-react';
+
+// Light-theme palette for the canvas trace
+const CANVAS_BG = '#ffffff';
+const GRID_COLOR = 'rgba(8, 145, 178, 0.10)';
+const TRACE_COLOR = '#0891b2';
 
 export const EcgWaveform = ({ bpm = 75, spO2 = 99, bp = '120/80', patientName = 'Live ICU Telemetry' }) => {
   const canvasRef = useRef(null);
@@ -15,14 +20,15 @@ export const EcgWaveform = ({ bpm = 75, spO2 = 99, bp = '120/80', patientName = 
     const height = canvas.height;
     const width = canvas.width;
     const midY = height / 2;
+    let prevY = midY;
 
     // Clear canvas
-    ctx.fillStyle = '#060d1f';
+    ctx.fillStyle = CANVAS_BG;
     ctx.fillRect(0, 0, width, height);
 
     // Draw background grid lines
     const drawGrid = () => {
-      ctx.strokeStyle = 'rgba(6, 182, 212, 0.08)';
+      ctx.strokeStyle = GRID_COLOR;
       ctx.lineWidth = 1;
       const gridSize = 16;
       for (let gx = 0; gx < width; gx += gridSize) {
@@ -45,16 +51,22 @@ export const EcgWaveform = ({ bpm = 75, spO2 = 99, bp = '120/80', patientName = 
 
     const render = () => {
       // Clear a small vertical slice ahead of the scan line
-      ctx.fillStyle = '#060d1f';
+      ctx.fillStyle = CANVAS_BG;
       ctx.fillRect(x, 0, 12, height);
 
       // Re-draw subtle grid for cleared slice
-      ctx.strokeStyle = 'rgba(6, 182, 212, 0.08)';
+      ctx.strokeStyle = GRID_COLOR;
       ctx.lineWidth = 1;
       for (let gy = 0; gy < height; gy += 16) {
         ctx.beginPath();
         ctx.moveTo(x, gy);
         ctx.lineTo(x + 12, gy);
+        ctx.stroke();
+      }
+      for (let gx = Math.ceil(x / 16) * 16; gx < x + 12; gx += 16) {
+        ctx.beginPath();
+        ctx.moveTo(gx, 0);
+        ctx.lineTo(gx, height);
         ctx.stroke();
       }
 
@@ -82,17 +94,17 @@ export const EcgWaveform = ({ bpm = 75, spO2 = 99, bp = '120/80', patientName = 
         y = midY + (Math.random() - 0.5) * 1.5;
       }
 
-      // Glowing Neon Cyan Wave line
-      ctx.strokeStyle = '#06b6d4';
-      ctx.lineWidth = 2.2;
-      ctx.shadowColor = '#22d3ee';
-      ctx.shadowBlur = 8;
+      // Teal trace on a light grid
+      ctx.strokeStyle = TRACE_COLOR;
+      ctx.lineWidth = 2;
+      ctx.lineJoin = 'round';
+      ctx.lineCap = 'round';
 
       ctx.beginPath();
-      ctx.moveTo(x === 0 ? width - 2 : x - 2, midY);
+      ctx.moveTo(x === 0 ? 0 : x - 2, x === 0 ? y : prevY);
       ctx.lineTo(x, y);
       ctx.stroke();
-      ctx.shadowBlur = 0; // Reset shadow
+      prevY = y;
 
       x += 2;
       step += 1;
@@ -117,96 +129,48 @@ export const EcgWaveform = ({ bpm = 75, spO2 = 99, bp = '120/80', patientName = 
   }, []);
 
   return (
-    <div
-      style={{
-        background: 'linear-gradient(180deg, #070d1e 0%, #030712 100%)',
-        borderRadius: '16px',
-        border: '1px solid rgba(6, 182, 212, 0.25)',
-        padding: '1.15rem 1.35rem',
-        color: '#ffffff',
-        boxShadow: '0 10px 25px rgba(0, 0, 0, 0.4), inset 0 0 20px rgba(6, 182, 212, 0.05)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        flexWrap: 'wrap',
-        gap: '1.25rem',
-        marginBottom: '1.75rem',
-      }}
-    >
-      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-        <div
-          style={{
-            width: '42px',
-            height: '42px',
-            borderRadius: '12px',
-            backgroundColor: 'rgba(6, 182, 212, 0.15)',
-            border: '1px solid rgba(6, 182, 212, 0.4)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: '#22d3ee',
-          }}
-        >
-          <Activity size={22} className="animate-pulse" />
+    <div className="portal-ecg">
+      <div className="portal-ecg-title">
+        <div className="portal-ecg-icon">
+          <Activity size={20} />
         </div>
         <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <span
-              style={{
-                width: '7px',
-                height: '7px',
-                borderRadius: '50%',
-                backgroundColor: '#10b981',
-                boxShadow: '0 0 8px #10b981',
-              }}
-            />
-            <span style={{ fontSize: '0.7rem', color: '#67e8f9', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-              Live Clinical Telemetry
-            </span>
+          <div className="portal-ecg-live">
+            <span className="portal-live-dot" />
+            Live clinical telemetry
           </div>
-          <div style={{ fontWeight: '800', fontSize: '1rem', color: '#ffffff', letterSpacing: '-0.02em' }}>
-            {patientName}
-          </div>
+          <div className="portal-ecg-name">{patientName}</div>
         </div>
       </div>
 
       {/* Real-Time Canvas Waveform */}
-      <div
-        style={{
-          flex: '1 1 240px',
-          height: '60px',
-          position: 'relative',
-          borderRadius: '10px',
-          overflow: 'hidden',
-          border: '1px solid rgba(255, 255, 255, 0.08)',
-        }}
-      >
-        <canvas ref={canvasRef} width={340} height={60} style={{ width: '100%', height: '100%', display: 'block' }} />
+      <div className="portal-ecg-canvas">
+        <canvas ref={canvasRef} width={340} height={60} />
       </div>
 
       {/* Live Numerical Readouts */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
-        <div style={{ textAlign: 'center' }}>
-          <div style={{ fontSize: '0.6875rem', color: '#94a3b8', fontWeight: '700', textTransform: 'uppercase' }}>Heart Rate</div>
-          <div style={{ fontSize: '1.25rem', fontWeight: '900', color: '#22d3ee', display: 'flex', alignItems: 'center', gap: '3px' }}>
-            <Heart size={14} color="#ef4444" fill="#ef4444" className="animate-bounce" /> {currentBpm} <span style={{ fontSize: '0.7rem', color: '#94a3b8', fontWeight: '600' }}>bpm</span>
+      <div className="portal-ecg-readouts">
+        <div className="portal-ecg-readout">
+          <div className="portal-ecg-label">Heart rate</div>
+          <div className="portal-ecg-value" style={{ color: 'var(--primary-700)' }}>
+            <Heart size={14} color="#ef4444" fill="#ef4444" /> {currentBpm} <span className="portal-ecg-unit">bpm</span>
           </div>
         </div>
 
-        <div style={{ height: '30px', width: '1px', backgroundColor: 'rgba(255, 255, 255, 0.15)' }} />
+        <div className="portal-ecg-divider" />
 
-        <div style={{ textAlign: 'center' }}>
-          <div style={{ fontSize: '0.6875rem', color: '#94a3b8', fontWeight: '700', textTransform: 'uppercase' }}>SpO2 Pulse</div>
-          <div style={{ fontSize: '1.25rem', fontWeight: '900', color: '#10b981' }}>
+        <div className="portal-ecg-readout">
+          <div className="portal-ecg-label">SpO2</div>
+          <div className="portal-ecg-value" style={{ color: 'var(--success-600)' }}>
             {spO2}%
           </div>
         </div>
 
-        <div style={{ height: '30px', width: '1px', backgroundColor: 'rgba(255, 255, 255, 0.15)' }} />
+        <div className="portal-ecg-divider" />
 
-        <div style={{ textAlign: 'center' }}>
-          <div style={{ fontSize: '0.6875rem', color: '#94a3b8', fontWeight: '700', textTransform: 'uppercase' }}>Blood Pressure</div>
-          <div style={{ fontSize: '1.15rem', fontWeight: '800', color: '#ffffff' }}>
+        <div className="portal-ecg-readout">
+          <div className="portal-ecg-label">Blood pressure</div>
+          <div className="portal-ecg-value" style={{ color: 'var(--slate-900)', fontSize: '1.05rem' }}>
             {bp}
           </div>
         </div>

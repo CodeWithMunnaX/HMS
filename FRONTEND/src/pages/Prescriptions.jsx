@@ -236,13 +236,13 @@ export const Prescriptions = () => {
           <tbody>
             {loading ? (
               <tr>
-                <td colSpan="8" style={{ textAlign: 'center', padding: '2.5rem', color: '#64748b' }}>
+                <td colSpan="8" className="table-empty">
                   Loading prescriptions...
                 </td>
               </tr>
             ) : filtered.length === 0 ? (
               <tr>
-                <td colSpan="8" style={{ textAlign: 'center', padding: '2.5rem', color: '#64748b' }}>
+                <td colSpan="8" className="table-empty">
                   No digital prescriptions found.
                 </td>
               </tr>
@@ -254,7 +254,7 @@ export const Prescriptions = () => {
                   </td>
                   <td>
                     <div style={{ fontWeight: '600' }}>{rx.patient?.name || 'Patient'}</div>
-                    <div style={{ fontSize: '0.75rem', color: '#64748b' }}>{rx.patient?.patientId}</div>
+                    <div className="text-muted-sm">{rx.patient?.patientId}</div>
                   </td>
                   <td>
                     <div style={{ fontWeight: '600' }}>{rx.doctor?.user?.name || 'Doctor'}</div>
@@ -581,7 +581,7 @@ export const Prescriptions = () => {
                 </div>
                 <div style={{ textAlign: 'right' }}>
                   <div style={{ fontWeight: '800', color: '#0e7490' }}>{selectedRx.prescriptionId}</div>
-                  <div style={{ fontSize: '0.75rem', color: '#64748b' }}>
+                  <div className="text-muted-sm">
                     Date: {new Date(selectedRx.createdAt).toLocaleDateString()}
                   </div>
                 </div>
@@ -589,19 +589,19 @@ export const Prescriptions = () => {
 
               <div className="rx-patient-bar">
                 <div>
-                  <span style={{ fontSize: '0.75rem', color: '#64748b' }}>Patient Name:</span>
+                  <span className="text-muted-sm">Patient Name:</span>
                   <div style={{ fontWeight: '700' }}>{selectedRx.patient?.name}</div>
                 </div>
                 <div>
-                  <span style={{ fontSize: '0.75rem', color: '#64748b' }}>Patient ID:</span>
+                  <span className="text-muted-sm">Patient ID:</span>
                   <div>{selectedRx.patient?.patientId}</div>
                 </div>
                 <div>
-                  <span style={{ fontSize: '0.75rem', color: '#64748b' }}>Age / Gender:</span>
+                  <span className="text-muted-sm">Age / Gender:</span>
                   <div>{selectedRx.patient?.age}y ({selectedRx.patient?.gender})</div>
                 </div>
                 <div>
-                  <span style={{ fontSize: '0.75rem', color: '#64748b' }}>Blood Group:</span>
+                  <span className="text-muted-sm">Blood Group:</span>
                   <div style={{ fontWeight: '700', color: '#dc2626' }}>{selectedRx.patient?.bloodGroup}</div>
                 </div>
               </div>
@@ -666,7 +666,7 @@ export const Prescriptions = () => {
 
               <div className="rx-footer">
                 <div>
-                  <div style={{ fontSize: '0.75rem', color: '#64748b' }}>
+                  <div className="text-muted-sm">
                     Follow-up Date: {selectedRx.followUpDate ? new Date(selectedRx.followUpDate).toLocaleDateString() : 'As needed'}
                   </div>
                 </div>
@@ -675,7 +675,7 @@ export const Prescriptions = () => {
                   <div style={{ fontWeight: '700', fontSize: '0.875rem' }}>
                     {selectedRx.doctor?.user?.name || 'Attending Physician'}
                   </div>
-                  <div style={{ fontSize: '0.75rem', color: '#64748b' }}>Authorized Medical Practitioner</div>
+                  <div className="text-muted-sm">Authorized Medical Practitioner</div>
                 </div>
               </div>
             </div>

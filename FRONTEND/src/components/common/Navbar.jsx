@@ -1,19 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import {
-  Search,
-  Bell,
-  ShieldCheck,
-  CheckCircle2,
-  AlertTriangle,
-  FileText,
-  Calendar,
-  Siren,
-  Microscope,
-  Pill,
-  X,
-  Trash2,
-} from 'lucide-react';
+import { Search, Bell, CheckCircle2, Calendar, Siren, Microscope, Pill, X } from 'lucide-react';
+import { Avatar } from './Avatar';
 
 export const Navbar = ({ onSearch, searchQuery }) => {
   const { user } = useAuth();
@@ -96,140 +84,52 @@ export const Navbar = ({ onSearch, searchQuery }) => {
   };
 
   return (
-    <header className="app-navbar" style={{ position: 'relative', zIndex: 100 }}>
+    <header className="app-navbar">
       <div className="navbar-search">
-        <Search size={16} color="#64748b" />
+        <Search size={16} />
         <input
           type="text"
           placeholder="Search patients, doctors, tokens, or invoices..."
           value={searchQuery || ''}
           onChange={(e) => onSearch && onSearch(e.target.value)}
+          aria-label="Search"
         />
       </div>
 
-      <div className="navbar-right" style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#0e7490', fontSize: '0.8125rem', fontWeight: '600' }}>
-          <ShieldCheck size={16} />
-          <span>CarePulse v1.0 • Secure HIPAA Ready</span>
-        </div>
-
-        {/* Notification Bell with Dropdown Menu */}
+      <div className="navbar-right">
+        {/* Notification bell with dropdown */}
         <div style={{ position: 'relative' }} ref={dropdownRef}>
           <button
             type="button"
-            style={{
-              position: 'relative',
-              padding: '0.55rem',
-              borderRadius: '50%',
-              backgroundColor: isDropdownOpen ? '#e2e8f0' : '#f1f5f9',
-              color: isDropdownOpen ? '#0e7490' : '#475569',
-              border: 'none',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              transition: 'all 0.2s ease',
-            }}
+            className={`navbar-icon-btn ${isDropdownOpen ? 'active' : ''}`}
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            title="Hospital Clinical Notifications"
+            title="Notifications"
+            aria-label="Notifications"
           >
-            <Bell size={19} />
-            {unreadCount > 0 && (
-              <span
-                style={{
-                  position: 'absolute',
-                  top: '2px',
-                  right: '2px',
-                  minWidth: '16px',
-                  height: '16px',
-                  padding: '0 3px',
-                  borderRadius: '999px',
-                  backgroundColor: '#ef4444',
-                  color: '#ffffff',
-                  fontSize: '0.65rem',
-                  fontWeight: '800',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  border: '2px solid #ffffff',
-                }}
-              >
-                {unreadCount}
-              </span>
-            )}
+            <Bell size={18} />
+            {unreadCount > 0 && <span className="navbar-badge">{unreadCount}</span>}
           </button>
 
-          {/* Dropdown Menu */}
           {isDropdownOpen && (
-            <div
-              style={{
-                position: 'absolute',
-                top: 'calc(100% + 10px)',
-                right: '0',
-                width: '360px',
-                backgroundColor: '#ffffff',
-                borderRadius: '16px',
-                boxShadow: '0 12px 36px rgba(0, 0, 0, 0.15)',
-                border: '1px solid #e2e8f0',
-                overflow: 'hidden',
-                animation: 'fadeIn 0.2s ease-out',
-                zIndex: 1000,
-              }}
-            >
-              {/* Header */}
-              <div
-                style={{
-                  padding: '0.85rem 1rem',
-                  borderBottom: '1px solid #e2e8f0',
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  backgroundColor: '#f8fafc',
-                }}
-              >
+            <div className="notif-dropdown">
+              <div className="notif-header">
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <strong style={{ fontSize: '0.9rem', color: '#0f172a' }}>Clinical Notifications</strong>
-                  {unreadCount > 0 && (
-                    <span
-                      style={{
-                        backgroundColor: '#fee2e2',
-                        color: '#dc2626',
-                        fontSize: '0.7rem',
-                        fontWeight: '800',
-                        padding: '0.1rem 0.45rem',
-                        borderRadius: '999px',
-                      }}
-                    >
-                      {unreadCount} New
-                    </span>
-                  )}
+                  <strong>Notifications</strong>
+                  {unreadCount > 0 && <span className="badge badge-rose">{unreadCount} new</span>}
                 </div>
-
                 {unreadCount > 0 && (
-                  <button
-                    type="button"
-                    style={{
-                      background: 'none',
-                      border: 'none',
-                      color: '#0891b2',
-                      fontSize: '0.75rem',
-                      fontWeight: '700',
-                      cursor: 'pointer',
-                    }}
-                    onClick={markAllAsRead}
-                  >
+                  <button type="button" className="notif-link-btn" onClick={markAllAsRead}>
                     Mark all as read
                   </button>
                 )}
               </div>
 
-              {/* Notification List */}
-              <div style={{ maxHeight: '340px', overflowY: 'auto' }}>
+              <div className="notif-list">
                 {notifications.length === 0 ? (
-                  <div style={{ padding: '2rem', textAlign: 'center', color: '#94a3b8', fontSize: '0.85rem' }}>
-                    <CheckCircle2 size={32} style={{ margin: '0 auto 0.5rem auto', color: '#10b981' }} />
-                    <p style={{ margin: 0, fontWeight: '600' }}>All caught up!</p>
-                    <span style={{ fontSize: '0.75rem' }}>No new clinical alerts at this time.</span>
+                  <div className="notif-empty">
+                    <CheckCircle2 size={28} style={{ margin: '0 auto 0.5rem auto', color: 'var(--success-500)' }} />
+                    <p style={{ fontWeight: 600, color: 'var(--slate-700)' }}>All caught up</p>
+                    <span style={{ fontSize: '0.75rem' }}>No new alerts right now.</span>
                   </div>
                 ) : (
                   notifications.map((item) => {
@@ -237,57 +137,28 @@ export const Navbar = ({ onSearch, searchQuery }) => {
                     return (
                       <div
                         key={item.id}
+                        className={`notif-item ${item.read ? '' : 'unread'}`}
                         onClick={() => markAsRead(item.id)}
-                        style={{
-                          padding: '0.85rem 1rem',
-                          borderBottom: '1px solid #f1f5f9',
-                          backgroundColor: item.read ? '#ffffff' : '#f0fdfa',
-                          display: 'flex',
-                          alignItems: 'flex-start',
-                          gap: '0.75rem',
-                          cursor: 'pointer',
-                          transition: 'background 0.15s ease',
-                          position: 'relative',
-                        }}
                       >
-                        <div
-                          style={{
-                            width: '34px',
-                            height: '34px',
-                            borderRadius: '10px',
-                            backgroundColor: item.bg,
-                            color: item.color,
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            flexShrink: 0,
-                          }}
-                        >
+                        <div className="notif-icon" style={{ backgroundColor: item.bg, color: item.color }}>
                           <Icon size={17} />
                         </div>
 
                         <div style={{ flex: 1, minWidth: 0 }}>
-                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2px' }}>
-                            <strong style={{ fontSize: '0.8125rem', color: '#0f172a' }}>{item.title}</strong>
-                            <span style={{ fontSize: '0.6875rem', color: '#94a3b8' }}>{item.time}</span>
+                          <div className="notif-title-row">
+                            <strong>{item.title}</strong>
+                            <span className="notif-time">{item.time}</span>
                           </div>
-                          <p style={{ fontSize: '0.75rem', color: '#475569', margin: 0, lineHeight: '1.3' }}>
-                            {item.message}
-                          </p>
+                          <p className="notif-message">{item.message}</p>
                         </div>
 
                         <button
                           type="button"
+                          className="btn-icon"
                           onClick={(e) => clearNotification(item.id, e)}
-                          style={{
-                            background: 'none',
-                            border: 'none',
-                            color: '#94a3b8',
-                            cursor: 'pointer',
-                            padding: '2px',
-                            opacity: 0.7,
-                          }}
                           title="Dismiss"
+                          aria-label="Dismiss notification"
+                          style={{ padding: '2px' }}
                         >
                           <X size={13} />
                         </button>
@@ -296,23 +167,21 @@ export const Navbar = ({ onSearch, searchQuery }) => {
                   })
                 )}
               </div>
-
-              {/* Footer */}
-              <div
-                style={{
-                  padding: '0.6rem 1rem',
-                  backgroundColor: '#f8fafc',
-                  borderTop: '1px solid #e2e8f0',
-                  textAlign: 'center',
-                }}
-              >
-                <span style={{ fontSize: '0.7rem', color: '#64748b', fontWeight: '600' }}>
-                  CarePulse Hospital Alert Network • Real-Time Sync Active
-                </span>
-              </div>
             </div>
           )}
         </div>
+
+        <span className="navbar-divider" />
+
+        {user && (
+          <div className="navbar-user">
+            <Avatar src={user.avatar} name={user.name || 'User'} size={34} shape="circle" />
+            <div className="navbar-user-text">
+              <span className="navbar-user-name">{user.name}</span>
+              <span className="navbar-user-role">{user.role}</span>
+            </div>
+          </div>
+        )}
       </div>
     </header>
   );

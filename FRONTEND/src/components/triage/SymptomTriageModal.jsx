@@ -12,6 +12,11 @@ import {
   Flame,
   Calendar,
   Sparkles,
+  Brain,
+  Bone,
+  Wind,
+  HeartPulse,
+  Hand,
 } from 'lucide-react';
 
 export const SymptomTriageModal = ({ isOpen, onClose, onBookDepartment = null }) => {
@@ -26,7 +31,8 @@ export const SymptomTriageModal = ({ isOpen, onClose, onBookDepartment = null })
   const symptomOptions = [
     {
       id: 'chest_pain',
-      name: '🫀 Chest Pain / Palpitations',
+      name: 'Chest Pain / Palpitations',
+      icon: HeartPulse,
       desc: 'Chest pressure, shortness of breath, radiating pain to arm',
       recommendedDept: 'Cardiology',
       recommendedDoc: 'Dr. Sarah Jenkins',
@@ -34,7 +40,8 @@ export const SymptomTriageModal = ({ isOpen, onClose, onBookDepartment = null })
     },
     {
       id: 'headache',
-      name: '🧠 Severe Headache / Migraine',
+      name: 'Severe Headache / Migraine',
+      icon: Brain,
       desc: 'Throbbing head pain, dizziness, visual aura, light sensitivity',
       recommendedDept: 'Neurology',
       recommendedDoc: 'Dr. Michael Chen',
@@ -42,7 +49,8 @@ export const SymptomTriageModal = ({ isOpen, onClose, onBookDepartment = null })
     },
     {
       id: 'joint_trauma',
-      name: '🦴 Joint Pain / Bone Injury',
+      name: 'Joint Pain / Bone Injury',
+      icon: Bone,
       desc: 'Severe knee/wrist pain, inability to bear weight, swelling after fall',
       recommendedDept: 'Orthopedics',
       recommendedDoc: 'Dr. David Kim',
@@ -50,7 +58,8 @@ export const SymptomTriageModal = ({ isOpen, onClose, onBookDepartment = null })
     },
     {
       id: 'respiratory',
-      name: '🫁 Persistent Cough & Fever',
+      name: 'Persistent Cough & Fever',
+      icon: Wind,
       desc: 'Productive phlegm, wheezing, high temperature, chest crackles',
       recommendedDept: 'General Medicine',
       recommendedDoc: 'Dr. Emily Carter',
@@ -58,7 +67,8 @@ export const SymptomTriageModal = ({ isOpen, onClose, onBookDepartment = null })
     },
     {
       id: 'dermatology',
-      name: '🩹 Skin Rash / Allergic Lesion',
+      name: 'Skin Rash / Allergic Lesion',
+      icon: Hand,
       desc: 'Itchy rash, redness, spreading skin inflammation, hives',
       recommendedDept: 'Dermatology',
       recommendedDoc: 'Dr. Marcus Vance',
@@ -81,7 +91,7 @@ export const SymptomTriageModal = ({ isOpen, onClose, onBookDepartment = null })
       urgency: finalUrgency,
       guidance:
         finalUrgency.includes('EMERGENCY')
-          ? '⚠️ Immediate clinical evaluation required. Please proceed to the Hospital Emergency Trauma Center or call emergency dispatch.'
+          ? 'Immediate clinical evaluation required. Please proceed to the Hospital Emergency Trauma Center or call emergency dispatch.'
           : `Specialist consultation recommended with ${symptomData.recommendedDept}. Schedule an outpatient appointment.`,
     });
     toast.success('Clinical Triage Assessment generated!');
@@ -98,41 +108,41 @@ export const SymptomTriageModal = ({ isOpen, onClose, onBookDepartment = null })
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title="🩺 Clinical Symptom Checker & Specialty Triage Assistant"
+      title="Symptom Checker & Specialty Triage"
       maxWidth="780px"
     >
       <div>
         {/* Step 1: Choose Chief Complaint */}
         <div style={{ marginBottom: '1.25rem' }}>
-          <label className="form-label" style={{ fontSize: '0.85rem', fontWeight: '700' }}>
-            Step 1: Select Your Primary Symptom or Chief Complaint:
+          <label className="form-label">
+            Step 1: Select your primary symptom
           </label>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '0.6rem' }}>
             {symptomOptions.map((s) => {
               const isSelected = selectedSymptom === s.id;
+              const Icon = s.icon;
               return (
-                <div
+                <button
+                  type="button"
                   key={s.id}
                   onClick={() => setSelectedSymptom(s.id)}
-                  style={{
-                    padding: '0.75rem 0.85rem',
-                    borderRadius: '12px',
-                    border: isSelected ? '2px solid #0891b2' : '1px solid #e2e8f0',
-                    backgroundColor: isSelected ? '#ecfeff' : '#ffffff',
-                    cursor: 'pointer',
-                    transition: 'all 0.15s ease',
-                  }}
+                  className={`clinical-option${isSelected ? ' is-selected' : ''}`}
                 >
-                  <div style={{ fontWeight: '700', fontSize: '0.85rem', color: '#0f172a' }}>{s.name}</div>
-                  <div style={{ fontSize: '0.7rem', color: '#64748b', marginTop: '2px' }}>{s.desc}</div>
-                </div>
+                  <span className="clinical-option-icon">
+                    <Icon size={18} />
+                  </span>
+                  <span>
+                    <span className="clinical-option-title">{s.name}</span>
+                    <span className="clinical-option-desc">{s.desc}</span>
+                  </span>
+                </button>
               );
             })}
           </div>
         </div>
 
         {/* Step 2: Severity & Duration */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.25rem' }}>
+        <div className="clinical-grid-2" style={{ marginBottom: '1.25rem' }}>
           <div className="form-group">
             <label className="form-label">Symptom Severity Level</label>
             <select className="form-select" value={severity} onChange={(e) => setSeverity(e.target.value)}>
@@ -189,41 +199,23 @@ export const SymptomTriageModal = ({ isOpen, onClose, onBookDepartment = null })
 
         {/* Triage Output Card */}
         {assessmentResult && (
-          <div
-            style={{
-              marginTop: '1.5rem',
-              backgroundColor: '#f8fafc',
-              borderRadius: '16px',
-              border: '2px solid #0891b2',
-              padding: '1.25rem',
-              animation: 'fadeIn 0.3s ease',
-            }}
-          >
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.85rem' }}>
+          <div className="clinical-result">
+            <div className="clinical-result-head">
               <div>
-                <span style={{ fontSize: '0.7rem', color: '#64748b', fontWeight: '800', textTransform: 'uppercase' }}>
-                  Clinical Triage Output
-                </span>
-                <div style={{ fontWeight: '900', color: '#0f172a', fontSize: '1.1rem' }}>
-                  Recommended Department: {assessmentResult.department}
+                <span className="clinical-eyebrow">Triage result</span>
+                <div className="clinical-result-title">
+                  Recommended department: {assessmentResult.department}
                 </div>
               </div>
               <span
-                style={{
-                  padding: '0.35rem 0.85rem',
-                  borderRadius: '999px',
-                  fontSize: '0.75rem',
-                  fontWeight: '800',
-                  backgroundColor: assessmentResult.urgency.includes('EMERGENCY') ? '#fee2e2' : '#ecfeff',
-                  color: assessmentResult.urgency.includes('EMERGENCY') ? '#dc2626' : '#0891b2',
-                  border: assessmentResult.urgency.includes('EMERGENCY') ? '1px solid #fca5a5' : '1px solid #a5f3fc',
-                }}
+                className={`clinical-pill ${assessmentResult.urgency.includes('EMERGENCY') ? 'clinical-pill-danger' : 'clinical-pill-teal'}`}
               >
-                ● {assessmentResult.urgency}
+                {assessmentResult.urgency.includes('EMERGENCY') && <AlertTriangle size={13} />}
+                {assessmentResult.urgency}
               </span>
             </div>
 
-            <div style={{ fontSize: '0.85rem', color: '#334155', lineHeight: '1.4', marginBottom: '1rem' }}>
+            <div style={{ fontSize: '0.875rem', color: 'var(--slate-600)', lineHeight: '1.5', marginBottom: '1rem' }}>
               {assessmentResult.guidance}
             </div>
 

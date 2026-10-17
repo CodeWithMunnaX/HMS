@@ -8,12 +8,12 @@ export const StatCard = ({
   color = 'teal',
 }) => {
   const colorStyles = {
-    teal: { bg: '#ecfeff', text: '#0e7490' },
-    emerald: { bg: '#ecfdf5', text: '#059669' },
-    amber: { bg: '#fffbeb', text: '#d97706' },
-    rose: { bg: '#fef2f2', text: '#dc2626' },
-    blue: { bg: '#eff6ff', text: '#2563eb' },
-    indigo: { bg: '#eef2ff', text: '#4f46e5' },
+    teal: { bg: 'var(--primary-50)', text: 'var(--primary-700)' },
+    emerald: { bg: 'var(--success-50)', text: 'var(--success-600)' },
+    amber: { bg: 'var(--warning-50)', text: 'var(--warning-600)' },
+    rose: { bg: 'var(--danger-50)', text: 'var(--danger-600)' },
+    blue: { bg: 'var(--info-50)', text: 'var(--info-600)' },
+    indigo: { bg: 'var(--violet-50)', text: 'var(--violet-600)' },
   };
 
   const style = colorStyles[color] || colorStyles.teal;
@@ -30,7 +30,7 @@ export const StatCard = ({
           className="stat-icon-wrapper"
           style={{ backgroundColor: style.bg, color: style.text }}
         >
-          <Icon size={22} />
+          <Icon size={20} />
         </div>
       )}
     </div>

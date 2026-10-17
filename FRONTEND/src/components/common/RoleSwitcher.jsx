@@ -24,11 +24,11 @@ export const RoleSwitcher = () => {
   };
 
   return (
-    <div className="demo-role-banner">
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-        <span style={{ fontWeight: '700' }}>⚡ Quick Demo Switcher:</span>
-        <span style={{ opacity: 0.85, fontSize: '0.75rem' }}>
-          Current Role: <strong>{user?.role || 'Guest'}</strong> ({user?.name || 'Not logged in'})
+    <div className="demo-role-banner" role="region" aria-label="Demo role switcher">
+      <div className="demo-role-label">
+        <span>Demo mode — switch role:</span>
+        <span className="demo-role-current">
+          viewing as <strong>{user?.name || 'Guest'}</strong> ({user?.role || 'Guest'})
         </span>
       </div>
       <div className="demo-role-buttons">
@@ -38,11 +38,13 @@ export const RoleSwitcher = () => {
           return (
             <button
               key={r.name}
+              type="button"
               className={`demo-role-btn ${isActive ? 'active' : ''}`}
               onClick={() => handleRoleSwitch(r.name)}
-              title={`Simulate ${r.name} workflow`}
+              title={r.label}
+              aria-pressed={isActive}
             >
-              <Icon size={12} style={{ display: 'inline', marginRight: '4px' }} />
+              <Icon size={12} />
               {r.name}
             </button>
           );

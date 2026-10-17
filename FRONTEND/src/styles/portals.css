@@ -1,1 +1,890 @@
 /* Doctor & Patient portal styles (light theme) */
+
+/* ==========================================================================
+   Portal hero / welcome banner
+   ========================================================================== */
+.portal-hero {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  padding: 1.5rem 1.75rem;
+  margin-bottom: 1.75rem;
+  background: linear-gradient(120deg, #ffffff 0%, var(--primary-50) 100%);
+  border: 1px solid var(--slate-200);
+  border-radius: 16px;
+  box-shadow: var(--shadow-sm);
+}
+
+.portal-hero-photo {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 42%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.55;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.85) 70%);
+  mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.85) 70%);
+}
+
+.portal-hero-main,
+.portal-hero-actions {
+  position: relative;
+  z-index: 1;
+}
+
+.portal-hero-main {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  min-width: 0;
+}
+
+.portal-hero-avatar {
+  width: 64px;
+  height: 64px;
+  flex-shrink: 0;
+  border-radius: 14px;
+  object-fit: cover;
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 0 1px var(--slate-200), var(--shadow-sm);
+  background: var(--slate-100);
+}
+
+.portal-hero-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  font-size: 0.8125rem;
+  color: var(--slate-600);
+}
+
+.portal-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  background: var(--success-50);
+  border: 1px solid var(--success-100);
+  color: var(--success-700);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.portal-live-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--success-500);
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.18);
+}
+
+.portal-hero-title {
+  margin: 0.3rem 0 0.15rem;
+  font-size: 1.5rem;
+  font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  color: var(--slate-900);
+}
+
+.portal-hero-sub {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--slate-600);
+}
+
+.portal-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* ==========================================================================
+   ECG telemetry strip (light)
+   ========================================================================== */
+.portal-ecg {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.75rem;
+  background: #ffffff;
+  border: 1px solid var(--slate-200);
+  border-radius: 16px;
+  box-shadow: var(--shadow-sm);
+}
+
+.portal-ecg-title {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  min-width: 0;
+}
+
+.portal-ecg-icon {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: var(--primary-50);
+  border: 1px solid var(--primary-100);
+  color: var(--primary-600);
+}
+
+.portal-ecg-live {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--primary-700);
+}
+
+.portal-ecg-name {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--slate-900);
+}
+
+.portal-ecg-canvas {
+  flex: 1 1 240px;
+  height: 60px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--primary-100);
+  background: #ffffff;
+}
+
+.portal-ecg-canvas canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.portal-ecg-readouts {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.1rem;
+}
+
+.portal-ecg-readout {
+  text-align: center;
+}
+
+.portal-ecg-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--slate-500);
+}
+
+.portal-ecg-value {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-size: 1.2rem;
+  font-weight: 800;
+  font-feature-settings: 'tnum';
+}
+
+.portal-ecg-unit {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--slate-500);
+}
+
+.portal-ecg-divider {
+  width: 1px;
+  height: 30px;
+  background: var(--slate-200);
+}
+
+/* ==========================================================================
+   Small portal elements
+   ========================================================================== */
+.portal-token {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 38px;
+  height: 32px;
+  padding: 0 0.5rem;
+  border-radius: 9px;
+  background: var(--primary-50);
+  border: 1px solid var(--primary-100);
+  color: var(--primary-700);
+  font-weight: 800;
+  font-size: 0.875rem;
+}
+
+.portal-alert-text {
+  display: flex;
+  align-items: flex-start;
+  gap: 4px;
+  margin-top: 2px;
+  font-size: 0.75rem;
+  color: var(--danger-600);
+}
+
+.portal-alert-text svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.portal-row-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.portal-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.15rem 0.55rem;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  font-size: 0.75rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.portal-tag-teal {
+  background: var(--primary-50);
+  border-color: var(--primary-100);
+  color: var(--primary-700);
+}
+
+.portal-tag-red {
+  background: var(--danger-50);
+  border-color: var(--danger-100);
+  color: var(--danger-600);
+}
+
+.portal-tag-amber {
+  background: var(--warning-50);
+  border-color: var(--warning-100);
+  color: #b45309;
+  white-space: normal;
+}
+
+.portal-empty-cell {
+  text-align: center;
+  padding: 2.5rem 1rem !important;
+  color: var(--slate-500);
+}
+
+.portal-empty-card {
+  text-align: center;
+  padding: 3rem 1.5rem;
+  color: var(--slate-500);
+  margin-bottom: 1.5rem;
+}
+
+.portal-section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.portal-file-tag {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 0.15rem 0.5rem;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid var(--slate-200);
+  color: var(--slate-700);
+  font-size: 0.72rem;
+  font-weight: 600;
+  box-shadow: var(--shadow-xs);
+}
+
+.portal-two-col {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr));
+  gap: 1.5rem;
+}
+
+.portal-two-col > .card {
+  min-width: 0;
+}
+
+.portal-table-scroll {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Key/value list (profile, medical record) */
+.portal-info-list {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.portal-info-list > div {
+  display: grid;
+  grid-template-columns: minmax(120px, 38%) 1fr;
+  gap: 0.75rem;
+  padding: 0.65rem 0;
+  border-bottom: 1px solid var(--slate-100);
+  font-size: 0.875rem;
+}
+
+.portal-info-list > div:last-child {
+  border-bottom: none;
+}
+
+.portal-info-list dt {
+  color: var(--slate-500);
+  font-weight: 500;
+}
+
+.portal-info-list dd {
+  margin: 0;
+  color: var(--slate-900);
+  font-weight: 600;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+/* Scan viewer - dark canvas is intentional for imaging */
+.portal-scan-viewer {
+  text-align: center;
+  padding: 1rem;
+  border-radius: 12px;
+  background: var(--slate-900);
+}
+
+.portal-scan-viewer img {
+  max-width: 100%;
+  max-height: 480px;
+  object-fit: contain;
+}
+
+/* Forms inside portal modals */
+.portal-form-section {
+  margin: 1.25rem 0 0.6rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--slate-100);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--primary-700);
+}
+
+.portal-med-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1.5fr 1fr 2fr 36px;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.portal-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
+  border: 1px solid var(--slate-200);
+  background: #ffffff;
+  color: var(--slate-600);
+  cursor: pointer;
+  transition: background-color 150ms ease, border-color 150ms ease;
+}
+
+.portal-icon-btn-danger {
+  color: var(--danger-600);
+}
+
+.portal-icon-btn-danger:hover {
+  background: var(--danger-50);
+  border-color: var(--danger-100);
+}
+
+.portal-callout {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  border-radius: 10px;
+  border: 1px solid transparent;
+}
+
+.portal-callout-warning {
+  background: var(--warning-50);
+  border-color: #fde68a;
+}
+
+.portal-doctor-picker {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  gap: 0.6rem;
+  max-height: 240px;
+  overflow-y: auto;
+  padding: 0.5rem;
+  border: 1px solid var(--slate-200);
+  border-radius: 12px;
+  background: var(--slate-50);
+}
+
+.portal-chip {
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid var(--slate-200);
+  background: #ffffff;
+  color: var(--slate-700);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease;
+}
+
+.portal-chip:hover {
+  background: var(--primary-50);
+  border-color: var(--primary-200);
+  color: var(--primary-700);
+}
+
+/* ==========================================================================
+   Clinical modals (shared)
+   ========================================================================== */
+.clinical-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  width: 100%;
+  padding: 0.75rem 0.85rem;
+  text-align: left;
+  font: inherit;
+  background: #ffffff;
+  border: 1px solid var(--slate-200);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: border-color 150ms ease, background-color 150ms ease, box-shadow 150ms ease;
+}
+
+.clinical-option:hover {
+  border-color: var(--primary-200);
+  background: var(--slate-50);
+}
+
+.clinical-option.is-selected {
+  border-color: var(--primary-600);
+  background: var(--primary-50);
+  box-shadow: 0 0 0 1px var(--primary-600);
+}
+
+.clinical-option-icon {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: var(--primary-50);
+  color: var(--primary-600);
+}
+
+.clinical-option.is-selected .clinical-option-icon {
+  background: #ffffff;
+}
+
+.clinical-option-title {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--slate-900);
+}
+
+.clinical-option-desc {
+  display: block;
+  margin-top: 2px;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: var(--slate-500);
+}
+
+.clinical-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.clinical-split-grid {
+  display: grid;
+  grid-template-columns: 1.25fr 0.75fr;
+  gap: 1.25rem;
+}
+
+.clinical-panel,
+.clinical-side-panel {
+  background: #ffffff;
+  border: 1px solid var(--slate-200);
+  border-radius: 14px;
+  padding: 1.25rem;
+  box-shadow: var(--shadow-xs);
+}
+
+.clinical-side-panel {
+  display: flex;
+  flex-direction: column;
+  height: 490px;
+}
+
+.clinical-eyebrow {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--slate-500);
+}
+
+.clinical-section-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 0.4rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--slate-600);
+}
+
+.clinical-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.clinical-pill-teal {
+  background: var(--primary-50);
+  border-color: var(--primary-200);
+  color: var(--primary-700);
+}
+
+.clinical-pill-danger {
+  background: var(--danger-50);
+  border-color: #fca5a5;
+  color: var(--danger-600);
+}
+
+.clinical-pill-success {
+  background: #ffffff;
+  border-color: var(--success-100);
+  color: var(--success-700);
+}
+
+.clinical-result {
+  margin-top: 1.5rem;
+  padding: 1.25rem;
+  background: #ffffff;
+  border: 1px solid var(--primary-200);
+  border-left: 4px solid var(--primary-600);
+  border-radius: 14px;
+  box-shadow: var(--shadow-sm);
+  animation: fadeIn 0.3s ease;
+}
+
+.clinical-result-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 0.85rem;
+}
+
+.clinical-result-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--slate-900);
+}
+
+.clinical-notice {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding: 0.65rem 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.8125rem;
+  background: var(--primary-50);
+  border: 1px solid var(--primary-100);
+  border-radius: 12px;
+}
+
+.clinical-notice-text {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-width: 0;
+}
+
+/* Telehealth */
+.clinical-studio-grid {
+  display: grid;
+  grid-template-columns: 1.45fr 0.85fr;
+  gap: 1.25rem;
+}
+
+.clinical-video-stage {
+  position: relative;
+  height: 420px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 14px;
+  background: var(--slate-900);
+  border: 1px solid var(--slate-200);
+  box-shadow: var(--shadow-md);
+}
+
+.clinical-call-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  padding: 0.75rem;
+  background: #ffffff;
+  border: 1px solid var(--slate-200);
+  border-radius: 14px;
+}
+
+.clinical-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 0.75rem;
+  margin-bottom: 0.85rem;
+  font-size: 0.8125rem;
+  color: var(--slate-700);
+  background: var(--slate-50);
+  border: 1px solid var(--slate-200);
+  border-radius: 10px;
+}
+
+.clinical-summary > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+/* Scan analyzer */
+.clinical-report-panel {
+  display: flex;
+  flex-direction: column;
+  max-height: 540px;
+  overflow-y: auto;
+  padding: 1.25rem;
+  background: #ffffff;
+  border: 1px solid var(--slate-200);
+  border-radius: 14px;
+  box-shadow: var(--shadow-xs);
+}
+
+.clinical-disclaimer {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 5px;
+  margin-top: 0.75rem;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  text-align: center;
+  color: var(--slate-500);
+}
+
+.clinical-disclaimer svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.clinical-empty-icon {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  background: var(--primary-50);
+  border: 1px solid var(--primary-100);
+  color: var(--primary-600);
+}
+
+/* Metric tiles */
+.clinical-metric {
+  padding: 0.6rem 1rem;
+  background: #ffffff;
+  border: 1px solid var(--slate-200);
+  border-radius: 10px;
+  box-shadow: var(--shadow-xs);
+}
+
+.clinical-metric-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--slate-500);
+}
+
+.clinical-metric-value {
+  font-size: 1.25rem;
+  font-weight: 800;
+  font-feature-settings: 'tnum';
+}
+
+.clinical-stat {
+  padding: 1rem;
+  background: var(--slate-50);
+  border: 1px solid var(--slate-200);
+  border-radius: 12px;
+}
+
+.clinical-stat-value {
+  margin-top: 2px;
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--slate-900);
+}
+
+/* ==========================================================================
+   Responsive
+   ========================================================================== */
+@media (max-width: 960px) {
+  .clinical-studio-grid,
+  .clinical-split-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .clinical-side-panel {
+    height: auto;
+    min-height: 380px;
+  }
+
+  .clinical-video-stage {
+    height: 320px;
+  }
+
+  .portal-med-row {
+    grid-template-columns: 1fr 1fr;
+    padding: 0.75rem;
+    border: 1px solid var(--slate-200);
+    border-radius: 10px;
+    background: var(--slate-50);
+  }
+
+  .portal-med-row > input:first-child {
+    grid-column: 1 / -1;
+  }
+
+  .portal-med-row > .portal-icon-btn {
+    justify-self: end;
+  }
+}
+
+@media (max-width: 768px) {
+  .portal-hero {
+    padding: 1.25rem;
+  }
+
+  .portal-hero-photo {
+    display: none;
+  }
+
+  .portal-hero-actions {
+    width: 100%;
+  }
+
+  .portal-hero-actions .btn {
+    flex: 1 1 auto;
+    justify-content: center;
+  }
+
+  .clinical-grid-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .clinical-report-panel {
+    max-height: none;
+  }
+
+  .portal-ecg-canvas {
+    flex-basis: 100%;
+    order: 3;
+  }
+}
+
+@media (max-width: 480px) {
+  .portal-hero-avatar {
+    width: 52px;
+    height: 52px;
+  }
+
+  .portal-hero-title {
+    font-size: 1.25rem;
+  }
+
+  .portal-info-list > div {
+    grid-template-columns: 1fr;
+    gap: 0.15rem;
+  }
+
+  .clinical-video-stage {
+    height: 260px;
+  }
+}
+
+/* Used by the telehealth live indicator */
+.animate-pulse {
+  animation: portal-pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes portal-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.45; }
+}
