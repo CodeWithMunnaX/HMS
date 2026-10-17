@@ -12,12 +12,8 @@ dotenv.config();
 // Fail fast if the JWT secret is missing in production
 require('./config/jwt').getJwtSecret();
 
-// Connect to MongoDB
-connectDB().then((connected) => {
-  if (connected) {
-    seedData();
-  }
-});
+// Connect to MongoDB (retries until reachable), then seed demo data on first run
+connectDB.connectWithRetry(seedData);
 
 const app = express();
 
