@@ -52,10 +52,10 @@
   --slate-950: #020617;
 
   /* Surfaces & Frosted Glass */
-  --bg-app: #f1f5f9;
+  --bg-app: #f6f8fb;
   --bg-surface: rgba(255, 255, 255, 0.92);
   --bg-surface-elevated: #ffffff;
-  --bg-sidebar: #0b1329;
+  --bg-sidebar: #ffffff;
   --border-subtle: rgba(226, 232, 240, 0.85);
   --border-focus: #0891b2;
 

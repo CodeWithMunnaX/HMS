@@ -25,31 +25,30 @@ export const Sidebar = ({ activeTab, setActiveTab }) => {
 
   // Role-specific navigation definitions
   const doctorNav = [
-    { id: 'doctor-overview', label: 'Clinical Dashboard', icon: LayoutDashboard },
-    { id: 'doctor-queue', label: "Today's Patient Queue", icon: Clock },
-    { id: 'doctor-prescriptions', label: 'E-Prescription Studio', icon: FileCheck },
-    { id: 'doctor-patients', label: 'My Patients & EMR', icon: Users },
-    { id: 'doctor-scans', label: 'Diagnostics & Scans', icon: FolderLock },
+    { id: 'overview', label: "Dashboard & Today's Queue", icon: LayoutDashboard },
+    { id: 'prescriptions', label: 'E-Prescriptions', icon: FileCheck },
+    { id: 'patients', label: 'My Patients', icon: Users },
+    { id: 'scans', label: 'Diagnostics & Scans', icon: FolderLock },
   ];
 
   const patientNav = [
-    { id: 'patient-overview', label: 'My Health Overview', icon: HeartPulse },
-    { id: 'patient-booking', label: 'Book Consultation', icon: CalendarCheck },
-    { id: 'patient-prescriptions', label: 'My Prescriptions', icon: FileCheck },
-    { id: 'patient-reports', label: 'Lab Reports & Scans', icon: FolderLock },
-    { id: 'patient-billing', label: 'Invoices & Receipts', icon: Receipt },
-    { id: 'patient-profile', label: 'My Medical Profile', icon: User },
+    { id: 'overview', label: 'Health Overview', icon: HeartPulse },
+    { id: 'appointments', label: 'Appointments', icon: CalendarCheck },
+    { id: 'prescriptions', label: 'Prescriptions', icon: FileCheck },
+    { id: 'reports', label: 'Lab Reports & Scans', icon: FolderLock },
+    { id: 'billing', label: 'Invoices & Payments', icon: Receipt },
+    { id: 'profile', label: 'Medical Profile', icon: User },
   ];
 
   const adminNav = [
-    { id: 'admin-dashboard', label: 'Hospital Intelligence', icon: LayoutDashboard },
-    { id: 'admin-appointments', label: 'OPD Appointments', icon: CalendarCheck },
-    { id: 'admin-patients', label: 'Patient Registry', icon: Users },
-    { id: 'admin-doctors', label: 'Doctors Roster', icon: Stethoscope },
-    { id: 'admin-wards', label: 'Wards & Bed Matrix', icon: BedDouble },
-    { id: 'admin-prescriptions', label: 'Prescriptions & Pharmacy', icon: FileCheck },
-    { id: 'admin-billing', label: 'Billing & Invoices', icon: Receipt },
-    { id: 'admin-vault', label: 'Cloud Medical Vault', icon: FolderLock },
+    { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
+    { id: 'appointments', label: 'Appointments', icon: CalendarCheck },
+    { id: 'patients', label: 'Patients', icon: Users },
+    { id: 'doctors', label: 'Doctors', icon: Stethoscope },
+    { id: 'wards', label: 'Wards & Beds', icon: BedDouble },
+    { id: 'prescriptions', label: 'Prescriptions & Pharmacy', icon: FileCheck },
+    { id: 'billing', label: 'Billing & Invoices', icon: Receipt },
+    { id: 'vault', label: 'Medical Records', icon: FolderLock },
   ];
 
   let currentNav = adminNav;

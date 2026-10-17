@@ -10,21 +10,21 @@ import { Prescriptions } from '../Prescriptions';
 
 export const AdminPortal = ({ activeTab, setActiveTab }) => {
   switch (activeTab) {
-    case 'admin-appointments':
+    case 'appointments':
       return <Appointments />;
-    case 'admin-patients':
+    case 'patients':
       return <Patients />;
-    case 'admin-doctors':
+    case 'doctors':
       return <Doctors setActiveTab={setActiveTab} />;
-    case 'admin-wards':
+    case 'wards':
       return <WardsAndBeds />;
-    case 'admin-prescriptions':
+    case 'prescriptions':
       return <Prescriptions />;
-    case 'admin-billing':
+    case 'billing':
       return <Billing />;
-    case 'admin-vault':
+    case 'vault':
       return <MedicalFiles />;
-    case 'admin-dashboard':
+    case 'dashboard':
     default:
       return <Dashboard setActiveTab={setActiveTab} />;
   }

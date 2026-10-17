@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ToastProvider } from './context/ToastContext';
 import { Sidebar } from './components/common/Sidebar';
@@ -19,67 +19,79 @@ import { Register } from './pages/Register';
 import './styles/index.css';
 import './styles/components.css';
 import './styles/landing.css';
+import './styles/portals.css';
+
+// Pages available to each role, in sidebar order. URLs are /app/<tab>.
+export const ROLE_TABS = {
+  Admin: ['dashboard', 'appointments', 'patients', 'doctors', 'wards', 'prescriptions', 'billing', 'vault'],
+  Receptionist: ['dashboard', 'appointments', 'patients', 'doctors', 'wards', 'prescriptions', 'billing', 'vault'],
+  Doctor: ['overview', 'prescriptions', 'patients', 'scans'],
+  Patient: ['overview', 'appointments', 'prescriptions', 'reports', 'billing', 'profile'],
+};
+
+const tabsForRole = (role) => ROLE_TABS[role] || ROLE_TABS.Admin;
+
+// Small history-based router: keeps the URL in sync so Back/Refresh/shared links work
+const usePath = () => {
+  const [path, setPath] = useState(window.location.pathname);
+  useEffect(() => {
+    const onPop = () => setPath(window.location.pathname);
+    window.addEventListener('popstate', onPop);
+    return () => window.removeEventListener('popstate', onPop);
+  }, []);
+  const navigate = useCallback((to, { replace = false } = {}) => {
+    if (to === window.location.pathname) return;
+    window.history[replace ? 'replaceState' : 'pushState']({}, '', to);
+    setPath(to);
+    window.scrollTo(0, 0);
+  }, []);
+  return [path, navigate];
+};
 
 const MainLayout = () => {
   const { user, loading, isDoctor, isPatient } = useAuth();
-  const [activeTab, setActiveTab] = useState('admin-dashboard');
-  const [authView, setAuthView] = useState('landing'); // 'landing', 'login', 'register'
+  const [path, navigate] = usePath();
   const [globalSearch, setGlobalSearch] = useState('');
 
-  // Automatically sync default tab when role changes
+  const appTab = path.startsWith('/app/') ? path.slice('/app/'.length).split('/')[0] : null;
+  const allowedTabs = user ? tabsForRole(user.role) : [];
+  const activeTab = allowedTabs.includes(appTab) ? appTab : allowedTabs[0];
+
+  // Keep the URL valid for the current auth state
   useEffect(() => {
-    if (user) {
-      if (user.role === 'Doctor') {
-        setActiveTab('doctor-overview');
-      } else if (user.role === 'Patient') {
-        setActiveTab('patient-overview');
-      } else {
-        setActiveTab('admin-dashboard');
-      }
+    if (loading) return;
+    if (user && (!path.startsWith('/app/') || appTab !== activeTab)) {
+      navigate(`/app/${activeTab}`, { replace: true });
+    } else if (!user && path.startsWith('/app')) {
+      navigate('/login', { replace: true });
     }
-  }, [user?.role]);
+  }, [user, loading, path, appTab, activeTab, navigate]);
+
+  const setActiveTab = useCallback((tab) => navigate(`/app/${tab}`), [navigate]);
 
   if (loading) {
     return (
-      <div style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#0b1329', color: '#38bdf8' }}>
-        <h2 style={{ fontWeight: '700', letterSpacing: '-0.02em' }}>Connecting to CarePulse Clinical Network...</h2>
+      <div className="app-loading">
+        <div className="app-loading-spinner" />
+        <p>Loading CarePulse…</p>
       </div>
     );
   }
 
-  // If unauthenticated, display Landing Page, Login, or Register
+  // Unauthenticated: landing page, login or register based on the URL
   if (!user) {
-    if (authView === 'register') {
-      return (
-        <Register
-          onNavigateLogin={() => setAuthView('login')}
-          onNavigateHome={() => setAuthView('landing')}
-        />
-      );
+    if (path === '/register') {
+      return <Register onNavigateLogin={() => navigate('/login')} onNavigateHome={() => navigate('/')} />;
     }
-    if (authView === 'login') {
-      return (
-        <Login
-          onNavigateRegister={() => setAuthView('register')}
-          onNavigateHome={() => setAuthView('landing')}
-        />
-      );
+    if (path === '/login' || path.startsWith('/app')) {
+      return <Login onNavigateRegister={() => navigate('/register')} onNavigateHome={() => navigate('/')} />;
     }
-    return (
-      <LandingPage
-        onNavigateLogin={() => setAuthView('login')}
-        onNavigateRegister={() => setAuthView('register')}
-      />
-    );
+    return <LandingPage onNavigateLogin={() => navigate('/login')} onNavigateRegister={() => navigate('/register')} />;
   }
 
   const renderActivePortal = () => {
-    if (isDoctor) {
-      return <DoctorPortal subTab={activeTab} setSubTab={setActiveTab} />;
-    }
-    if (isPatient) {
-      return <PatientPortal subTab={activeTab} setSubTab={setActiveTab} />;
-    }
+    if (isDoctor) return <DoctorPortal subTab={activeTab} setSubTab={setActiveTab} />;
+    if (isPatient) return <PatientPortal subTab={activeTab} setSubTab={setActiveTab} />;
     return <AdminPortal activeTab={activeTab} setActiveTab={setActiveTab} />;
   };
 

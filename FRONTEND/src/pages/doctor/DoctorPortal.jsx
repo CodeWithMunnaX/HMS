@@ -35,7 +35,9 @@ export const DoctorPortal = ({ subTab = 'overview', setSubTab }) => {
   const { user } = useAuth();
   const toast = useToast();
 
-  const [currentTab, setCurrentTab] = useState(subTab || 'overview');
+  // The active page comes from the URL (/app/<tab>) via the sidebar
+  const currentTab = subTab || 'overview';
+  const setCurrentTab = (tab) => setSubTab?.(tab);
   const [data, setData] = useState(null);
   const [appointments, setAppointments] = useState([]);
   const [prescriptions, setPrescriptions] = useState([]);
@@ -309,30 +311,6 @@ export const DoctorPortal = ({ subTab = 'overview', setSubTab }) => {
             <Plus size={16} /> Write E-Prescription
           </button>
         </div>
-      </div>
-
-      {/* Navigation Sub-Tabs for Doctor */}
-      <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '2rem', flexWrap: 'wrap' }}>
-        {[
-          { id: 'overview', label: "📋 Today's Queue & Dashboard", icon: Clock },
-          { id: 'prescriptions', label: '℞ E-Prescriptions Studio', icon: FileCheck },
-          { id: 'patients', label: '👥 My Patients & History', icon: User },
-          { id: 'scans', label: '🔬 Diagnostic Scans & Vault', icon: FolderLock },
-        ].map((tab) => {
-          const Icon = tab.icon;
-          const isActive = currentTab === tab.id;
-          return (
-            <button
-              key={tab.id}
-              onClick={() => setCurrentTab(tab.id)}
-              className={`btn ${isActive ? 'btn-primary' : 'btn-secondary'}`}
-              style={{ padding: '0.6rem 1.25rem', borderRadius: '12px' }}
-            >
-              <Icon size={16} />
-              {tab.label}
-            </button>
-          );
-        })}
       </div>
 
       {/* TAB 1: OVERVIEW & TODAY'S QUEUE */}
