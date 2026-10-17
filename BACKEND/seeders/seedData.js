@@ -10,23 +10,22 @@ const MedicalFile = require('../models/MedicalFile');
 
 const seedData = async () => {
   try {
-    // Ensure Munna Admin exists
-    const existingMunna = await User.findOne({ email: 'munna@gmail.com' });
-    if (!existingMunna) {
-      await User.create({
-        name: 'Munna (Chief Admin)',
-        email: 'munna@gmail.com',
-        password: 'munna@gmail.com',
-        role: 'Admin',
-        phone: '+1 (555) 010-9000',
-        avatar: 'https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&q=80&w=300',
-        department: 'Hospital Administration',
-      });
-      console.log('[HMS Seeder]: Admin Munna (munna@gmail.com) created.');
-    }
-
+    // Existing database: only make sure the demo admin exists, never re-seed
     const userCount = await User.countDocuments();
-    if (userCount > 1) {
+    if (userCount > 0) {
+      const existingMunna = await User.findOne({ email: 'munna@gmail.com' });
+      if (!existingMunna) {
+        await User.create({
+          name: 'Munna (Chief Admin)',
+          email: 'munna@gmail.com',
+          password: 'munna@gmail.com',
+          role: 'Admin',
+          phone: '+1 (555) 010-9000',
+          avatar: 'https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&q=80&w=300',
+          department: 'Hospital Administration',
+        });
+        console.log('[HMS Seeder]: Admin Munna (munna@gmail.com) created.');
+      }
       console.log('[HMS Seeder]: Data already seeded, skipping auto-seed.');
       return;
     }

@@ -9,6 +9,9 @@ const seedData = require('./seeders/seedData');
 // Load environment variables
 dotenv.config();
 
+// Fail fast if the JWT secret is missing in production
+require('./config/jwt').getJwtSecret();
+
 // Connect to MongoDB
 connectDB().then((connected) => {
   if (connected) {

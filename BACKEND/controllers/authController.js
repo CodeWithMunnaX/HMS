@@ -1,11 +1,12 @@
 const jwt = require('jsonwebtoken');
+const { getJwtSecret } = require('../config/jwt');
 const User = require('../models/User');
 const Doctor = require('../models/Doctor');
 const Patient = require('../models/Patient');
 
 // Generate JWT Token
 const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET || 'carepulse_hms_jwt_secret_key_2026', {
+  return jwt.sign({ id }, getJwtSecret(), {
     expiresIn: '30d',
   });
 };

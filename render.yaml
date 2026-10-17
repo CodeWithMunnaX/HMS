@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: hms-api
+    runtime: node
+    plan: free
+    rootDir: BACKEND
+    buildCommand: npm ci
+    startCommand: node server.js
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        generateValue: true
+      - key: MONGODB_URI
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false
